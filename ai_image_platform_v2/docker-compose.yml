@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     container_name: ai_image_backend
     ports:
-      - "5000:5000"
+      - "5002:5002"
     environment:
       - FLASK_ENV=production
       - DATABASE_URL=postgresql://postgres:password@db:5432/ai_image_platform
@@ -25,7 +25,7 @@ services:
       - ai_image_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+              test: ["CMD", "curl", "-f", "http://localhost:5002/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -39,7 +39,7 @@ services:
     ports:
       - "3000:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:5000/api
+              - REACT_APP_API_URL=http://localhost:5002/api
     depends_on:
       - backend
     networks:

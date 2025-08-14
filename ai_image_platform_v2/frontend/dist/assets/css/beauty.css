@@ -1018,6 +1018,73 @@
     cursor: not-allowed;
 }
 
+/* 全屏模式样式 */
+.image-comparison-area.fullscreen-mode {
+    background: #000;
+    z-index: 9999;
+}
+
+.image-comparison-area.fullscreen-mode .image-comparison {
+    height: 100vh;
+    padding: 20px;
+}
+
+.image-comparison-area.fullscreen-mode .image-wrapper {
+    max-height: calc(100vh - 120px);
+}
+
+.image-comparison-area.fullscreen-mode .image-actions {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.image-comparison-area.fullscreen-mode .btn-icon {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.image-comparison-area.fullscreen-mode .btn-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.image-comparison-area.fullscreen-mode .zoom-level {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 缩放功能样式 */
+.image-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.image-wrapper img {
+    transform-origin: center center;
+    cursor: grab;
+    user-select: none;
+}
+
+.image-wrapper img:active {
+    cursor: grabbing;
+}
+
+/* 禁用状态的按钮样式 */
+.btn-icon:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* 缩放级别显示样式增强 */
+.zoom-level {
+    font-weight: 600;
+    min-width: 50px;
+    text-align: center;
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .beauty-panel .panel-content {
@@ -1037,5 +1104,17 @@
     .action-row {
         flex-direction: column;
         gap: 8px;
+    }
+    
+    /* 全屏模式在移动设备上的调整 */
+    .image-comparison-area.fullscreen-mode .image-actions {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .image-comparison-area.fullscreen-mode .btn-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
     }
 }

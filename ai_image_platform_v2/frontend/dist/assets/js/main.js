@@ -130,6 +130,7 @@ function bindEvents() {
     $(document).on('click', '.btn-compare', toggleImageComparison);
     $(document).on('click', '.btn-zoom-in', zoomIn);
     $(document).on('click', '.btn-zoom-out', zoomOut);
+    $(document).on('click', '.btn-reset-zoom', resetZoom);
     $(document).on('click', '.btn-fullscreen', toggleFullscreen);
     
     // 重置按钮
@@ -894,6 +895,9 @@ function displayImage(imageUrl) {
             $('.file-info .file-name').text(currentImage.filename || '未知文件');
             $('.file-info .file-size').text(formatFileSize(currentImage.size || 0));
         }
+        
+        // 初始化缩放状态
+        initializeZoom();
     }).on('error', function() {
         // 图片加载失败
         showNotification('图片加载失败', 'error');
@@ -916,26 +920,102 @@ function displayBeautyInterface(imageUrl) {
     $('.file-info .file-size').text(formatFileSize(currentImage?.size || 0));
 }
 
+// 图片缩放相关变量
+let currentZoom = 1.0;
+const zoomStep = 0.2;
+const minZoom = 0.5;
+const maxZoom = 3.0;
+
 // 放大图片
 function zoomIn() {
-    // 实现放大逻辑
-    console.log('放大图片');
+    console.log('zoomIn called, currentZoom:', currentZoom);
+    if (currentZoom < maxZoom) {
+        currentZoom = Math.min(currentZoom + zoomStep, maxZoom);
+        applyZoom();
+    }
 }
 
 // 缩小图片
 function zoomOut() {
-    // 实现缩小逻辑
-    console.log('缩小图片');
+    console.log('zoomOut called, currentZoom:', currentZoom);
+    if (currentZoom > minZoom) {
+        currentZoom = Math.max(currentZoom - zoomStep, minZoom);
+        applyZoom();
+    }
 }
 
 // 重置缩放
 function resetZoom() {
-    // 实现重置缩放逻辑
-    console.log('重置缩放');
+    console.log('resetZoom called');
+    currentZoom = 1.0;
+    applyZoom();
 }
 
+// 应用缩放效果
+function applyZoom() {
+    console.log('applyZoom called, currentZoom:', currentZoom);
+    const images = $('#original-image, #processed-image');
+    const zoomPercentage = Math.round(currentZoom * 100);
+    
+    console.log('Found images:', images.length);
+    
+    images.css({
+        'transform': `scale(${currentZoom})`,
+        'transition': 'transform 0.3s ease'
+    });
+    
+    // 更新缩放级别显示
+    $('#zoom-level').text(`${zoomPercentage}%`);
+    
+    // 更新按钮状态
+    $('.btn-zoom-in').prop('disabled', currentZoom >= maxZoom);
+    $('.btn-zoom-out').prop('disabled', currentZoom <= minZoom);
+}
+
+
+
+// 鼠标滚轮缩放支持
+$(document).on('wheel', '.image-wrapper', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        
+        if (e.originalEvent.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    }
+});
+
+// 双击重置缩放
+$(document).on('dblclick', '.image-wrapper img', function() {
+    resetZoom();
+});
+
+// 初始化缩放状态
+function initializeZoom() {
+    currentZoom = 1.0;
+    applyZoom();
+}
+
+// 监听全屏状态变化
+$(document).on('fullscreenchange webkitfullscreenchange mozfullscreenchange msfullscreenchange', function() {
+    const fullscreenBtn = $('.btn-fullscreen i');
+    const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+    
+    if (isFullscreen) {
+        fullscreenBtn.removeClass('fa-expand').addClass('fa-compress');
+        $('.btn-fullscreen').attr('title', '退出全屏');
+        $('.image-comparison-area').addClass('fullscreen-mode');
+    } else {
+        fullscreenBtn.removeClass('fa-compress').addClass('fa-expand');
+        $('.btn-fullscreen').attr('title', '全屏');
+        $('.image-comparison-area').removeClass('fullscreen-mode');
+    }
+});
+
 // 处理美颜图片
-function processBeautyImage() {
+async function processBeautyImage() {
     if (!currentImage) {
         showNotification('请先上传图片', 'warning');
         return;
@@ -958,135 +1038,58 @@ function processBeautyImage() {
     
     showLoading('正在进行AI美颜处理...');
     
-    // 先获取AI建议
-    $.ajax({
-        url: `${API_BASE_URL}/ai/beauty-suggestions`,
-        type: 'POST',
-        data: JSON.stringify({
-            image_id: currentImage.id
-        }),
-        contentType: 'application/json',
-        headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-        success: function(aiResponse) {
-            if (aiResponse.success) {
-                // AI建议获取成功，但直接使用原始参数（AI分析结果为文本格式）
-                const finalParams = params;
-                
-                // 应用美颜处理
-                $.ajax({
-                    url: `${API_BASE_URL}/processing/beauty`,
-                    type: 'POST',
-                    data: JSON.stringify({
-                        image_id: currentImage.id,
-                        ...finalParams
-                    }),
-                    contentType: 'application/json',
-                    headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-                    success: function(response) {
-                        hideLoading();
-                        // 隐藏处理指示器
-                        $('#processing-indicator').hide();
-                        // 启用处理按钮
-                        $('.btn-process-beauty').prop('disabled', false);
-                        
-                        if (response.success) {
-                            showNotification('美颜处理完成', 'success');
-                            // 更新图片显示
-                            if (response.data.result_url) {
-                                loadProcessedImage(response.data.result_url);
-                            }
-                        } else {
-                            showNotification(response.message || '处理失败', 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Beauty processing error:', {
-                            status: xhr.status,
-                            statusText: xhr.statusText,
-                            responseText: xhr.responseText,
-                            responseJSON: xhr.responseJSON
-                        });
-                        hideLoading();
-                        // 隐藏处理指示器
-                        $('#processing-indicator').hide();
-                        // 启用处理按钮
-                        $('.btn-process-beauty').prop('disabled', false);
-                        // 显示占位内容
-                        $('#processed-image').hide();
-                        $('#placeholder-content').show();
-                        
-                        const response = xhr.responseJSON;
-                        showNotification(response?.message || '处理失败', 'error');
-                    }
-                });
-            } else {
-                // 如果获取AI建议失败，仍然继续处理，但使用原始参数
-                $.ajax({
-                    url: `${API_BASE_URL}/processing/beauty`,
-                    type: 'POST',
-                    data: JSON.stringify({
-                        image_id: currentImage.id,
-                        ...params
-                    }),
-                    contentType: 'application/json',
-                    headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-                    success: function(response) {
-                        hideLoading();
-                        if (response.success) {
-                            showNotification('美颜处理完成', 'success');
-                            // 更新图片显示
-                            if (response.data.result_url) {
-                                loadProcessedImage(response.data.result_url);
-                            }
-                        } else {
-                            showNotification(response.message || '处理失败', 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Beauty processing error (fallback):', {
-                            status: xhr.status,
-                            statusText: xhr.statusText,
-                            responseText: xhr.responseText,
-                            responseJSON: xhr.responseJSON
-                        });
-                        hideLoading();
-                        const response = xhr.responseJSON;
-                        showNotification(response?.message || '处理失败', 'error');
-                    }
-                });
+    // 使用统一的API客户端进行美颜处理
+    console.log('发送美颜请求，authToken:', authToken);
+    console.log('Using API client instead of jQuery AJAX');
+    
+    try {
+        const response = await window.API.processingAPI.beauty(currentImage.id, params);
+        console.log('Beauty processing success response:', response);
+        
+        hideLoading();
+        // 隐藏处理指示器
+        $('#processing-indicator').hide();
+        // 启用处理按钮
+        $('.btn-process-beauty').prop('disabled', false);
+        
+        if (response.success) {
+            showNotification('美颜处理完成', 'success');
+            // 更新图片显示
+            if (response.data.result_url) {
+                loadProcessedImage(response.data.result_url);
             }
-        },
-        error: function(xhr) {
-            // 如果获取AI建议失败，仍然继续处理，但使用原始参数
-            $.ajax({
-                url: `${API_BASE_URL}/processing/beauty`,
-                type: 'POST',
-                data: JSON.stringify({
-                    image_id: currentImage.id,
-                    ...params
-                }),
-                contentType: 'application/json',
-                headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-                success: function(response) {
-                    hideLoading();
-                    if (response.success) {
-                        showNotification('美颜处理完成', 'success');
-                        // 更新图片显示
-                        if (response.data.result_url) {
-                            loadProcessedImage(response.data.result_url);
-                        }
-                    } else {
-                        showNotification(response.message || '处理失败', 'error');
-                    }
-                },
-                error: function(xhr) {
-                    hideLoading();
-                    const response = xhr.responseJSON;
-                    showNotification(response?.message || '处理失败', 'error');
-                }
-            });
+        } else {
+            showNotification(response.message || '处理失败', 'error');
         }
-    });
+    } catch (error) {
+        console.error('Beauty processing error:', error);
+        
+        // 检查错误对象是否包含实际的成功响应数据
+        if (error.data && error.data.success === true) {
+            console.log('Error contains success data, processing as success:', error.data);
+            
+            hideLoading();
+            $('#processing-indicator').hide();
+            $('.btn-process-beauty').prop('disabled', false);
+            
+            showNotification('美颜处理完成', 'success');
+            if (error.data.data && error.data.data.result_url) {
+                loadProcessedImage(error.data.data.result_url);
+            }
+            return;
+        }
+        
+        hideLoading();
+        // 隐藏处理指示器
+        $('#processing-indicator').hide();
+        // 启用处理按钮
+        $('.btn-process-beauty').prop('disabled', false);
+        // 显示占位内容
+        $('#processed-image').hide();
+        $('#placeholder-content').show();
+        
+        showNotification(error.message || '美颜处理失败', 'error');
+    }
 }
 
 // 处理证件照生成
@@ -1299,10 +1302,31 @@ function toggleImageComparison() {
 
 // 切换全屏
 function toggleFullscreen() {
-    if (document.fullscreenElement) {
-        document.exitFullscreen();
+    console.log('toggleFullscreen called');
+    const comparisonArea = document.querySelector('.image-comparison-area');
+    console.log('Found comparison area:', !!comparisonArea);
+    
+    if (!document.fullscreenElement) {
+        // 进入全屏
+        if (comparisonArea && comparisonArea.requestFullscreen) {
+            comparisonArea.requestFullscreen();
+        } else if (comparisonArea && comparisonArea.webkitRequestFullscreen) {
+            comparisonArea.webkitRequestFullscreen();
+        } else if (comparisonArea && comparisonArea.msRequestFullscreen) {
+            comparisonArea.msRequestFullscreen();
+        } else {
+            // 回退到整个文档全屏
+            document.documentElement.requestFullscreen();
+        }
     } else {
-        document.documentElement.requestFullscreen();
+        // 退出全屏
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
     }
 }
 

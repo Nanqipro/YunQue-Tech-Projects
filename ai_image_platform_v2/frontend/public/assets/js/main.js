@@ -9,7 +9,7 @@ let currentUser = null;
 const API_BASE_URL = 'http://127.0.0.1:5002/api';
 
 // 初始化应用
-$(document).ready(function() {
+$(document).ready(function () {
     initializeApp();
     bindEvents();
     checkAuthStatus();
@@ -18,25 +18,30 @@ $(document).ready(function() {
 // 初始化应用
 function initializeApp() {
     console.log('AI图像处理平台初始化...');
-    
+
+    // 设置API客户端的token
+    if (authToken) {
+        window.API.apiClient.setToken(authToken);
+    }
+
     // 隐藏初始加载遮罩
     hideLoading();
-    
+
     // 初始化拖拽上传
     initializeDragDrop();
-    
+
     // 初始化工具面板
     initializeToolPanels();
-    
+
     // 初始化美颜界面
     initializeBeautyInterface();
-    
+
     // 初始化通知功能
     initializeNotifications();
-    
+
     // 更新状态栏
     updateStatusBar('就绪');
-    
+
     // 延迟设置默认工具，避免初始化时的递归问题
     setTimeout(() => {
         selectTool('beauty', 'beauty');
@@ -47,18 +52,18 @@ function initializeApp() {
 function initializeNotifications() {
     // 初始化通知权限
     initNotificationPermission();
-    
+
     // 检查用户是否已登录
     const token = localStorage.getItem('authToken');
     if (token) {
         // 更新通知徽章
         updateNotificationBadge();
-        
+
         // 定期检查新通知
         setInterval(() => {
             updateNotificationBadge();
         }, 60000); // 每分钟检查一次
-        
+
         // 启动实时通知检查
         initNotificationRealtime();
     }
@@ -67,19 +72,19 @@ function initializeNotifications() {
 // 绑定事件
 function bindEvents() {
     // 工具选择（使用委托事件避免重复绑定）
-    $(document).on('click.toolitem', '.tool-item', function() {
+    $(document).on('click.toolitem', '.tool-item', function () {
         const category = $(this).data('category');
         const tool = $(this).data('tool');
         selectTool(category, tool);
     });
-    
+
     // 文件上传事件绑定
     $('#image-input').on('change', handleFileSelect);
-    
+
     // 上传区域点击触发文件选择
-    $(document).on('click', '.upload-container', function(e) {
+    $(document).on('click', '.upload-container', function (e) {
         console.log('上传区域被点击');
-        
+
         const fileInput = document.getElementById('image-input');
         if (fileInput) {
             console.log('触发文件选择器');
@@ -88,10 +93,10 @@ function bindEvents() {
             console.error('找不到文件输入框');
         }
     });
-    
+
     // 文件选择现在通过label标签自动处理，无需JavaScript干预
     console.log('文件选择功能已通过HTML label标签实现');
-    
+
     // 处理按钮（使用委托事件避免重复绑定）
     $(document).on('click.buttons', '#process-btn', processBeautyImage);
     $(document).on('click.buttons', '#resetBtn', resetImage);
@@ -99,104 +104,104 @@ function bindEvents() {
     $(document).on('click', '.btn-process-beauty', processBeautyImage);
     $(document).on('click', '.btn-process-id-photo', processIdPhoto);
     $(document).on('click', '.btn-process-background', processBackground);
-    
+
     // 创建防抖函数实例
     const debouncedPreviewEffect = debounce(previewEffect, 300);
-    
+
     // 滑块控件（使用命名空间避免重复绑定）
-    $(document).on('input.slider', '.slider', function() {
+    $(document).on('input.slider', '.slider', function () {
         const value = $(this).val();
         $(this).siblings('.slider-value').text(value);
         if (currentImage && !isProcessing) {
             debouncedPreviewEffect();
         }
     });
-    
+
     // 美颜滑块值更新
-    $(document).on('input', '.beauty-slider', function() {
+    $(document).on('input', '.beauty-slider', function () {
         const value = $(this).val();
         $(this).siblings('.parameter-label').find('.parameter-value').text(value);
         updateBeautyPreview();
     });
-    
+
     // 预设方案选择
-    $(document).on('click', '.preset-btn', function() {
+    $(document).on('click', '.preset-btn', function () {
         $('.preset-btn').removeClass('active');
         $(this).addClass('active');
         applyBeautyPreset($(this).data('preset'));
     });
-    
+
     // 图片对比控制
     $(document).on('click', '.btn-compare', toggleImageComparison);
     $(document).on('click', '.btn-zoom-in', zoomIn);
     $(document).on('click', '.btn-zoom-out', zoomOut);
     $(document).on('click', '.btn-fullscreen', toggleFullscreen);
-    
+
     // 重置按钮
     $(document).on('click', '.btn-reset-params', resetBeautyParams);
-    
+
     // 下载按钮
     $(document).on('click', '.btn-download-result', downloadImage);
-    
+
     // 选择框（使用委托事件避免重复绑定）
-    $(document).on('change.formselect', '.form-select', function() {
+    $(document).on('change.formselect', '.form-select', function () {
         if (currentImage && !isProcessing) {
             previewEffect();
         }
     });
-    
+
     // 用户菜单（使用委托事件避免重复绑定）
-    $(document).on('click.usermenu', '.user-profile', function(e) {
+    $(document).on('click.usermenu', '.user-profile', function (e) {
         e.stopPropagation();
         $('.user-dropdown').toggleClass('show');
     });
-    
-    $(document).on('click', function() {
+
+    $(document).on('click', function () {
         $('.user-dropdown').removeClass('show');
     });
-    
+
     // 登录/注册（使用委托事件避免重复绑定）
     $(document).on('click.auth', '#loginBtn', showLoginModal);
     $(document).on('click.auth', '#registerBtn', showRegisterModal);
     $(document).on('click.auth', '#logout-btn', logout);
-    
+
     // 顶部菜单栏功能按钮
     $(document).on('click', '#help-btn', showHelpCenter);
     $(document).on('click', '#history-btn', showHistoryPanel);
     $(document).on('click', '#favorites-btn', showFavoritesPanel);
     $(document).on('click', '#notifications-btn', showNotificationsPanel);
-    $(document).on('click', '#user-menu-btn', function(e) {
+    $(document).on('click', '#user-menu-btn', function (e) {
         e.stopPropagation();
         $('.user-dropdown').toggleClass('show');
     });
-    
+
     // 模态框内的切换按钮
-    $(document).on('click.auth', '#show-register', function() {
+    $(document).on('click.auth', '#show-register', function () {
         $('#login-modal').hide();
         $('#register-modal').show();
     });
-    $(document).on('click.auth', '#show-login', function() {
+    $(document).on('click.auth', '#show-login', function () {
         $('#register-modal').hide();
         $('#login-modal').show();
     });
-    
+
     // 模态框（使用委托事件避免重复绑定）
     $(document).on('click.modal', '.modal-close', closeModal);
-    $(document).on('click.modal', '.modal-overlay', function(e) {
+    $(document).on('click.modal', '.modal-overlay', function (e) {
         if (e.target === this) {
             closeModal();
         }
     });
-    
+
     // 表单提交（使用委托事件避免重复绑定）
     $(document).on('submit.forms', '#login-form', handleLogin);
     $(document).on('submit.forms', '#register-form', handleRegister);
-    
+
     // 键盘快捷键
     $(document).on('keydown', handleKeyboardShortcuts);
-    
+
     // ESC键关闭模态框
-    $(document).on('keydown', function(e) {
+    $(document).on('keydown', function (e) {
         if (e.key === 'Escape') {
             closeModal();
         }
@@ -208,16 +213,16 @@ function selectTool(category, tool) {
     // 更新UI状态
     $('.tool-item').removeClass('active');
     $(`.tool-item[data-category="${category}"][data-tool="${tool}"]`).addClass('active');
-    
+
     // 更新当前工具
     currentTool = { category, tool };
-    
+
     // 更新面板
     updateToolPanel(category, tool);
-    
+
     // 更新页面标题
     updatePageTitle(category, tool);
-    
+
     // 启用处理按钮
     if (currentImage) {
         $('#process-btn').prop('disabled', false);
@@ -227,7 +232,7 @@ function selectTool(category, tool) {
 // 更新工具面板
 function updateToolPanel(category, tool) {
     const panelContent = $('.panel-content');
-    
+
     switch (category) {
         case 'beauty':
             panelContent.html(getBeautyPanel(tool));
@@ -463,7 +468,7 @@ function updatePageTitle(category, tool) {
         repair: { scratch: '划痕修复', noise: '噪点去除', enhance: '细节增强' },
         'id-photo': { generate: '证件照生成' }
     };
-    
+
     const title = titles[category]?.[tool] || '图像处理';
     $('.page-title').text(title);
 }
@@ -478,7 +483,7 @@ function initializeToolPanels() {
 function initializeBeautyInterface() {
     // 美颜界面已在HTML中定义，这里可以添加特定的初始化逻辑
     console.log('美颜界面初始化完成');
-    
+
     // 确保控制面板初始状态为禁用
     $('#beauty-panel').addClass('disabled');
 }
@@ -496,14 +501,14 @@ function showNotification(message, type = 'info') {
             <button class="notification-close">&times;</button>
         </div>
     `);
-    
+
     $('body').append(notification);
-    
+
     // 自动关闭
     setTimeout(() => {
         notification.fadeOut(() => notification.remove());
     }, 3000);
-    
+
     // 手动关闭
     notification.find('.notification-close').click(() => {
         notification.fadeOut(() => notification.remove());
@@ -540,10 +545,10 @@ function processImage() {
         showNotification('请先上传图片并选择工具', 'warning');
         return;
     }
-    
+
     // 实现图像处理逻辑
     showLoading('正在处理图像...');
-    
+
     // 模拟处理时间
     setTimeout(() => {
         hideLoading();
@@ -584,14 +589,14 @@ function checkAuthStatus() {
                 'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json'
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.valid) {
                     currentUser = response.user;
                     updateUserInterface();
                     console.log('Token验证成功，用户已登录:', currentUser);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 // Token无效，清除本地存储
                 localStorage.removeItem('authToken');
                 authToken = null;
@@ -616,7 +621,7 @@ function updateUserInterface() {
         $('.user-info').show();
         $('.user-name').text(currentUser.username);
         $('.user-dropdown').removeClass('show');
-        
+
         // 用户已登录，检查是否有图片来决定是否启用证件照按钮
         updateProcessingButtons();
     } else {
@@ -625,7 +630,7 @@ function updateUserInterface() {
         $('.auth-buttons').show();
         $('.user-info').hide();
         $('.user-dropdown').removeClass('show');
-        
+
         // 用户未登录时禁用证件照按钮
         $('.btn-process-id-photo').prop('disabled', true);
     }
@@ -639,7 +644,7 @@ function updateProcessingButtons() {
         hasUser: !!currentUser,
         hasImage: !!currentImage
     });
-    
+
     // 只有用户已登录且有图片时才启用证件照按钮
     if (currentUser && currentImage) {
         console.log('启用证件照按钮');
@@ -669,7 +674,7 @@ function showRegisterModal() {
 function closeModal() {
     $('.modal').hide();
     $('#modal-overlay').hide();
-    
+
     // 关闭通知面板
     $('#notifications-modal').hide();
     $('.modal-overlay').hide();
@@ -679,7 +684,7 @@ function closeModal() {
 function handleLogin(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    
+
     $.ajax({
         url: `${API_BASE_URL}/users/login`,
         type: 'POST',
@@ -688,10 +693,12 @@ function handleLogin(e) {
             password: formData.get('password')
         }),
         contentType: 'application/json',
-        success: function(response) {
+        success: function (response) {
             if (response.success && response.data && response.data.token) {
                 authToken = response.data.token;
                 localStorage.setItem('authToken', authToken);
+                // 设置API客户端的token
+                window.API.apiClient.setToken(authToken);
                 currentUser = response.data.user;
                 updateUserInterface();
                 closeModal();
@@ -700,9 +707,20 @@ function handleLogin(e) {
                 showNotification(response.message || '登录失败', 'error');
             }
         },
-        error: function(xhr) {
+        error: function (xhr) {
             const response = xhr.responseJSON;
-            showNotification(response?.message || '登录失败', 'error');
+            let errorMessage = '登录失败';
+
+            if (xhr.status === 401) {
+                errorMessage = '用户名或密码错误';
+            } else if (xhr.status === 400) {
+                errorMessage = response?.message || '输入信息有误，请检查';
+            } else if (xhr.status === 500) {
+                errorMessage = '服务器错误，请稍后重试';
+            }
+
+            showNotification(errorMessage, 'error');
+            console.error('登录失败:', xhr.status, response);
         }
     });
 }
@@ -711,7 +729,7 @@ function handleLogin(e) {
 function handleRegister(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    
+
     $.ajax({
         url: `${API_BASE_URL}/users/register`,
         type: 'POST',
@@ -721,7 +739,7 @@ function handleRegister(e) {
             password: formData.get('password')
         }),
         contentType: 'application/json',
-        success: function(response) {
+        success: function (response) {
             if (response.success) {
                 showNotification('注册成功，请登录', 'success');
                 $('#register-modal').hide();
@@ -730,9 +748,26 @@ function handleRegister(e) {
                 showNotification(response.message || '注册失败', 'error');
             }
         },
-        error: function(xhr) {
+        error: function (xhr) {
             const response = xhr.responseJSON;
-            showNotification(response?.message || '注册失败', 'error');
+            let errorMessage = '注册失败';
+
+            if (xhr.status === 409) {
+                if (response?.message?.includes('用户名已存在')) {
+                    errorMessage = '用户名已存在，请选择其他用户名';
+                } else if (response?.message?.includes('邮箱已存在')) {
+                    errorMessage = '邮箱已被注册，请使用其他邮箱';
+                } else {
+                    errorMessage = response?.message || '用户信息冲突，请检查输入';
+                }
+            } else if (xhr.status === 400) {
+                errorMessage = response?.message || '输入信息有误，请检查';
+            } else if (xhr.status === 500) {
+                errorMessage = '服务器错误，请稍后重试';
+            }
+
+            showNotification(errorMessage, 'error');
+            console.error('注册失败:', xhr.status, response);
         }
     });
 }
@@ -741,6 +776,7 @@ function handleRegister(e) {
 function logout() {
     localStorage.removeItem('authToken');
     authToken = null;
+    window.API.apiClient.setToken(null);
     currentUser = null;
     updateUserInterface();
     showNotification('已登出', 'info');
@@ -757,13 +793,13 @@ function handleKeyboardShortcuts(e) {
         input.val(''); // 清除之前的选择
         input.click();
     }
-    
+
     // Ctrl/Cmd + S: 保存/下载
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
         downloadImage();
     }
-    
+
     // Ctrl/Cmd + Z: 重置
     if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
         e.preventDefault();
@@ -774,21 +810,21 @@ function handleKeyboardShortcuts(e) {
 // 初始化拖拽上传
 function initializeDragDrop() {
     const uploadArea = $('.upload-area');
-    
-    uploadArea.on('dragover', function(e) {
+
+    uploadArea.on('dragover', function (e) {
         e.preventDefault();
         $(this).addClass('drag-over');
     });
-    
-    uploadArea.on('dragleave', function(e) {
+
+    uploadArea.on('dragleave', function (e) {
         e.preventDefault();
         $(this).removeClass('drag-over');
     });
-    
-    uploadArea.on('drop', function(e) {
+
+    uploadArea.on('drop', function (e) {
         e.preventDefault();
         $(this).removeClass('drag-over');
-        
+
         const files = e.originalEvent.dataTransfer.files;
         if (files.length > 0) {
             handleFile(files[0]);
@@ -811,90 +847,86 @@ function handleFileSelect(e) {
 }
 
 // 处理文件
-function handleFile(file) {
+async function handleFile(file) {
     // 验证文件类型
     if (!file.type.startsWith('image/')) {
         showNotification('请选择图片文件', 'error');
         return;
     }
-    
+
     // 验证文件大小（10MB限制）
     if (file.size > 10 * 1024 * 1024) {
         showNotification('文件大小不能超过10MB', 'error');
         return;
     }
-    
+
     // 显示加载状态
     showLoading('正在上传图片...');
-    
-    // 创建FormData
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    // 上传图片到通义千问API
-    $.ajax({
-        url: `${API_BASE_URL}/images/upload`,
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-        success: function(response) {
-            hideLoading();
-            if (response.success) {
-                currentImage = response.data;
-                console.log('图片上传成功，设置currentImage:', currentImage);
-                displayImage(response.data.url);
-                showNotification('图片上传成功', 'success');
-                updateStatusBar(`已上传: ${file.name} (${formatFileSize(file.size)})`);
-            } else {
-                showNotification(response.message || '上传失败', 'error');
-            }
-        },
-        error: function(xhr) {
-            hideLoading();
-            const response = xhr.responseJSON;
-            showNotification(response?.message || '上传失败', 'error');
+
+    // 确保API客户端的token与当前authToken同步
+    if (authToken && window.API.apiClient.token !== authToken) {
+        console.log('同步API客户端token用于图片上传');
+        window.API.apiClient.setToken(authToken);
+    }
+
+    try {
+        // 使用统一的API客户端上传图片
+        console.log('使用API客户端上传图片，token:', window.API.apiClient.token ? 'exists' : 'none');
+        const response = await window.API.imageAPI.upload(file);
+
+        hideLoading();
+        if (response.success) {
+            currentImage = response.data;
+            console.log('图片上传成功，设置currentImage:', currentImage);
+            displayImage(response.data.url);
+            showNotification('图片上传成功', 'success');
+            updateStatusBar(`已上传: ${file.name} (${formatFileSize(file.size)})`);
+        } else {
+            showNotification(response.message || '上传失败', 'error');
         }
-    });
+    } catch (error) {
+        hideLoading();
+        console.error('图片上传错误:', error);
+        showNotification(error.message || '上传失败', 'error');
+    }
 }
 
 // 显示图片
 function displayImage(imageUrl) {
     // 隐藏上传区域
     $('#upload-section').hide();
-    
+
     // 显示图片对比区域
     $('#image-comparison').show();
-    
+
     // 设置原始图片
     const originalImage = $('#original-image');
     originalImage.attr('src', imageUrl);
-    
+
     // 等待图片加载完成
-    originalImage.on('load', function() {
+    originalImage.on('load', function () {
         // 显示原始图片
         originalImage.show();
-        
+
         // 隐藏占位内容
         $('#placeholder-content').hide();
-        
+
         // 启用美颜控制面板
         $('#beauty-panel').removeClass('disabled');
-        
+
         // 启用开始美颜按钮
         $('#process-btn').prop('disabled', false);
-        
+
         // 更新处理按钮状态（包括证件照按钮）
         console.log('调用updateProcessingButtons');
         updateProcessingButtons();
-        
+
         // 更新文件信息
         if (currentImage) {
             $('.file-info .file-name').text(currentImage.filename || '未知文件');
             $('.file-info .file-size').text(formatFileSize(currentImage.size || 0));
         }
-    }).on('error', function() {
+    }).on('error', function () {
         // 图片加载失败
         showNotification('图片加载失败', 'error');
         // 重置界面
@@ -907,10 +939,10 @@ function displayImage(imageUrl) {
 function displayBeautyInterface(imageUrl) {
     // 设置美颜界面的图片
     $('#beauty-image').attr('src', imageUrl);
-    
+
     // 启用美颜控制面板
     $('#beauty-panel').removeClass('disabled');
-    
+
     // 更新文件信息
     $('.file-info .file-name').text(currentImage?.filename || '未知文件');
     $('.file-info .file-size').text(formatFileSize(currentImage?.size || 0));
@@ -935,15 +967,15 @@ function resetZoom() {
 }
 
 // 处理美颜图片
-function processBeautyImage() {
+async function processBeautyImage() {
     if (!currentImage) {
         showNotification('请先上传图片', 'warning');
         return;
     }
-    
+
     // 显示处理指示器
     $('#processing-indicator').show();
-    
+
     // 获取美颜参数
     const params = {
         smoothing: parseFloat($('#smoothing').val() || 30) / 100,
@@ -952,141 +984,56 @@ function processBeautyImage() {
         lip_enhancement: parseFloat($('#lip-adjustment').val() || 25) / 100,
         ai_mode: true
     };
-    
+
     // 禁用处理按钮
     $('.btn-process-beauty').prop('disabled', true);
-    
+
     showLoading('正在进行AI美颜处理...');
-    
-    // 先获取AI建议
-    $.ajax({
-        url: `${API_BASE_URL}/ai/beauty-suggestions`,
-        type: 'POST',
-        data: JSON.stringify({
-            image_id: currentImage.id
-        }),
-        contentType: 'application/json',
-        headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-        success: function(aiResponse) {
-            if (aiResponse.success) {
-                // AI建议获取成功，但直接使用原始参数（AI分析结果为文本格式）
-                const finalParams = params;
-                
-                // 应用美颜处理
-                $.ajax({
-                    url: `${API_BASE_URL}/processing/beauty`,
-                    type: 'POST',
-                    data: JSON.stringify({
-                        image_id: currentImage.id,
-                        ...finalParams
-                    }),
-                    contentType: 'application/json',
-                    headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-                    success: function(response) {
-                        hideLoading();
-                        // 隐藏处理指示器
-                        $('#processing-indicator').hide();
-                        // 启用处理按钮
-                        $('.btn-process-beauty').prop('disabled', false);
-                        
-                        if (response.success) {
-                            showNotification('美颜处理完成', 'success');
-                            // 更新图片显示
-                            if (response.data.result_url) {
-                                loadProcessedImage(response.data.result_url);
-                            }
-                        } else {
-                            showNotification(response.message || '处理失败', 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Beauty processing error:', {
-                            status: xhr.status,
-                            statusText: xhr.statusText,
-                            responseText: xhr.responseText,
-                            responseJSON: xhr.responseJSON
-                        });
-                        hideLoading();
-                        // 隐藏处理指示器
-                        $('#processing-indicator').hide();
-                        // 启用处理按钮
-                        $('.btn-process-beauty').prop('disabled', false);
-                        // 显示占位内容
-                        $('#processed-image').hide();
-                        $('#placeholder-content').show();
-                        
-                        const response = xhr.responseJSON;
-                        showNotification(response?.message || '处理失败', 'error');
-                    }
-                });
-            } else {
-                // 如果获取AI建议失败，仍然继续处理，但使用原始参数
-                $.ajax({
-                    url: `${API_BASE_URL}/processing/beauty`,
-                    type: 'POST',
-                    data: JSON.stringify({
-                        image_id: currentImage.id,
-                        ...params
-                    }),
-                    contentType: 'application/json',
-                    headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-                    success: function(response) {
-                        hideLoading();
-                        if (response.success) {
-                            showNotification('美颜处理完成', 'success');
-                            // 更新图片显示
-                            if (response.data.result_url) {
-                                loadProcessedImage(response.data.result_url);
-                            }
-                        } else {
-                            showNotification(response.message || '处理失败', 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Beauty processing error (fallback):', {
-                            status: xhr.status,
-                            statusText: xhr.statusText,
-                            responseText: xhr.responseText,
-                            responseJSON: xhr.responseJSON
-                        });
-                        hideLoading();
-                        const response = xhr.responseJSON;
-                        showNotification(response?.message || '处理失败', 'error');
-                    }
-                });
+
+    // 使用统一的API客户端进行美颜处理
+    console.log('发送美颜请求，authToken:', authToken);
+    console.log('API客户端token:', window.API.apiClient.token);
+    console.log('Using API client instead of jQuery AJAX');
+
+    // 确保API客户端的token与当前authToken同步
+    if (authToken && window.API.apiClient.token !== authToken) {
+        console.log('同步API客户端token');
+        window.API.apiClient.setToken(authToken);
+    }
+
+    try {
+        const response = await window.API.processingAPI.beauty(currentImage.id, params);
+        console.log('Beauty processing success response:', response);
+
+        hideLoading();
+        // 隐藏处理指示器
+        $('#processing-indicator').hide();
+        // 启用处理按钮
+        $('.btn-process-beauty').prop('disabled', false);
+
+        if (response.success) {
+            showNotification('美颜处理完成', 'success');
+            // 更新图片显示
+            if (response.data.result_url) {
+                loadProcessedImage(response.data.result_url);
             }
-        },
-        error: function(xhr) {
-            // 如果获取AI建议失败，仍然继续处理，但使用原始参数
-            $.ajax({
-                url: `${API_BASE_URL}/processing/beauty`,
-                type: 'POST',
-                data: JSON.stringify({
-                    image_id: currentImage.id,
-                    ...params
-                }),
-                contentType: 'application/json',
-                headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-                success: function(response) {
-                    hideLoading();
-                    if (response.success) {
-                        showNotification('美颜处理完成', 'success');
-                        // 更新图片显示
-                        if (response.data.result_url) {
-                            loadProcessedImage(response.data.result_url);
-                        }
-                    } else {
-                        showNotification(response.message || '处理失败', 'error');
-                    }
-                },
-                error: function(xhr) {
-                    hideLoading();
-                    const response = xhr.responseJSON;
-                    showNotification(response?.message || '处理失败', 'error');
-                }
-            });
+        } else {
+            showNotification(response.message || '处理失败', 'error');
         }
-    });
+    } catch (error) {
+        console.error('Beauty processing error:', error);
+
+        hideLoading();
+        // 隐藏处理指示器
+        $('#processing-indicator').hide();
+        // 启用处理按钮
+        $('.btn-process-beauty').prop('disabled', false);
+        // 显示占位内容
+        $('#processed-image').hide();
+        $('#placeholder-content').show();
+
+        showNotification(error.message || '美颜处理失败', 'error');
+    }
 }
 
 // 处理证件照生成
@@ -1095,10 +1042,10 @@ function processIdPhoto() {
         showNotification('请先上传图片', 'warning');
         return;
     }
-    
+
     // 显示处理指示器
     $('#processing-indicator').show();
-    
+
     // 获取证件照参数
     const params = {
         photo_type: $('#photoType').val() || 'passport',
@@ -1106,23 +1053,23 @@ function processIdPhoto() {
         beauty_strength: parseFloat($('#beautyStrength').val() || 30),
         auto_crop: $('#autoCrop').is(':checked')
     };
-    
+
     console.log('证件照参数:', params);
     console.log('背景色选择器值:', $('#backgroundColor').val());
     console.log('当前图片ID:', currentImage ? currentImage.id : 'null');
-    
+
     // 禁用处理按钮
     $('.btn-process-id-photo').prop('disabled', true);
-    
+
     showLoading('正在生成证件照...');
-    
+
     // 调用证件照生成接口
     console.log('发送证件照请求到:', `${API_BASE_URL}/processing/id-photo`);
     console.log('请求数据:', {
         image_id: currentImage.id,
         ...params
     });
-    
+
     $.ajax({
         url: `${API_BASE_URL}/processing/id-photo`,
         type: 'POST',
@@ -1133,20 +1080,20 @@ function processIdPhoto() {
         contentType: 'application/json',
         headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
         timeout: 60000, // 60秒超时
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
             console.log('发送请求前，headers:', xhr.getAllResponseHeaders());
         },
-        success: function(response, textStatus, xhr) {
+        success: function (response, textStatus, xhr) {
             console.log('证件照处理响应状态:', textStatus);
             console.log('证件照处理响应:', response);
             console.log('响应头:', xhr.getAllResponseHeaders());
-            
+
             hideLoading();
             // 隐藏处理指示器
             $('#processing-indicator').hide();
             // 启用处理按钮
             $('.btn-process-id-photo').prop('disabled', false);
-            
+
             if (response && response.success) {
                 showNotification('证件照生成完成', 'success');
                 console.log('证件照生成成功，结果URL:', response.data?.result_url);
@@ -1162,7 +1109,7 @@ function processIdPhoto() {
                 showNotification(response?.message || '生成失败', 'error');
             }
         },
-        error: function(xhr, textStatus, errorThrown) {
+        error: function (xhr, textStatus, errorThrown) {
             console.error('AJAX请求失败:', {
                 textStatus: textStatus,
                 errorThrown: errorThrown,
@@ -1171,7 +1118,7 @@ function processIdPhoto() {
                 responseText: xhr.responseText,
                 responseJSON: xhr.responseJSON
             });
-            
+
             hideLoading();
             // 隐藏处理指示器
             $('#processing-indicator').hide();
@@ -1180,7 +1127,7 @@ function processIdPhoto() {
             // 显示占位内容
             $('#processed-image').hide();
             $('#placeholder-content').show();
-            
+
             let errorMessage = '生成失败';
             if (textStatus === 'timeout') {
                 errorMessage = '请求超时，请重试';
@@ -1191,7 +1138,7 @@ function processIdPhoto() {
             } else if (errorThrown) {
                 errorMessage = errorThrown;
             }
-            
+
             showNotification(errorMessage, 'error');
         }
     });
@@ -1203,21 +1150,21 @@ function processBackground() {
         showNotification('请先上传图片', 'warning');
         return;
     }
-    
+
     // 显示处理指示器
     $('#processing-indicator').show();
-    
+
     // 获取背景处理参数
     const params = {
         background_type: $('#backgroundType').val() || 'remove',
         intensity: parseFloat($('#backgroundIntensity').val() || 80) / 100
     };
-    
+
     // 禁用处理按钮
     $('.btn-process-background').prop('disabled', true);
-    
+
     showLoading('正在处理背景...');
-    
+
     // 调用背景处理接口
     $.ajax({
         url: `${API_BASE_URL}/processing/background`,
@@ -1228,13 +1175,13 @@ function processBackground() {
         }),
         contentType: 'application/json',
         headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
-        success: function(response) {
+        success: function (response) {
             hideLoading();
             // 隐藏处理指示器
             $('#processing-indicator').hide();
             // 启用处理按钮
             $('.btn-process-background').prop('disabled', false);
-            
+
             if (response.success) {
                 showNotification('背景处理完成', 'success');
                 // 更新图片显示
@@ -1245,7 +1192,7 @@ function processBackground() {
                 showNotification(response.message || '处理失败', 'error');
             }
         },
-        error: function(xhr) {
+        error: function (xhr) {
             console.error('Background processing error:', {
                 status: xhr.status,
                 statusText: xhr.statusText,
@@ -1260,7 +1207,7 @@ function processBackground() {
             // 显示占位内容
             $('#processed-image').hide();
             $('#placeholder-content').show();
-            
+
             const response = xhr.responseJSON;
             showNotification(response?.message || '背景处理失败', 'error');
         }
@@ -1280,7 +1227,7 @@ function applyBeautyPreset(preset) {
         sweet: { beauty_strength: 60, smoothing: 40, whitening: 50, eye_enhancement: 70, lip_adjustment: 35 },
         glamour: { beauty_strength: 80, smoothing: 60, whitening: 70, eye_enhancement: 85, lip_adjustment: 50 }
     };
-    
+
     const params = presets[preset];
     if (params) {
         $('#beauty-strength').val(params.beauty_strength).trigger('input');
@@ -1313,10 +1260,10 @@ function resetBeautyParams() {
     $('#whitening').val(40).trigger('input');
     $('#eye-enhancement').val(60).trigger('input');
     $('#lip-adjustment').val(25).trigger('input');
-    
+
     // 移除预设选择
     $('.preset-btn').removeClass('active');
-    
+
     showNotification('参数已重置', 'info');
 }
 
@@ -1375,7 +1322,7 @@ function showHelpCenter() {
             </div>
         </div>
     `);
-    
+
     $('body').append(helpModal);
     helpModal.show();
 }
@@ -1386,9 +1333,9 @@ function showHistoryPanel() {
         showNotification('请先登录查看历史记录', 'warning');
         return;
     }
-    
+
     showLoading('加载历史记录...');
-    
+
     $.ajax({
         url: `${API_BASE_URL}/processing/history`,
         type: 'GET',
@@ -1396,7 +1343,7 @@ function showHistoryPanel() {
             'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json'
         },
-        success: function(response) {
+        success: function (response) {
             hideLoading();
             if (response.success) {
                 displayHistoryModal(response.data);
@@ -1404,7 +1351,7 @@ function showHistoryPanel() {
                 showNotification(response.message || '加载失败', 'error');
             }
         },
-        error: function(xhr) {
+        error: function (xhr) {
             hideLoading();
             const response = xhr.responseJSON;
             showNotification(response?.message || '加载失败', 'error');
@@ -1447,7 +1394,7 @@ function displayHistoryModal(records) {
             </div>
         </div>
     `);
-    
+
     $('body').append(historyModal);
     historyModal.show();
 }
@@ -1473,7 +1420,7 @@ function showFavoritesPanel() {
             </div>
         </div>
     `);
-    
+
     $('body').append(favoritesModal);
     favoritesModal.show();
 }
@@ -1519,10 +1466,10 @@ async function showNotificationsPanel() {
         showNotification('请先登录查看通知', 'warning');
         return;
     }
-    
+
     try {
         const notifications = await fetchNotifications();
-        
+
         const notificationsModal = $(`
             <div class="modal-overlay" id="notifications-modal">
                 <div class="modal notifications-modal">
@@ -1600,29 +1547,29 @@ async function showNotificationsPanel() {
                 </div>
             </div>
         `);
-        
+
         $('body').append(notificationsModal);
         notificationsModal.show();
-        
+
         // 绑定筛选和搜索事件
         $('#notification-filter').on('change', filterNotifications);
         $('#notification-search').on('input', debounce(filterNotifications, 300));
-        
+
         // 添加点击遮罩层关闭功能
-        notificationsModal.on('click', function(e) {
+        notificationsModal.on('click', function (e) {
             if (e.target === this) {
                 closeModal();
             }
         });
-        
+
         // 添加ESC键关闭功能
-        $(document).on('keydown.notifications', function(e) {
+        $(document).on('keydown.notifications', function (e) {
             if (e.key === 'Escape') {
                 closeModal();
                 $(document).off('keydown.notifications');
             }
         });
-        
+
     } catch (error) {
         showNotification('加载通知失败', 'error');
     }
@@ -1632,28 +1579,28 @@ async function showNotificationsPanel() {
 function filterNotifications() {
     const filter = $('#notification-filter').val();
     const search = $('#notification-search').val().toLowerCase();
-    
-    $('.notification-item').each(function() {
+
+    $('.notification-item').each(function () {
         const $item = $(this);
         const title = $item.find('.notification-title').text().toLowerCase();
         const message = $item.find('.notification-message').text().toLowerCase();
         const category = $item.find('.notification-category').text().toLowerCase();
         const isRead = !$item.hasClass('unread');
-        
+
         let showItem = true;
-        
+
         // 应用筛选
         if (filter === 'unread' && isRead) {
             showItem = false;
         } else if (filter !== 'all' && filter !== 'unread' && !category.includes(filter)) {
             showItem = false;
         }
-        
+
         // 应用搜索
         if (search && !title.includes(search) && !message.includes(search)) {
             showItem = false;
         }
-        
+
         $item.toggle(showItem);
     });
 }
@@ -1665,7 +1612,7 @@ function viewNotificationDetail(id) {
     const message = notificationItem.find('.notification-message').text();
     const time = notificationItem.find('.notification-time').text();
     const category = notificationItem.find('.notification-category').text();
-    
+
     const detailModal = $(`
         <div class="modal-overlay" id="notification-detail-modal">
             <div class="modal notification-detail-modal">
@@ -1692,10 +1639,10 @@ function viewNotificationDetail(id) {
             </div>
         </div>
     `);
-    
+
     $('body').append(detailModal);
     detailModal.show();
-    
+
     // 自动标记为已读
     markAsRead(id);
 }
@@ -1713,37 +1660,37 @@ function handleNotificationAction(action, id) {
 function toggleSelectAll() {
     const checkboxes = $('.notification-select:visible');
     const allChecked = checkboxes.length > 0 && checkboxes.filter(':checked').length === checkboxes.length;
-    
+
     checkboxes.prop('checked', !allChecked);
 }
 
 // 批量标记已读
 function batchMarkAsRead() {
-    const selectedIds = $('.notification-select:checked').map(function() {
+    const selectedIds = $('.notification-select:checked').map(function () {
         return $(this).val();
     }).get();
-    
+
     selectedIds.forEach(id => markAsRead(id));
 }
 
 // 批量删除
 function batchDelete() {
-    const selectedIds = $('.notification-select:checked').map(function() {
+    const selectedIds = $('.notification-select:checked').map(function () {
         return $(this).val();
     }).get();
-    
+
     if (selectedIds.length === 0) {
         showNotification('请选择要删除的通知', 'warning');
         return;
     }
-    
+
     selectedIds.forEach(id => deleteNotification(id));
 }
 
 // 清空所有通知
 function clearAllNotifications() {
     if (confirm('确定要清空所有通知吗？此操作不可恢复。')) {
-        $('.notification-item').each(function() {
+        $('.notification-item').each(function () {
             const id = $(this).data('id');
             deleteNotification(id);
         });
@@ -1754,14 +1701,14 @@ function clearAllNotifications() {
 function loadMoreNotifications() {
     const currentCount = $('.notification-item').length;
     const nextPage = Math.floor(currentCount / 10) + 1;
-    
+
     fetchNotifications(nextPage).then(notifications => {
         if (notifications.length === 0) {
             $('#load-more-btn').hide();
             showNotification('没有更多通知了', 'info');
             return;
         }
-        
+
         const notificationsList = $('#notifications-list');
         notifications.forEach(notification => {
             const notificationHtml = `
@@ -1806,7 +1753,7 @@ function loadMoreNotifications() {
 // 显示通知设置
 function showNotificationSettings() {
     const settings = getNotificationSettings();
-    
+
     const settingsModal = $(`
         <div class="modal-overlay" id="notification-settings-modal">
             <div class="modal notification-settings-modal">
@@ -1861,7 +1808,7 @@ function showNotificationSettings() {
             </div>
         </div>
     `);
-    
+
     $('body').append(settingsModal);
     settingsModal.show();
 }
@@ -1876,14 +1823,14 @@ function saveNotificationSettings() {
         sound: $('#enable-sound').is(':checked'),
         autoDeleteDays: parseInt($('#auto-delete-days').val()) || 30
     };
-    
+
     localStorage.setItem('notificationSettings', JSON.stringify(settings));
-    
+
     // 如果启用了浏览器通知，请求权限
     if (settings.browser) {
         initNotificationPermission();
     }
-    
+
     closeModal();
     showNotification('设置已保存', 'success');
 }
@@ -1898,7 +1845,7 @@ function getNotificationSettings() {
         sound: false,
         autoDeleteDays: 30
     };
-    
+
     const saved = localStorage.getItem('notificationSettings');
     return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
 }
@@ -1922,12 +1869,12 @@ function showBrowserNotification(title, message, icon = '/assets/images/logo.png
             icon: icon,
             tag: 'ai-image-platform'
         });
-        
-        notification.onclick = function() {
+
+        notification.onclick = function () {
             window.focus();
             notification.close();
         };
-        
+
         setTimeout(() => {
             notification.close();
         }, 5000);
@@ -1940,7 +1887,7 @@ async function fetchNotifications(page = 1, limit = 10) {
     if (!token) {
         return [];
     }
-    
+
     try {
         const response = await $.ajax({
             url: `${API_BASE_URL}/notifications?page=${page}&limit=${limit}`,
@@ -1950,7 +1897,7 @@ async function fetchNotifications(page = 1, limit = 10) {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (response.success) {
             return response.data.notifications || [];
         }
@@ -1982,7 +1929,7 @@ function deleteNotification(id) {
 async function markNotificationAsRead(id) {
     const token = localStorage.getItem('authToken');
     if (!token) return;
-    
+
     try {
         await $.ajax({
             url: `${API_BASE_URL}/notifications/${id}/read`,
@@ -2001,7 +1948,7 @@ async function markNotificationAsRead(id) {
 async function deleteNotificationAPI(id) {
     const token = localStorage.getItem('authToken');
     if (!token) return;
-    
+
     try {
         await $.ajax({
             url: `${API_BASE_URL}/notifications/${id}`,
@@ -2023,7 +1970,7 @@ async function updateNotificationBadge() {
         $('.notification-badge').hide();
         return;
     }
-    
+
     try {
         const response = await $.ajax({
             url: `${API_BASE_URL}/notifications/unread-count`,
@@ -2033,7 +1980,7 @@ async function updateNotificationBadge() {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (response.success) {
             const count = response.data.count;
             if (count > 0) {
@@ -2124,12 +2071,12 @@ function showSettingsPanel() {
             </div>
         </div>
     `);
-    
+
     $('body').append(settingsModal);
     settingsModal.show();
-    
+
     // 绑定标签切换事件
-    settingsModal.find('.tab-btn').on('click', function() {
+    settingsModal.find('.tab-btn').on('click', function () {
         const tabId = $(this).data('tab');
         settingsModal.find('.tab-btn').removeClass('active');
         settingsModal.find('.tab-pane').removeClass('active');
@@ -2190,7 +2137,7 @@ function showBillingPanel() {
             </div>
         </div>
     `);
-    
+
     $('body').append(billingModal);
     billingModal.show();
 }
@@ -2234,7 +2181,7 @@ function showUsageStatsPanel() {
             </div>
         </div>
     `);
-    
+
     $('body').append(statsModal);
     statsModal.show();
 }
@@ -2280,12 +2227,12 @@ function showFeedbackPanel() {
             </div>
         </div>
     `);
-    
+
     $('body').append(feedbackModal);
     feedbackModal.show();
-    
+
     // 绑定表单提交事件
-    feedbackModal.find('.feedback-form').on('submit', function(e) {
+    feedbackModal.find('.feedback-form').on('submit', function (e) {
         e.preventDefault();
         showNotification('反馈已提交，感谢您的建议！', 'success');
         closeModal();
@@ -2302,17 +2249,17 @@ function loadProcessedImage(resultUrl) {
     console.log('Loading processed image:', resultUrl);
     console.log('API_BASE_URL:', API_BASE_URL);
     console.log('authToken exists:', !!authToken);
-    
+
     if (!authToken) {
         showNotification('需要登录才能查看处理结果', 'warning');
         return;
     }
-    
+
     // resultUrl已经包含/api前缀，所以只需要添加基础URL（不含/api）
     const baseUrl = API_BASE_URL.replace('/api', '');
     const fullUrl = `${baseUrl}${resultUrl}`;
     console.log('Full URL:', fullUrl);
-    
+
     // 使用fetch API获取图片数据
     fetch(fullUrl, {
         method: 'GET',
@@ -2320,42 +2267,42 @@ function loadProcessedImage(resultUrl) {
             'Authorization': `Bearer ${authToken}`
         }
     })
-    .then(response => {
-        console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
-        if (!response.ok) {
-            throw new Error(`获取图片失败: ${response.status} ${response.statusText}`);
-        }
-        return response.blob();
-    })
-    .then(blob => {
-        console.log('Blob received, size:', blob.size);
-        // 创建图片URL
-        const imageUrl = URL.createObjectURL(blob);
-        console.log('Created blob URL:', imageUrl);
-        const processedImage = $('#processed-image');
-        
-        // 清除之前的事件监听器
-        processedImage.off('load error');
-        
-        // 设置图片源
-        processedImage.attr('src', imageUrl);
-        console.log('Set image src to:', imageUrl);
-        
-        // 等待图片加载完成
-        processedImage.on('load', function() {
-            console.log('Image loaded successfully');
-            processedImage.show();
-            $('#placeholder-content').hide();
-            console.log('Image displayed, placeholder hidden');
-        }).on('error', function() {
-            console.error('Image load error');
-            showNotification('处理后的图片加载失败', 'error');
-            URL.revokeObjectURL(imageUrl); // 清理内存
+        .then(response => {
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            if (!response.ok) {
+                throw new Error(`获取图片失败: ${response.status} ${response.statusText}`);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            console.log('Blob received, size:', blob.size);
+            // 创建图片URL
+            const imageUrl = URL.createObjectURL(blob);
+            console.log('Created blob URL:', imageUrl);
+            const processedImage = $('#processed-image');
+
+            // 清除之前的事件监听器
+            processedImage.off('load error');
+
+            // 设置图片源
+            processedImage.attr('src', imageUrl);
+            console.log('Set image src to:', imageUrl);
+
+            // 等待图片加载完成
+            processedImage.on('load', function () {
+                console.log('Image loaded successfully');
+                processedImage.show();
+                $('#placeholder-content').hide();
+                console.log('Image displayed, placeholder hidden');
+            }).on('error', function () {
+                console.error('Image load error');
+                showNotification('处理后的图片加载失败', 'error');
+                URL.revokeObjectURL(imageUrl); // 清理内存
+            });
+        })
+        .catch(error => {
+            console.error('加载处理后图片失败:', error);
+            showNotification(`处理后的图片加载失败: ${error.message}`, 'error');
         });
-    })
-    .catch(error => {
-        console.error('加载处理后图片失败:', error);
-        showNotification(`处理后的图片加载失败: ${error.message}`, 'error');
-    });
 }

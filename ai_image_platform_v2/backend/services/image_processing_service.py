@@ -40,79 +40,50 @@ class ImageProcessingService:
             # 转换为RGB
             img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             
-            # 使用用户提供的参数，确保有默认值
+            # 使用用户提供的参数，确保有默认值（0-1范围）
             final_params = {
-                'smoothing': params.get('smoothing', 60),
-                'whitening': params.get('whitening', 55),
-                'eye_enhancement': params.get('eye_enhancement', 65),
-                'lip_enhancement': params.get('lip_enhancement', 45)
+                'smoothing': params.get('smoothing', 0.6),
+                'whitening': params.get('whitening', 0.55),
+                'eye_enhancement': params.get('eye_enhancement', 0.65),
+                'lip_enhancement': params.get('lip_enhancement', 0.45)
             }
             
-            # AI智能分析和参数优化
-            ai_result = {'success': False, 'message': 'AI功能已跳过以提升性能'}
-            try:
-                # 初始化AI服务
-                ai_service = AIService()
-                
-                # 快速检查AI配置
-                if hasattr(ai_service, 'ai_config') and ai_service.ai_config.ENABLE_IMAGE_ANALYSIS:
-                    # 获取AI美颜建议
-                    ai_result = ai_service.get_ai_beauty_processing(image_path, params)
-                    
-                    # 如果AI分析成功，尝试解析AI建议的参数
-                    if ai_result['success'] and ai_result.get('ai_suggestions'):
-                        try:
-                            # 尝试从AI建议中提取JSON格式的参数
-                            ai_suggestions = ai_result['ai_suggestions']
-                            if isinstance(ai_suggestions, str):
-                                # 查找JSON部分
-                                start_idx = ai_suggestions.find('{')
-                                end_idx = ai_suggestions.rfind('}') + 1
-                                if start_idx != -1 and end_idx > start_idx:
-                                    json_str = ai_suggestions[start_idx:end_idx]
-                                    ai_params = json.loads(json_str)
-                                    
-                                    # 使用AI推荐的参数（如果存在）
-                                    if 'recommended_params' in ai_params:
-                                        recommended = ai_params['recommended_params']
-                                        # AI参数权重调整，保持用户偏好
-                                        ai_weight = 0.7  # AI建议权重
-                                        user_weight = 0.3  # 用户设置权重
-                                        
-                                        final_params.update({
-                                            'smoothing': int(recommended.get('smoothing', final_params['smoothing']) * ai_weight + final_params['smoothing'] * user_weight),
-                                            'whitening': int(recommended.get('whitening', final_params['whitening']) * ai_weight + final_params['whitening'] * user_weight),
-                                            'eye_enhancement': int(recommended.get('eye_enhancement', final_params['eye_enhancement']) * ai_weight + final_params['eye_enhancement'] * user_weight),
-                                            'lip_enhancement': int(recommended.get('lip_enhancement', final_params['lip_enhancement']) * ai_weight + final_params['lip_enhancement'] * user_weight)
-                                        })
-                        except (json.JSONDecodeError, KeyError) as e:
-                            # AI建议解析失败，使用原始参数
-                            print(f"AI建议解析失败，使用原始参数: {str(e)}")
-            except Exception as e:
-                # AI服务调用失败，继续使用默认参数
-                print(f"AI服务调用失败，使用默认参数: {str(e)}")
-                ai_result = {'success': False, 'message': f'AI服务不可用: {str(e)}'}
+            # AI智能分析和参数优化（暂时禁用以避免错误）
+            ai_result = {'success': False, 'message': 'AI功能已禁用以提升稳定性'}
+            # 注释掉AI服务调用，避免初始化错误
+            # try:
+            #     # 初始化AI服务
+            #     ai_service = AIService()
+            #     
+            #     # 快速检查AI配置
+            #     if hasattr(ai_service, 'ai_config') and ai_service.ai_config.ENABLE_IMAGE_ANALYSIS:
+            #         # 获取AI美颜建议
+            #         ai_result = ai_service.get_ai_beauty_processing(image_path, params)
+            # except Exception as e:
+            #     # AI服务调用失败，继续使用默认参数
+            #     print(f"AI服务调用失败，使用默认参数: {str(e)}")
+            #     ai_result = {'success': False, 'message': f'AI服务不可用: {str(e)}'}
             
             # 人脸检测和区域分割
             face_regions = ImageProcessingService._detect_face_regions(img_rgb)
             
             # 智能磨皮处理（基于人脸区域）
-            smoothing = final_params.get('smoothing', 50)
+            smoothing = final_params.get('smoothing', 0.5) * 100  # 转换为0-100范围
             if smoothing > 0:
                 img_rgb = ImageProcessingService._apply_advanced_skin_smoothing(img_rgb, smoothing, face_regions)
             
             # 智能美白处理（保护眼部和唇部）
-            whitening = final_params.get('whitening', 30)
+            whitening = final_params.get('whitening', 0.3) * 100  # 转换为0-100范围
             if whitening > 0:
                 img_rgb = ImageProcessingService._apply_intelligent_whitening(img_rgb, whitening, face_regions)
             
             # 精准眼部增强
-            eye_enhancement = final_params.get('eye_enhancement', 20)
+            eye_enhancement = final_params.get('eye_enhancement', 0.2) * 100  # 转换为0-100范围
             if eye_enhancement > 0:
                 img_rgb = ImageProcessingService._enhance_eyes_advanced(img_rgb, eye_enhancement, face_regions)
             
             # 精准唇部增强
-            lip_enhancement = final_params.get('lip_enhancement', 15)
+            lip_enhancement = final_params.get('lip_enhancement', 0.15) * 100  # 转换为0-100范围
             if lip_enhancement > 0:
                 img_rgb = ImageProcessingService._enhance_lips_advanced(img_rgb, lip_enhancement, face_regions)
             
@@ -240,46 +211,58 @@ class ImageProcessingService:
             # 提取人脸区域
             face_img = result[ey:ey+eh, ex:ex+ew]
             
-            # 多层次磨皮处理
-            # 第一层：保边缘双边滤波
-            d1 = max(9, int(21 * strength_factor))
-            sigma_color1 = max(60, int(150 * strength_factor))
-            sigma_space1 = max(60, int(150 * strength_factor))
+            # 优化的多层次磨皮处理，减少过度效果
+            # 第一层：温和的双边滤波
+            d1 = max(5, int(15 * strength_factor))  # 减小滤波窗口
+            sigma_color1 = max(40, int(100 * strength_factor))  # 降低颜色相似性阈值
+            sigma_space1 = max(40, int(100 * strength_factor))  # 降低空间距离阈值
             smoothed1 = cv2.bilateralFilter(face_img, d1, sigma_color1, sigma_space1)
             
-            # 第二层：表面模糊（更好的边缘保护）
-            smoothed2 = cv2.edgePreservingFilter(smoothed1, flags=2, sigma_s=80, sigma_r=0.3)
+            # 第二层：轻微的边缘保护滤波
+            smoothed2 = cv2.edgePreservingFilter(smoothed1, flags=2, sigma_s=50, sigma_r=0.2)
             
-            # 第三层：高斯模糊用于细节平滑
-            kernel_size = max(5, int(11 * strength_factor))
+            # 第三层：非常轻微的高斯模糊
+            kernel_size = max(3, int(7 * strength_factor))  # 减小模糊核大小
             if kernel_size % 2 == 0:
                 kernel_size += 1
             smoothed3 = cv2.GaussianBlur(smoothed2, (kernel_size, kernel_size), 0)
             
-            # 创建渐变蒙版，中心区域处理强度更高
-            mask = np.zeros((eh, ew), dtype=np.float32)
-            center_x, center_y = ew // 2, eh // 2
-            for i in range(eh):
-                for j in range(ew):
-                    dist = np.sqrt((i - center_y)**2 + (j - center_x)**2)
-                    max_dist = np.sqrt(center_y**2 + center_x**2)
-                    mask[i, j] = max(0.3, 1.0 - (dist / max_dist) * 0.7)
+            # 创建自然的椭圆形蒙版，避免圆形边界效果
+            mask = np.ones((eh, ew), dtype=np.float32)
             
-            # 多层混合处理
-            alpha1 = 0.4 * strength_factor
-            alpha2 = 0.3 * strength_factor
-            alpha3 = 0.2 * strength_factor
+            # 使用椭圆形蒙版，更符合人脸形状
+            center_x, center_y = ew // 2, eh // 2
+            cv2.ellipse(mask, (center_x, center_y), (ew//3, eh//3), 0, 0, 360, 1.0, -1)
+            
+            # 使用高斯模糊创建平滑的边缘过渡
+            mask = cv2.GaussianBlur(mask, (51, 51), 0)
+            
+            # 调整蒙版强度，确保边缘自然过渡
+            mask = np.clip(mask * 0.8 + 0.2, 0.2, 1.0)
+            
+            # 优化的多层混合处理，减少过度处理
+            # 降低处理强度，使效果更自然
+            alpha1 = 0.25 * strength_factor  # 降低双边滤波强度
+            alpha2 = 0.15 * strength_factor  # 降低边缘保护滤波强度
+            alpha3 = 0.1 * strength_factor   # 降低高斯模糊强度
             
             blended = face_img.copy().astype(np.float32)
+            
+            # 使用更温和的混合方式
             for c in range(3):
+                # 第一层：轻微的双边滤波
                 blended[:, :, c] = (
                     face_img[:, :, c] * (1 - alpha1 * mask) +
                     smoothed1[:, :, c] * alpha1 * mask
                 )
+                
+                # 第二层：更轻微的边缘保护
                 blended[:, :, c] = (
                     blended[:, :, c] * (1 - alpha2 * mask) +
                     smoothed2[:, :, c] * alpha2 * mask
                 )
+                
+                # 第三层：最轻微的整体平滑
                 blended[:, :, c] = (
                     blended[:, :, c] * (1 - alpha3 * mask) +
                     smoothed3[:, :, c] * alpha3 * mask

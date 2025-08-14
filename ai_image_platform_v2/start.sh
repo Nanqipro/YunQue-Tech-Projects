@@ -117,15 +117,10 @@ main() {
     
     print_success "系统依赖检查通过"
     
-    # 检查端口占用
-    print_info "检查端口占用..."
-    
-    if check_port 5000; then
-        print_warning "端口 5000 已被占用，使用端口 5002"
-        export FLASK_PORT=5002
-    else
-        export FLASK_PORT=5000
-    fi
+    # 设置后端端口
+    print_info "设置后端端口..."
+    export FLASK_PORT=5002
+    print_info "后端服务将使用端口 5002"
     
     if check_port 3000; then
         print_warning "端口 3000 已被占用，前端服务可能无法启动"
@@ -170,7 +165,7 @@ main() {
     cd ..
     
     # 等待后端服务启动
-    wait_for_service "http://localhost:$FLASK_PORT/api/health" "后端服务"
+    wait_for_service "http://localhost:5002/api/health" "后端服务"
     
     # 启动前端服务
     print_info "启动前端服务..."
@@ -197,9 +192,9 @@ main() {
     print_success "=== 服务启动完成 ==="
     echo
     print_info "前端应用: http://localhost:3000"
-    print_info "后端API: http://localhost:$FLASK_PORT"
-    print_info "健康检查: http://localhost:$FLASK_PORT/api/health"
-    print_info "API文档: http://localhost:$FLASK_PORT/api/docs"
+    print_info "后端API: http://localhost:5002"
+    print_info "健康检查: http://localhost:5002/api/health"
+    print_info "API文档: http://localhost:5002/api/docs"
     echo
     print_warning "按 Ctrl+C 停止所有服务"
     echo

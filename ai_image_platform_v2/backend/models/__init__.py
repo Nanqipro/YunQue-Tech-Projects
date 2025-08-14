@@ -7,5 +7,6 @@ db = SQLAlchemy()
 from .user import User
 from .image import Image
 from .processing_record import ProcessingRecord
+from .notification import Notification
 
-__all__ = ['db', 'User', 'Image', 'ProcessingRecord']
+__all__ = ['db', 'User', 'Image', 'ProcessingRecord', 'Notification']

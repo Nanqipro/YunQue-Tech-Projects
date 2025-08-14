@@ -82,6 +82,11 @@ class APIClient {
         }
 
         if (!response.ok) {
+            // 特殊处理：如果响应状态不OK但数据表明实际成功，则返回数据而不抛出错误
+            if (data && typeof data === 'object' && data.success === true) {
+                console.log('API returned error status but success data, treating as success:', data);
+                return data;
+            }
             throw new APIError(data.message || 'Request failed', response.status, data);
         }
 

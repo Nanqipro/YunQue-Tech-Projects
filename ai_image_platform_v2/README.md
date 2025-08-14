@@ -111,7 +111,7 @@ python run.py --init-db
 python run.py
 ```
 
-后端服务将在 http://localhost:5000 启动
+后端服务将在 http://localhost:5002 启动
 
 ### 3. 前端设置
 
@@ -315,7 +315,7 @@ docker-compose logs -f
 2. **后端部署**:
    ```bash
    cd backend
-   gunicorn -w 4 -b 0.0.0.0:5000 run:app
+   gunicorn -w 4 -b 0.0.0.0:5002 run:app
    ```
 
 3. **Nginx配置**:
@@ -332,7 +332,7 @@ docker-compose logs -f
        
        # 后端API代理
        location /api {
-           proxy_pass http://localhost:5000;
+           proxy_pass http://localhost:5002;
            proxy_set_header Host $host;
            proxy_set_header X-Real-IP $remote_addr;
        }

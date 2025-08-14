@@ -148,7 +148,7 @@ npm run test:watch
 
 ```javascript
 const API_CONFIG = {
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'http://localhost:5002/api',
     timeout: 30000
 };
 ```
@@ -194,7 +194,7 @@ server {
     
     # API代理
     location /api {
-        proxy_pass http://localhost:5000;
+        proxy_pass http://localhost:5002;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }

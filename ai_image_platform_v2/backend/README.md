@@ -136,10 +136,10 @@ python run.py --init-db
 python run.py
 
 # 生产模式
-gunicorn -w 4 -b 0.0.0.0:5000 run:app
+gunicorn -w 4 -b 0.0.0.0:5002 run:app
 ```
 
-访问 http://localhost:5000
+访问 http://localhost:5002
 
 ## API文档
 
@@ -380,9 +380,9 @@ COPY . .
 # 创建上传目录
 RUN mkdir -p static/uploads
 
-EXPOSE 5000
+EXPOSE 5002
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "run:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5002", "run:app"]
 ```
 
 ### Docker Compose
@@ -395,7 +395,7 @@ services:
   backend:
     build: .
     ports:
-      - "5000:5000"
+      - "5002:5002"
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/aiplatform
       - REDIS_URL=redis://redis:6379/0

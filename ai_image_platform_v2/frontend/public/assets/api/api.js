@@ -1,6 +1,6 @@
 // API 配置
 const API_CONFIG = {
-    baseURL: 'http://localhost:5002/api',
+    baseURL: 'http://127.0.0.1:5002/api',
     timeout: 30000,
     retryAttempts: 3,
     retryDelay: 1000
@@ -25,9 +25,12 @@ class APIClient {
 
     // 获取请求头
     getHeaders(contentType = 'application/json') {
-        const headers = {
-            'Content-Type': contentType
-        };
+        const headers = {};
+        
+        // 只有当contentType不为null时才设置Content-Type
+        if (contentType !== null) {
+            headers['Content-Type'] = contentType;
+        }
 
         if (this.token) {
             headers['Authorization'] = `Bearer ${this.token}`;
@@ -220,7 +223,7 @@ const imageAPI = {
     // 上传图片
     async upload(file, metadata = {}) {
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append('file', file);
         
         // 添加元数据
         Object.keys(metadata).forEach(key => {

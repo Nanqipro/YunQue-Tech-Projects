@@ -14,7 +14,8 @@ from config.config import Config
 processing_bp = Blueprint('processing', __name__, url_prefix='/api/processing')
 
 @processing_bp.route('/beauty', methods=['POST'])
-def apply_beauty():
+@token_required
+def apply_beauty(current_user):
     """应用美颜效果"""
     try:
         data = request.get_json()
@@ -23,10 +24,10 @@ def apply_beauty():
             return jsonify({'error': '请提供图片ID'}), 400
         
         image_id = data['image_id']
-        image = Image.query.filter_by(id=image_id).first()
+        image = Image.query.filter_by(id=image_id, user_id=current_user.id).first()
         
         if not image:
-            return jsonify({'error': '图片不存在'}), 404
+            return jsonify({'error': '图片不存在或无权限访问'}), 404
         
         # 获取增强的美颜参数
         params = {
@@ -43,7 +44,7 @@ def apply_beauty():
         # 创建处理记录
         record = ProcessingRecord(
             processing_type='beauty',
-            user_id=image.user_id,  # 使用图片的用户ID
+            user_id=current_user.id,  # 使用当前认证用户的ID
             image_id=image.id,
             parameters=str(params)
         )
@@ -59,7 +60,7 @@ def apply_beauty():
             result_path = ImageProcessingService.apply_beauty(
                 image.file_path, 
                 params,
-                image.user_id
+                current_user.id
             )
             
             # 完成处理
@@ -69,8 +70,7 @@ def apply_beauty():
             # 创建处理完成通知
             try:
                 from controllers.notification_controller import create_processing_notification
-                if image.user_id:  # 只有登录用户才创建通知
-                    create_processing_notification(image.user_id, 'AI美颜', 'completed', record.id)
+                create_processing_notification(current_user.id, 'AI美颜', 'completed', record.id)
             except Exception as e:
                 current_app.logger.warning(f"创建处理通知失败: {str(e)}")
             
@@ -79,7 +79,7 @@ def apply_beauty():
                 'message': 'AI美颜处理完成',
                 'data': {
                     'record_id': record.id,
-                'result_url': record.result_url
+                    'result_url': record.result_url
                 }
             }), 200
             

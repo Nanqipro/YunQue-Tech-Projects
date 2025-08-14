@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美颜API调试</title>
+</head>
+<body>
+    <h1>美颜API调试页面</h1>
+    <button id="testBeauty">测试美颜API</button>
+    <div id="result"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="assets/api/api.js"></script>
+    <script>
+        // 首先登录获取有效token
+        async function loginAndGetToken() {
+            try {
+                const response = await window.API.userAPI.login({
+                    username: 'admin',
+                    password: 'admin123'
+                });
+                
+                if (response.success) {
+                    const token = response.data.token;
+                    localStorage.setItem('authToken', token);
+                    window.API.apiClient.setToken(token);
+                    console.log('登录成功，token:', token);
+                    return token;
+                } else {
+                    throw new Error('登录失败: ' + response.message);
+                }
+            } catch (error) {
+                console.error('登录错误:', error);
+                throw error;
+            }
+        }
+        
+        document.getElementById('testBeauty').addEventListener('click', async function() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '正在测试...';
+            
+            try {
+                console.log('开始测试美颜API');
+                
+                // 先登录获取token
+                await loginAndGetToken();
+                
+                console.log('API配置:', window.API.apiClient.config);
+                console.log('认证token:', window.API.apiClient.token);
+                
+                // 测试美颜API
+                const response = await window.API.processingAPI.beauty(1, {
+                    smoothing: 0.3,
+                    whitening: 0.4,
+                    eye_enhancement: 0.6,
+                    lip_enhancement: 0.25,
+                    ai_mode: true
+                });
+                
+                console.log('美颜API响应:', response);
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(response, null, 2) + '</pre>';
+                
+            } catch (error) {
+                console.error('美颜API错误:', error);
+                resultDiv.innerHTML = '<div style="color: red;">错误: ' + error.message + '</div>';
+            }
+        });
+        
+        // 监听所有网络请求
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            console.log('网络请求:', args[0], args[1]);
+            return originalFetch.apply(this, args).then(response => {
+                console.log('网络响应:', response.status, response.statusText, response.url);
+                return response;
+            }).catch(error => {
+                console.error('网络错误:', error);
+                throw error;
+            });
+        };
+    </script>
+</body>
+</html>
