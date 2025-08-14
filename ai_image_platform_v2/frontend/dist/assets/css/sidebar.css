@@ -1,0 +1,145 @@
+/* 侧边栏专用样式 */
+
+/* 侧边栏容器 - 已在style.css中定义基本布局 */
+.sidebar {
+    /* 基本布局在style.css中定义 */
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #1e40af;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo区域 */
+.logo-section {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ecf0f1;
+}
+
+.logo i {
+    margin-right: 12px;
+    font-size: 24px;
+    color: #60a5fa;
+}
+
+/* 工具分类 */
+.tool-categories {
+    flex: 1;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.category-group {
+    margin-bottom: 25px;
+}
+
+.category-title {
+    padding: 0 20px 10px;
+    font-size: 14px;
+    color: #bdc3c7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.category-title i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.tool-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tool-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    border-left: 3px solid transparent;
+    color: #ecf0f1;
+}
+
+.tool-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left-color: #60a5fa;
+    color: #60a5fa;
+}
+
+.tool-item.active {
+    background: rgba(96, 165, 250, 0.2);
+    border-left-color: #60a5fa;
+    color: #60a5fa;
+}
+
+.tool-item i {
+    margin-right: 12px;
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.tool-item span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 滚动条样式 */
+.tool-categories::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tool-categories::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.tool-categories::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.tool-categories::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* 响应式设计在主样式文件中统一管理 */
+@media (max-width: 768px) {
+    .logo {
+        font-size: 18px;
+    }
+    
+    .tool-item {
+        padding: 10px 15px;
+    }
+    
+    .category-title {
+        padding: 0 15px 8px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 640px) {
+    .logo-section {
+        padding: 15px;
+    }
+    
+    .tool-item {
+        padding: 8px 12px;
+    }
+    
+    .tool-item span {
+        font-size: 13px;
+    }
+}

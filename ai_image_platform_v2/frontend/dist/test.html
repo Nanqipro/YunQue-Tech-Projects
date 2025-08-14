@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件选择测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .upload-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        .upload-btn:hover {
+            background: #0056b3;
+        }
+        .file-info {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .log {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>文件选择功能测试</h1>
+    
+    <div class="test-section">
+        <h3>测试1: 基本文件选择</h3>
+        <input type="file" id="file-input-1" accept="image/*" style="display: none;">
+        <button class="upload-btn" onclick="document.getElementById('file-input-1').click()">选择图片</button>
+        <div id="file-info-1" class="file-info" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试2: 点击区域触发文件选择</h3>
+        <input type="file" id="file-input-2" accept="image/*" style="display: none;">
+        <div class="upload-btn" onclick="document.getElementById('file-input-2').click()" style="display: inline-block; text-align: center;">点击这里选择图片</div>
+        <div id="file-info-2" class="file-info" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试3: 使用jQuery (如果可用)</h3>
+        <input type="file" id="file-input-3" accept="image/*" style="display: none;">
+        <button class="upload-btn" id="jquery-btn">jQuery选择图片</button>
+        <div id="file-info-3" class="file-info" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>调试日志</h3>
+        <div id="log" class="log"></div>
+        <button class="upload-btn" onclick="clearLog()">清除日志</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').textContent = '';
+        }
+        
+        function handleFileSelect(inputId, infoId) {
+            return function(e) {
+                const file = e.target.files[0];
+                const infoDiv = document.getElementById(infoId);
+                
+                if (file) {
+                    log(`文件选择成功: ${file.name}, 大小: ${file.size} bytes, 类型: ${file.type}`);
+                    infoDiv.innerHTML = `
+                        <strong>文件信息:</strong><br>
+                        名称: ${file.name}<br>
+                        大小: ${(file.size / 1024 / 1024).toFixed(2)} MB<br>
+                        类型: ${file.type}<br>
+                        最后修改: ${new Date(file.lastModified).toLocaleString()}
+                    `;
+                    infoDiv.style.display = 'block';
+                } else {
+                    log('没有选择文件');
+                    infoDiv.style.display = 'none';
+                }
+            };
+        }
+        
+        // 绑定事件
+        document.getElementById('file-input-1').addEventListener('change', handleFileSelect('file-input-1', 'file-info-1'));
+        document.getElementById('file-input-2').addEventListener('change', handleFileSelect('file-input-2', 'file-info-2'));
+        document.getElementById('file-input-3').addEventListener('change', handleFileSelect('file-input-3', 'file-info-3'));
+        
+        // jQuery测试
+        $(document).ready(function() {
+            log('jQuery已加载');
+            
+            $('#jquery-btn').click(function() {
+                log('jQuery按钮被点击');
+                $('#file-input-3').click();
+            });
+        });
+        
+        // 页面加载完成
+        window.addEventListener('load', function() {
+            log('页面加载完成');
+            log('jQuery版本: ' + (typeof $ !== 'undefined' ? $.fn.jquery : '未加载'));
+        });
+        
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            log(`JavaScript错误: ${e.message} (${e.filename}:${e.lineno})`);
+        });
+    </script>
+</body>
+</html>

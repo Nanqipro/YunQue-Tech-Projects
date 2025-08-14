@@ -1,0 +1,600 @@
+/* 模态框遮罩层 */
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+#modal-overlay.show {
+    display: flex;
+}
+
+/* 模态框基础样式 */
+.modal {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+    display: none;
+}
+
+.modal.show {
+    display: block;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 模态框内容样式已合并到.modal中 */
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* 模态框头部 */
+.modal-header {
+    padding: 24px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 24px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-title i {
+    color: #667eea;
+    font-size: 22px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.modal-close:hover {
+    background: #f8f9fa;
+    color: #495057;
+    transform: rotate(90deg);
+}
+
+/* 模态框主体 */
+.modal-body {
+    padding: 0 24px 24px;
+}
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #495057;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: #ffffff;
+}
+
+.form-input:invalid {
+    border-color: #dc3545;
+}
+
+.form-input:invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.form-input::placeholder {
+    color: #adb5bd;
+}
+
+/* 输入框图标 */
+.input-group {
+    position: relative;
+}
+
+.input-group .form-input {
+    padding-left: 44px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 16px;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.form-input:focus + .input-icon {
+    color: #667eea;
+}
+
+/* 密码显示切换 */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #495057;
+}
+
+/* 表单按钮 */
+.form-actions {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-form {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-form:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-primary-form {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary-form:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary-form {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #e9ecef;
+}
+
+.btn-secondary-form:hover:not(:disabled) {
+    background: #e9ecef;
+    color: #495057;
+    border-color: #dee2e6;
+}
+
+/* 加载状态 */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 表单底部链接 */
+.form-footer {
+    margin-top: 20px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.form-footer p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.form-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.form-link:hover {
+    color: #5a6fd8;
+    text-decoration: underline;
+}
+
+/* 错误提示 */
+.form-error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.form-group.error .form-error {
+    display: block;
+}
+
+.form-group.error .form-input {
+    border-color: #dc3545;
+}
+
+/* 成功提示 */
+.form-success {
+    color: #28a745;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.form-group.success .form-success {
+    display: block;
+}
+
+.form-group.success .form-input {
+    border-color: #28a745;
+}
+
+/* 复选框样式 */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.checkbox-input {
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: #495057;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* 社交登录按钮 */
+.social-login {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.social-login-title {
+    text-align: center;
+    margin-bottom: 16px;
+    color: #6c757d;
+    font-size: 14px;
+    position: relative;
+}
+
+.social-login-title::before,
+.social-login-title::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #e9ecef;
+}
+
+.social-login-title::before {
+    left: 0;
+}
+
+.social-login-title::after {
+    right: 0;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-social {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.btn-social:hover {
+    border-color: #dee2e6;
+    background: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+.btn-social.google {
+    color: #db4437;
+}
+
+.btn-social.facebook {
+    color: #4267b2;
+}
+
+.btn-social.github {
+    color: #333;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+    .modal-content {
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .modal-header {
+        padding: 20px 20px 0;
+    }
+    
+    .modal-body {
+        padding: 0 20px 20px;
+    }
+    
+    .modal-title {
+        font-size: 18px;
+    }
+    
+    .form-input {
+        padding: 10px 14px;
+    }
+    
+    .btn-form {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .social-buttons {
+        flex-direction: column;
+    }
+}
+
+/* 深色主题支持 */
+@media (prefers-color-scheme: dark) {
+    .modal {
+        background: rgba(0, 0, 0, 0.8);
+    }
+    
+    .modal-content {
+        background: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .modal-title {
+        color: #ecf0f1;
+    }
+    
+    .modal-close {
+        color: #bdc3c7;
+    }
+    
+    .modal-close:hover {
+        background: #34495e;
+        color: #ecf0f1;
+    }
+    
+    .form-input {
+        background: #34495e;
+        border-color: #4a5f7a;
+        color: #ecf0f1;
+    }
+    
+    .form-input:focus {
+        border-color: #667eea;
+        background: #34495e;
+    }
+    
+    .form-input::placeholder {
+        color: #7f8c8d;
+    }
+    
+    .form-label {
+        color: #bdc3c7;
+    }
+    
+    .input-icon {
+        color: #7f8c8d;
+    }
+    
+    .form-input:focus + .input-icon {
+        color: #667eea;
+    }
+    
+    .btn-secondary-form {
+        background: #34495e;
+        color: #bdc3c7;
+        border-color: #4a5f7a;
+    }
+    
+    .btn-secondary-form:hover:not(:disabled) {
+        background: #4a5f7a;
+        color: #ecf0f1;
+    }
+    
+    .form-footer {
+        border-top-color: #4a5f7a;
+    }
+    
+    .form-footer p {
+        color: #7f8c8d;
+    }
+    
+    .checkbox-label {
+        color: #bdc3c7;
+    }
+    
+    .social-login {
+        border-top-color: #4a5f7a;
+    }
+    
+    .social-login-title {
+        color: #7f8c8d;
+    }
+    
+    .social-login-title::before,
+    .social-login-title::after {
+        background: #4a5f7a;
+    }
+    
+    .btn-social {
+        background: #34495e;
+        border-color: #4a5f7a;
+        color: #bdc3c7;
+    }
+    
+    .btn-social:hover {
+        background: #4a5f7a;
+        border-color: #5d6d7e;
+    }
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+    .modal,
+    .modal-content,
+    .modal-close,
+    .form-input,
+    .btn-form,
+    .btn-social {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* 高对比度支持 */
+@media (prefers-contrast: high) {
+    .modal {
+        background: rgba(0, 0, 0, 0.9);
+    }
+    
+    .form-input {
+        border-width: 3px;
+    }
+    
+    .btn-form {
+        border: 3px solid transparent;
+    }
+    
+    .btn-primary-form {
+        border-color: #667eea;
+    }
+    
+    .btn-secondary-form {
+        border-color: #6c757d;
+    }
+}

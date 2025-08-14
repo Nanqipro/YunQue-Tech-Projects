@@ -1,0 +1,136 @@
+{
+  "name": "ai-image-platform-frontend",
+  "version": "1.0.0",
+  "description": "AI图像处理平台前端",
+  "main": "src/assets/js/main.js",
+  "scripts": {
+    "dev": "live-server public --port=3000 --host=localhost",
+    "build": "npm run build:css && npm run build:js && npm run copy:assets",
+    "build:css": "postcss src/assets/css/*.css --dir dist/css --use autoprefixer cssnano",
+    "build:js": "webpack --mode=production",
+    "copy:assets": "cp -r public/* dist/ && cp -r src/assets/images dist/images",
+    "watch": "npm run watch:css & npm run watch:js",
+    "watch:css": "postcss src/assets/css/*.css --dir dist/css --watch",
+    "watch:js": "webpack --mode=development --watch",
+    "clean": "rm -rf dist/*",
+    "lint": "eslint src/assets/js/**/*.js",
+    "lint:fix": "eslint src/assets/js/**/*.js --fix",
+    "format": "prettier --write src/**/*.{js,css,html}",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "serve": "http-server dist -p 3000 -o",
+    "preview": "npm run build && npm run serve"
+  },
+  "keywords": [
+    "ai",
+    "image-processing",
+    "frontend",
+    "javascript",
+    "css",
+    "html"
+  ],
+  "author": "AI Image Platform Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "autoprefixer": "^10.4.14",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.8.0",
+    "cssnano": "^6.0.0",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.5.0",
+    "live-server": "^1.2.2",
+    "mini-css-extract-plugin": "^2.7.0",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0",
+    "prettier": "^2.8.8",
+    "style-loader": "^3.3.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "jquery": "^3.7.0",
+    "lodash": "^4.17.21"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ai-image-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/ai-image-platform/issues"
+  },
+  "homepage": "https://github.com/your-username/ai-image-platform#readme",
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.min.js"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jquery": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "globals": {
+      "$": "readonly",
+      "jQuery": "readonly",
+      "API": "readonly"
+    },
+    "rules": {
+      "no-console": "warn",
+      "no-unused-vars": "warn",
+      "prefer-const": "error",
+      "no-var": "error"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "printWidth": 80,
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {},
+      "cssnano": {
+        "preset": "default"
+      }
+    }
+  }
+}

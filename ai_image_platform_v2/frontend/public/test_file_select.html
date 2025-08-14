@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件选择测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .upload-btn {
+            background: #1976D2;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .upload-btn:hover {
+            background: #1565C0;
+        }
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #1976D2;
+        }
+        .hidden {
+            display: none;
+        }
+        .drag-area {
+            border: 2px dashed #1976D2;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .drag-area:hover {
+            background: #f0f8ff;
+        }
+        .drag-area.dragover {
+            background: #e3f2fd;
+            border-color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>文件选择功能测试</h1>
+        
+        <h3>方法1: 直接点击文件输入框</h3>
+        <input type="file" id="file-input-1" accept="image/*">
+        
+        <h3>方法2: 通过按钮触发</h3>
+        <button class="upload-btn" onclick="document.getElementById('file-input-2').click()">
+            选择文件
+        </button>
+        <input type="file" id="file-input-2" accept="image/*" class="hidden">
+        
+        <h3>方法3: 拖拽上传区域</h3>
+        <div class="drag-area" id="drag-area" onclick="document.getElementById('file-input-3').click()">
+            <p>点击这里选择文件或拖拽文件到此区域</p>
+        </div>
+        <input type="file" id="file-input-3" accept="image/*" class="hidden">
+        
+        <h3>方法4: jQuery触发</h3>
+        <button class="upload-btn" id="jquery-btn">
+            jQuery选择文件
+        </button>
+        <input type="file" id="file-input-4" accept="image/*" class="hidden">
+        
+        <div id="file-info" class="file-info" style="display: none;">
+            <h4>选择的文件信息:</h4>
+            <p id="file-details"></p>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 显示文件信息
+        function showFileInfo(file) {
+            const fileInfo = document.getElementById('file-info');
+            const fileDetails = document.getElementById('file-details');
+            
+            fileDetails.innerHTML = `
+                <strong>文件名:</strong> ${file.name}<br>
+                <strong>文件大小:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB<br>
+                <strong>文件类型:</strong> ${file.type}<br>
+                <strong>最后修改:</strong> ${new Date(file.lastModified).toLocaleString()}
+            `;
+            
+            fileInfo.style.display = 'block';
+            console.log('文件选择成功:', file);
+        }
+        
+        // 绑定所有文件输入框的change事件
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    showFileInfo(file);
+                }
+            });
+        });
+        
+        // jQuery按钮事件
+        $(document).ready(function() {
+            $('#jquery-btn').click(function() {
+                $('#file-input-4').click();
+            });
+        });
+        
+        // 拖拽功能
+        const dragArea = document.getElementById('drag-area');
+        
+        dragArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dragArea.classList.add('dragover');
+        });
+        
+        dragArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            dragArea.classList.remove('dragover');
+        });
+        
+        dragArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dragArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    showFileInfo(file);
+                } else {
+                    alert('请选择图片文件');
+                }
+            }
+        });
+        
+        console.log('文件选择测试页面已加载');
+    </script>
+</body>
+</html>

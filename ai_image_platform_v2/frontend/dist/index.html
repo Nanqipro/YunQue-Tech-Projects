@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图文动态批量生产工具</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/beauty.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 加载遮罩 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="loading-text">处理中...</p>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <!-- Logo区域 -->
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-magic"></i>
+    <span>批量生产工具</span>
+                </div>
+            </div>
+
+            <!-- 工具分类 -->
+            <nav class="tool-categories">
+                <div class="category-group">
+                    <h3 class="category-title">
+                        <i class="fas fa-magic"></i>
+                        AI美颜
+                    </h3>
+                    <ul class="tool-list">
+                        <li class="tool-item active" data-category="beauty" data-tool="beauty">
+                            <i class="fas fa-sparkles"></i>
+                            <span>智能美颜</span>
+                        </li>
+                        <li class="tool-item" data-category="beauty" data-tool="smooth">
+                            <i class="fas fa-hand-sparkles"></i>
+                            <span>磨皮</span>
+                        </li>
+                        <li class="tool-item" data-category="beauty" data-tool="whiten">
+                            <i class="fas fa-sun"></i>
+                            <span>美白</span>
+                        </li>
+                        <li class="tool-item" data-category="beauty" data-tool="eyes">
+                            <i class="fas fa-eye"></i>
+                            <span>眼部增强</span>
+                        </li>
+                        <li class="tool-item" data-category="beauty" data-tool="lips">
+                            <i class="fas fa-kiss"></i>
+                            <span>唇部调整</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-group">
+                    <h3 class="category-title">
+                        <i class="fas fa-filter"></i>
+                        滤镜效果
+                    </h3>
+                    <ul class="tool-list">
+                        <li class="tool-item" data-category="filters" data-tool="vintage">
+                            <i class="fas fa-camera-retro"></i>
+                            <span>复古滤镜</span>
+                        </li>
+                        <li class="tool-item" data-category="filters" data-tool="bw">
+                            <i class="fas fa-adjust"></i>
+                            <span>黑白滤镜</span>
+                        </li>
+                        <li class="tool-item" data-category="filters" data-tool="sepia">
+                            <i class="fas fa-palette"></i>
+                            <span>棕褐滤镜</span>
+                        </li>
+                        <li class="tool-item" data-category="filters" data-tool="cool">
+                            <i class="fas fa-snowflake"></i>
+                            <span>冷色调</span>
+                        </li>
+                        <li class="tool-item" data-category="filters" data-tool="warm">
+                            <i class="fas fa-fire"></i>
+                            <span>暖色调</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-group">
+                    <h3 class="category-title">
+                        <i class="fas fa-palette"></i>
+                        颜色调整
+                    </h3>
+                    <ul class="tool-list">
+                        <li class="tool-item" data-category="color" data-tool="adjust">
+                            <i class="fas fa-sliders-h"></i>
+                            <span>颜色调整</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-group">
+                    <h3 class="category-title">
+                        <i class="fas fa-image"></i>
+                        背景处理
+                    </h3>
+                    <ul class="tool-list">
+                        <li class="tool-item" data-category="background" data-tool="blur">
+                            <i class="fas fa-circle-notch"></i>
+                            <span>背景虚化</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-group">
+                    <h3 class="category-title">
+                        <i class="fas fa-tools"></i>
+                        智能修复
+                    </h3>
+                    <ul class="tool-list">
+                        <li class="tool-item" data-category="repair" data-tool="smart">
+                            <i class="fas fa-magic"></i>
+                            <span>智能修复</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-group">
+                    <h3 class="category-title">
+                        <i class="fas fa-id-card"></i>
+                        证件照
+                    </h3>
+                    <ul class="tool-list">
+                        <li class="tool-item" data-category="id-photo" data-tool="generate">
+                            <i class="fas fa-user-tie"></i>
+                            <span>证件照生成</span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部导航 -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="btn-icon" id="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="brand-info">
+                        <h1 class="page-title">AI智能图像处理平台</h1>
+                        <span class="version-tag">v2.0</span>
+                    </div>
+                </div>
+                
+                <div class="nav-center">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item"><i class="fas fa-home"></i> 首页</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">AI美颜</span>
+                    </div>
+                </div>
+                
+                <div class="nav-right">
+                    <!-- 功能按钮组 -->
+                    <div class="function-buttons">
+                        <button class="btn-icon" id="help-btn" title="帮助中心">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <button class="btn-icon" id="history-btn" title="历史记录">
+                            <i class="fas fa-history"></i>
+                            <span>历史</span>
+                        </button>
+                        <button class="btn-icon" id="favorites-btn" title="我的收藏">
+                            <i class="fas fa-star"></i>
+                            <span>收藏</span>
+                        </button>
+                        <button class="btn-icon" id="notifications-btn" title="通知">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    
+                    <!-- 分隔线 -->
+                    <div class="nav-divider"></div>
+                    
+                    <!-- 认证按钮 -->
+                    <div class="auth-buttons">
+                        <button class="btn-primary" id="loginBtn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>登录</span>
+                        </button>
+                        <button class="btn-secondary" id="registerBtn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>注册</span>
+                        </button>
+                    </div>
+                    
+                    <!-- 用户信息 -->
+                    <div class="user-info" style="display: none;">
+                        <div class="user-profile">
+                            <div class="user-details">
+                                <span class="user-name" id="user-name">用户名</span>
+                            </div>
+                        </div>
+                        <div class="user-menu">
+                            <button class="btn-icon user-menu-toggle" id="user-menu-btn">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="user-dropdown" id="user-dropdown">
+                                <button class="dropdown-item logout-item" id="logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>退出登录</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 工作区 -->
+            <div class="workspace">
+                <!-- 图片操作区域 -->
+                <div class="image-operation-area">
+                    <!-- 图片处理区域 -->
+                    <div class="image-processing-area">
+                        <!-- 上传区域 -->
+                        <div class="upload-section" id="upload-section">
+                            <div class="upload-container">
+                                <div class="upload-icon-wrapper">
+                                    <i class="fas fa-camera-retro upload-main-icon"></i>
+                                </div>
+                                <h2 class="upload-title">AI智能美颜处理</h2>
+                                <p class="upload-subtitle">上传您的照片，体验专业级美颜效果</p>
+                                <div class="upload-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-sparkles"></i>
+                                        <span>智能磨皮</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-sun"></i>
+                                        <span>自然美白</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-eye"></i>
+                                        <span>眼部增强</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-kiss"></i>
+                                        <span>唇部优化</span>
+                                    </div>
+                                </div>
+                                <div class="upload-actions">
+                                    <label for="image-input" class="btn-upload-primary" style="cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0;">
+                                        <i class="fas fa-upload"></i>
+                                        选择照片
+                                    </label>
+                                    <div class="upload-tips">
+                                        <span>支持 JPG、PNG、WEBP 格式，最大 10MB</span>
+                                    </div>
+                                </div>
+                                <input type="file" id="image-input" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+
+                        <!-- 图片预览和对比区域 -->
+                        <div class="image-comparison-area" id="image-comparison" style="display: none;">
+                            <div class="comparison-header">
+                                <h3 class="comparison-title">
+                                    <i class="fas fa-magic"></i>
+                                    美颜效果对比
+                                </h3>
+                                <!-- 移除对比视图和全屏按钮 -->
+                            </div>
+                            
+                            <div class="image-comparison-container">
+                                <div class="image-panel original-panel">
+                                    <div class="panel-header">
+                                        <span class="panel-label">原图</span>
+                                    </div>
+                                    <div class="image-wrapper">
+                                        <img id="original-image" src="" alt="原始图片">
+                                    </div>
+                                </div>
+                                
+                                <div class="comparison-divider">
+                                    <div class="divider-line"></div>
+                                    <div class="divider-handle">
+                                        <i class="fas fa-arrows-alt-h"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="image-panel processed-panel">
+                                    <div class="panel-header">
+                                        <span class="panel-label">美颜后</span>
+                                        <div class="processing-indicator" id="processing-indicator" style="display: none;">
+                                            <div class="processing-spinner"></div>
+                                            <span>处理中...</span>
+                                        </div>
+                                    </div>
+                                    <div class="image-wrapper">
+                                        <img id="processed-image" src="" alt="处理后图片" style="display: none;">
+                                        <div class="placeholder-content" id="placeholder-content">
+                                            <i class="fas fa-magic placeholder-icon"></i>
+                                            <p>调整参数后点击"开始美颜"查看效果</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="image-actions">
+                                <button class="btn-icon" id="zoom-in">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                                <button class="btn-icon" id="zoom-out">
+                                    <i class="fas fa-search-minus"></i>
+                                </button>
+                                <button class="btn-icon" id="reset-zoom">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                </button>
+                                <div class="zoom-level" id="zoom-level">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 控制面板区域 -->
+                <div class="properties-panel">
+            <!-- 美颜参数面板 -->
+            <div class="beauty-panel disabled" id="beauty-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i class="fas fa-sparkles"></i>
+                        AI智能美颜
+                    </div>
+                    <div class="panel-subtitle">调整参数获得最佳效果</div>
+                </div>
+
+                <!-- 美颜参数控制 -->
+                <div class="panel-content">
+                    <!-- 磨皮设置 -->
+                    <div class="parameter-group">
+                        <div class="group-header">
+                            <i class="fas fa-hand-sparkles"></i>
+                            <span class="group-title">磨皮设置</span>
+                        </div>
+                        <div class="parameter-item">
+                            <div class="parameter-label">
+                                <span>磨皮强度</span>
+                                <span class="parameter-value" id="smoothing-value">30</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" class="beauty-slider" id="smoothing" min="0" max="100" value="30">
+                                <div class="slider-track"></div>
+                            </div>
+                            <div class="parameter-tips">适度磨皮，保持肌肤自然质感</div>
+                        </div>
+                    </div>
+
+                    <!-- 美白设置 -->
+                    <div class="parameter-group">
+                        <div class="group-header">
+                            <i class="fas fa-sun"></i>
+                            <span class="group-title">美白设置</span>
+                        </div>
+                        <div class="parameter-item">
+                            <div class="parameter-label">
+                                <span>美白程度</span>
+                                <span class="parameter-value" id="whitening-value">40</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" class="beauty-slider" id="whitening" min="0" max="100" value="40">
+                                <div class="slider-track"></div>
+                            </div>
+                            <div class="parameter-tips">自然提亮肤色，避免过度美白</div>
+                        </div>
+                    </div>
+
+                    <!-- 眼部增强 -->
+                    <div class="parameter-group">
+                        <div class="group-header">
+                            <i class="fas fa-eye"></i>
+                            <span class="group-title">眼部增强</span>
+                        </div>
+                        <div class="parameter-item">
+                            <div class="parameter-label">
+                                <span>增强程度</span>
+                                <span class="parameter-value" id="eye-enhancement-value">60</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" class="beauty-slider" id="eye-enhancement" min="0" max="100" value="60">
+                                <div class="slider-track"></div>
+                            </div>
+                            <div class="parameter-tips">增强眼部轮廓，提升神采</div>
+                        </div>
+                    </div>
+
+                    <!-- 唇部调整 -->
+                    <div class="parameter-group">
+                        <div class="group-header">
+                            <i class="fas fa-kiss"></i>
+                            <span class="group-title">唇部调整</span>
+                        </div>
+                        <div class="parameter-item">
+                            <div class="parameter-label">
+                                <span>唇色增强</span>
+                                <span class="parameter-value" id="lip-adjustment-value">25</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" class="beauty-slider" id="lip-adjustment" min="0" max="100" value="25">
+                                <div class="slider-track"></div>
+                            </div>
+                            <div class="parameter-tips">自然提升唇部色彩饱和度</div>
+                        </div>
+                    </div>
+
+                    <!-- 预设方案 -->
+                    <div class="preset-section">
+                        <div class="preset-header">
+                            <i class="fas fa-magic"></i>
+                            <span>快速预设</span>
+                        </div>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-preset="natural">
+                                <i class="fas fa-leaf"></i>
+                                <span>自然</span>
+                            </button>
+                            <button class="preset-btn" data-preset="sweet">
+                                <i class="fas fa-heart"></i>
+                                <span>甜美</span>
+                            </button>
+                            <button class="preset-btn" data-preset="elegant">
+                                <i class="fas fa-gem"></i>
+                                <span>优雅</span>
+                            </button>
+                            <button class="preset-btn" data-preset="fresh">
+                                <i class="fas fa-snowflake"></i>
+                                <span>清新</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI建议 -->
+                    <div class="ai-suggestions">
+                        <div class="ai-header">
+                            <i class="fas fa-robot"></i>
+                            <span>AI智能建议</span>
+                        </div>
+                        <div class="suggestion-list" id="suggestion-list">
+                            <div class="suggestion-item">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>上传照片后获取个性化建议</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="panel-actions">
+                    <button class="btn-process-beauty" id="process-btn" disabled>
+                        <i class="fas fa-magic"></i>
+                        <span>开始美颜</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 底部状态栏 -->
+    <footer class="status-bar">
+        <div class="status-left">
+            <span class="status-item" id="image-info">未选择图片</span>
+        </div>
+        <div class="status-center">
+            <span class="status-item" id="processing-status">就绪</span>
+        </div>
+        <div class="status-right">
+            <span class="status-item" id="zoom-level">100%</span>
+        </div>
+    </footer>
+
+    <!-- 模态框 -->
+    <div id="modal-overlay" class="modal-overlay" style="display: none;">
+        <!-- 登录模态框 -->
+        <div id="login-modal" class="modal">
+            <div class="modal-header">
+                <h3>用户登录</h3>
+                <button class="modal-close" data-modal="login-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">用户名或邮箱</label>
+                        <input type="text" id="login-username" name="username" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">密码</label>
+                        <input type="password" id="login-password" name="password" class="form-input" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">登录</button>
+                        <button type="button" class="btn-link" id="show-register">注册账号</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 注册模态框 -->
+        <div id="register-modal" class="modal" style="display: none;">
+            <div class="modal-header">
+                <h3>用户注册</h3>
+                <button class="modal-close" data-modal="register-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">用户名</label>
+                        <input type="text" id="register-username" name="username" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">邮箱</label>
+                        <input type="email" id="register-email" name="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">密码</label>
+                        <input type="password" id="register-password" name="password" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">确认密码</label>
+                        <input type="password" id="register-confirm" name="confirmPassword" class="form-input" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">注册</button>
+                        <button type="button" class="btn-link" id="show-login">已有账号？登录</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="assets/api/api.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
