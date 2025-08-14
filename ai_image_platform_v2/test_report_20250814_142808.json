@@ -1,0 +1,86 @@
+[
+  {
+    "test_name": "健康检查",
+    "status": "FAIL",
+    "message": "HTTP状态码: 503",
+    "timestamp": "2025-08-14T14:28:07.791500",
+    "details": null
+  },
+  {
+    "test_name": "用户注册",
+    "status": "PASS",
+    "message": "成功创建用户: testuser_1755152887",
+    "timestamp": "2025-08-14T14:28:07.921779",
+    "details": null
+  },
+  {
+    "test_name": "用户登录",
+    "status": "PASS",
+    "message": "登录成功，获取到token",
+    "timestamp": "2025-08-14T14:28:08.049578",
+    "details": null
+  },
+  {
+    "test_name": "Token验证",
+    "status": "PASS",
+    "message": "Token验证成功",
+    "timestamp": "2025-08-14T14:28:08.051507",
+    "details": null
+  },
+  {
+    "test_name": "创建测试图片",
+    "status": "PASS",
+    "message": "成功创建测试图片",
+    "timestamp": "2025-08-14T14:28:08.051697",
+    "details": null
+  },
+  {
+    "test_name": "图片上传",
+    "status": "FAIL",
+    "message": "HTTP状态码: 400",
+    "timestamp": "2025-08-14T14:28:08.053437",
+    "details": null
+  },
+  {
+    "test_name": "美颜处理",
+    "status": "WARNING",
+    "message": "图片不存在（这是正常的，因为我们使用了假设的图片ID）",
+    "timestamp": "2025-08-14T14:28:08.055625",
+    "details": null
+  },
+  {
+    "test_name": "证件照处理",
+    "status": "WARNING",
+    "message": "图片不存在（这是正常的，因为我们使用了假设的图片ID）",
+    "timestamp": "2025-08-14T14:28:08.057663",
+    "details": null
+  },
+  {
+    "test_name": "背景处理",
+    "status": "WARNING",
+    "message": "图片不存在（这是正常的，因为我们使用了假设的图片ID）",
+    "timestamp": "2025-08-14T14:28:08.059557",
+    "details": null
+  },
+  {
+    "test_name": "未授权访问保护",
+    "status": "PASS",
+    "message": "正确拒绝未授权访问",
+    "timestamp": "2025-08-14T14:28:08.060707",
+    "details": null
+  },
+  {
+    "test_name": "CORS头设置",
+    "status": "PASS",
+    "message": "CORS头已正确设置",
+    "timestamp": "2025-08-14T14:28:08.062192",
+    "details": null
+  },
+  {
+    "test_name": "错误处理",
+    "status": "WARNING",
+    "message": "无效JSON处理状态码: 500",
+    "timestamp": "2025-08-14T14:28:08.063431",
+    "details": null
+  }
+]

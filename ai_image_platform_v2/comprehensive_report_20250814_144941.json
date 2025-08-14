@@ -1,0 +1,65 @@
+[
+  {
+    "test_name": "重复用户注册",
+    "status": "PASS",
+    "message": "正确拒绝重复用户名",
+    "timestamp": "2025-08-14T14:49:39.695125",
+    "details": null
+  },
+  {
+    "test_name": "无效登录测试",
+    "status": "PASS",
+    "message": "正确拒绝所有无效登录尝试",
+    "timestamp": "2025-08-14T14:49:39.702344",
+    "details": null
+  },
+  {
+    "test_name": "大文件上传",
+    "status": "PASS",
+    "message": "大文件上传成功",
+    "timestamp": "2025-08-14T14:49:39.972557",
+    "details": null
+  },
+  {
+    "test_name": "无效文件上传",
+    "status": "PASS",
+    "message": "正确拒绝非图片文件",
+    "timestamp": "2025-08-14T14:49:40.241134",
+    "details": null
+  },
+  {
+    "test_name": "处理性能测试",
+    "status": "PASS",
+    "message": "美颜处理耗时: 0.03秒",
+    "timestamp": "2025-08-14T14:49:40.536538",
+    "details": null
+  },
+  {
+    "test_name": "并发用户注册",
+    "status": "PASS",
+    "message": "成功创建 10/10 个用户",
+    "timestamp": "2025-08-14T14:49:40.884048",
+    "details": null
+  },
+  {
+    "test_name": "API限流测试",
+    "status": "WARNING",
+    "message": "未检测到API限流机制",
+    "timestamp": "2025-08-14T14:49:41.193240",
+    "details": null
+  },
+  {
+    "test_name": "Token过期处理",
+    "status": "PASS",
+    "message": "正确处理过期token",
+    "timestamp": "2025-08-14T14:49:41.195084",
+    "details": null
+  },
+  {
+    "test_name": "错误响应格式",
+    "status": "PASS",
+    "message": "错误响应格式正确",
+    "timestamp": "2025-08-14T14:49:41.196806",
+    "details": null
+  }
+]

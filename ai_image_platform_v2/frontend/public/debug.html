@@ -1,241 +1,286 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>调试页面</title>
+    <title>证件照功能调试</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
+            margin: 20px;
+            line-height: 1.6;
         }
+
         .debug-section {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #f9f9f9;
-        }
-        .upload-container {
-            padding: 40px;
-            border: 2px dashed #007bff;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-        }
-        .upload-container:hover {
-            background: #e9ecef;
-            border-color: #0056b3;
-        }
-        .btn-upload-primary {
-            background: #007bff;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
-        }
-        .btn-upload-primary:hover {
-            background: #0056b3;
-        }
-        .log {
-            background: #f1f1f1;
+            background: #f5f5f5;
             padding: 15px;
-            border-radius: 4px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            max-height: 300px;
-            overflow-y: auto;
-            font-size: 12px;
-        }
-        .status {
-            padding: 10px;
             margin: 10px 0;
-            border-radius: 4px;
+            border-radius: 5px;
         }
-        .status.success { background: #d4edda; color: #155724; }
-        .status.error { background: #f8d7da; color: #721c24; }
-        .status.info { background: #d1ecf1; color: #0c5460; }
+
+        .status {
+            padding: 5px 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
+
 <body>
-    <h1>AI图片处理平台 - 调试页面</h1>
-    
+    <h1>🔍 证件照功能调试页面</h1>
+
     <div class="debug-section">
-        <h3>系统状态检查</h3>
-        <div id="system-status"></div>
-        <button onclick="checkSystemStatus()">重新检查</button>
-    </div>
-    
-    <div class="debug-section">
-        <h3>文件选择测试</h3>
-        <div class="upload-container" id="upload-container">
-            <h2>点击选择图片</h2>
-            <p>支持 JPG、PNG、WEBP 格式</p>
-            <button class="btn-upload-primary" id="select-image-btn">
-                选择照片
-            </button>
+        <h3>当前状态检查</h3>
+        <div id="status-check">
+            <p>正在检查...</p>
         </div>
-        <input type="file" id="image-input" accept="image/*" style="display: none;">
-        <div id="file-status"></div>
+        <button onclick="checkStatus()">🔄 刷新状态</button>
     </div>
-    
+
     <div class="debug-section">
-        <h3>API连接测试</h3>
-        <button onclick="testAPIConnection()">测试API连接</button>
-        <div id="api-status"></div>
+        <h3>操作步骤</h3>
+        <ol>
+            <li>确保用户已登录</li>
+            <li>确保已上传图片</li>
+            <li>切换到证件照模块</li>
+            <li>检查证件照按钮状态</li>
+        </ol>
     </div>
-    
+
     <div class="debug-section">
-        <h3>调试日志</h3>
-        <div id="debug-log" class="log"></div>
-        <button onclick="clearLog()">清除日志</button>
+        <h3>快速操作</h3>
+        <button onclick="goToBeautyModule()">🎨 切换到美颜模块</button>
+        <button onclick="testBeautyButton()">🧪 测试美颜按钮</button>
+        <button onclick="goToIdPhotoModule()">📷 切换到证件照模块</button>
+        <button onclick="enableIdPhotoButton()">✅ 强制启用证件照按钮</button>
+        <button onclick="testIdPhotoFunction()">🧪 测试证件照功能</button>
+    </div>
+
+    <div class="debug-section">
+        <h3>控制台日志</h3>
+        <div id="console-log"
+            style="background: #000; color: #0f0; padding: 10px; height: 200px; overflow-y: auto; font-family: monospace;">
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        const API_BASE_URL = 'http://localhost:5002/api';
-        
-        function log(message, type = 'info') {
-            const logDiv = document.getElementById('debug-log');
-            const timestamp = new Date().toLocaleTimeString();
-            logDiv.textContent += `[${timestamp}] [${type.toUpperCase()}] ${message}\n`;
+        // 劫持console.log来显示在页面上
+        const originalLog = console.log;
+        const logDiv = document.getElementById('console-log');
+
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '\\n';
             logDiv.scrollTop = logDiv.scrollHeight;
-            console.log(`[${type.toUpperCase()}] ${message}`);
-        }
-        
-        function clearLog() {
-            document.getElementById('debug-log').textContent = '';
-        }
-        
-        function showStatus(elementId, message, type = 'info') {
-            const element = document.getElementById(elementId);
-            element.innerHTML = `<div class="status ${type}">${message}</div>`;
-        }
-        
-        function checkSystemStatus() {
-            log('开始系统状态检查');
-            
-            const checks = {
-                'jQuery': typeof $ !== 'undefined' ? '✓ 已加载' : '✗ 未加载',
-                'jQuery版本': typeof $ !== 'undefined' ? $.fn.jquery : 'N/A',
-                '文件输入元素': document.getElementById('image-input') ? '✓ 存在' : '✗ 不存在',
-                '上传按钮': document.getElementById('select-image-btn') ? '✓ 存在' : '✗ 不存在',
-                '上传容器': document.getElementById('upload-container') ? '✓ 存在' : '✗ 不存在'
-            };
-            
-            let statusHtml = '<h4>系统检查结果:</h4>';
-            for (const [key, value] of Object.entries(checks)) {
-                const isOk = value.startsWith('✓');
-                statusHtml += `<div class="status ${isOk ? 'success' : 'error'}">${key}: ${value}</div>`;
-                log(`${key}: ${value}`);
-            }
-            
-            document.getElementById('system-status').innerHTML = statusHtml;
-        }
-        
-        function testAPIConnection() {
-            log('测试API连接...');
-            showStatus('api-status', '正在测试API连接...', 'info');
-            
-            $.ajax({
-                url: `${API_BASE_URL}/health`,
-                type: 'GET',
-                timeout: 5000,
-                success: function(response) {
-                    log('API连接成功');
-                    showStatus('api-status', `API连接成功 - 状态: ${response.status}`, 'success');
-                },
-                error: function(xhr, status, error) {
-                    log(`API连接失败: ${error}`, 'error');
-                    showStatus('api-status', `API连接失败: ${error}`, 'error');
-                }
-            });
-        }
-        
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            log(`文件选择事件触发`);
-            
-            if (file) {
-                log(`选择了文件: ${file.name} (${file.size} bytes, ${file.type})`);
-                showStatus('file-status', `已选择文件: ${file.name}<br>大小: ${(file.size/1024/1024).toFixed(2)} MB<br>类型: ${file.type}`, 'success');
-                
-                // 测试文件上传
-                testFileUpload(file);
+        };
+
+        function checkStatus() {
+            const statusDiv = document.getElementById('status-check');
+            let html = '';
+
+            // 检查用户登录状态
+            if (window.currentUser) {
+                html += '<div class="status success">✅ 用户已登录: ' + window.currentUser.username + '</div>';
             } else {
-                log('没有选择文件');
-                showStatus('file-status', '没有选择文件', 'error');
+                html += '<div class="status error">❌ 用户未登录</div>';
+            }
+
+            // 检查图片状态
+            if (window.currentImage) {
+                html += '<div class="status success">✅ 已有图片: ' + window.currentImage.filename + '</div>';
+            } else {
+                html += '<div class="status error">❌ 未上传图片</div>';
+            }
+
+            // 检查简化版管理器
+            if (window.simpleImageManager) {
+                const managerImage = window.simpleImageManager.getCurrentImage();
+                if (managerImage) {
+                    html += '<div class="status success">✅ 简化版管理器有图片: ' + managerImage.filename + '</div>';
+                } else {
+                    html += '<div class="status warning">⚠️ 简化版管理器无图片</div>';
+                }
+            } else {
+                html += '<div class="status error">❌ 简化版管理器未加载</div>';
+            }
+
+            // 检查美颜按钮状态
+            const beautyBtn = $('.btn-process-beauty');
+            const beautyBtnById = $('#process-btn');
+
+            if (beautyBtn.length > 0) {
+                const isDisabled = beautyBtn.prop('disabled');
+                html += '<div class="status ' + (isDisabled ? 'error' : 'success') + '">' +
+                    (isDisabled ? '❌' : '✅') + ' 美颜按钮 (class): ' + (isDisabled ? '禁用' : '启用') + '</div>';
+            } else {
+                html += '<div class="status error">❌ 找不到美颜按钮 (class选择器)</div>';
+            }
+
+            if (beautyBtnById.length > 0) {
+                const isDisabled = beautyBtnById.prop('disabled');
+                html += '<div class="status ' + (isDisabled ? 'error' : 'success') + '">' +
+                    (isDisabled ? '❌' : '✅') + ' 美颜按钮 (ID): ' + (isDisabled ? '禁用' : '启用') + '</div>';
+            } else {
+                html += '<div class="status error">❌ 找不到美颜按钮 (ID选择器)</div>';
+            }
+
+            // 检查证件照按钮状态
+            const idPhotoBtn = $('.btn-process-id-photo');
+            const idPhotoBtnById = $('#processIdPhoto');
+
+            if (idPhotoBtn.length > 0) {
+                const isDisabled = idPhotoBtn.prop('disabled');
+                html += '<div class="status ' + (isDisabled ? 'error' : 'success') + '">' +
+                    (isDisabled ? '❌' : '✅') + ' 证件照按钮 (class): ' + (isDisabled ? '禁用' : '启用') + '</div>';
+            } else {
+                html += '<div class="status error">❌ 找不到证件照按钮 (class选择器)</div>';
+            }
+
+            if (idPhotoBtnById.length > 0) {
+                const isDisabled = idPhotoBtnById.prop('disabled');
+                html += '<div class="status ' + (isDisabled ? 'error' : 'success') + '">' +
+                    (isDisabled ? '❌' : '✅') + ' 证件照按钮 (ID): ' + (isDisabled ? '禁用' : '启用') + '</div>';
+            } else {
+                html += '<div class="status error">❌ 找不到证件照按钮 (ID选择器)</div>';
+            }
+
+            statusDiv.innerHTML = html;
+
+            console.log('状态检查完成');
+            console.log('currentUser:', window.currentUser);
+            console.log('currentImage:', window.currentImage);
+            console.log('simpleImageManager:', window.simpleImageManager);
+        }
+
+        function goToBeautyModule() {
+            console.log('切换到美颜模块');
+            // 模拟点击美颜模块
+            const beautyTool = $('[data-category="beauty"][data-tool="beauty"]');
+            if (beautyTool.length > 0) {
+                beautyTool.click();
+                console.log('已点击美颜模块');
+                setTimeout(checkStatus, 500); // 延迟检查状态
+            } else {
+                console.error('找不到美颜模块按钮');
             }
         }
-        
-        function testFileUpload(file) {
-            log('开始测试文件上传...');
-            
-            const formData = new FormData();
-            formData.append('file', file);
-            
-            $.ajax({
-                url: `${API_BASE_URL}/images/upload`,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    log('文件上传成功');
-                    showStatus('file-status', `文件上传成功!<br>图片ID: ${response.data?.id}<br>URL: ${response.data?.url}`, 'success');
-                },
-                error: function(xhr) {
-                    const response = xhr.responseJSON;
-                    log(`文件上传失败: ${response?.message || xhr.statusText}`, 'error');
-                    showStatus('file-status', `文件上传失败: ${response?.message || xhr.statusText}`, 'error');
-                }
-            });
+
+        function testBeautyButton() {
+            console.log('测试美颜按钮');
+            if (!window.currentUser) {
+                alert('请先登录！');
+                return;
+            }
+            if (!window.currentImage) {
+                alert('请先上传图片！');
+                return;
+            }
+
+            // 测试按钮点击
+            const beautyBtn = $('#process-btn');
+            if (beautyBtn.length > 0) {
+                console.log('找到美颜按钮，模拟点击');
+                beautyBtn.click();
+            } else {
+                console.error('找不到美颜按钮');
+            }
+
+            // 也尝试类选择器
+            const beautyBtnClass = $('.btn-process-beauty');
+            if (beautyBtnClass.length > 0) {
+                console.log('找到美颜按钮(类)，模拟点击');
+                beautyBtnClass.click();
+            } else {
+                console.error('找不到美颜按钮(类)');
+            }
+
+            // 直接调用函数
+            if (typeof processBeautyImage === 'function') {
+                console.log('直接调用 processBeautyImage 函数');
+                processBeautyImage();
+            } else {
+                console.error('processBeautyImage 函数未找到');
+            }
         }
-        
-        // 页面加载完成后的初始化
-        $(document).ready(function() {
-            log('页面加载完成，开始初始化...');
-            
-            // 检查系统状态
-            checkSystemStatus();
-            
-            // 绑定文件选择事件
-            $('#image-input').on('change', handleFileSelect);
-            log('文件选择事件已绑定');
-            
-            // 绑定按钮点击事件
-            $('#select-image-btn').on('click', function(e) {
-                log('选择照片按钮被点击');
-                e.stopPropagation();
-                $('#image-input').click();
-            });
-            
-            // 绑定容器点击事件
-            $('#upload-container').on('click', function(e) {
-                log('上传容器被点击');
-                e.stopPropagation();
-                $('#image-input').click();
-            });
-            
-            log('所有事件绑定完成');
-        });
-        
-        // 错误处理
-        window.addEventListener('error', function(e) {
-            log(`JavaScript错误: ${e.message} (${e.filename}:${e.lineno})`, 'error');
-        });
-        
-        // 未处理的Promise拒绝
-        window.addEventListener('unhandledrejection', function(e) {
-            log(`未处理的Promise拒绝: ${e.reason}`, 'error');
+
+        function goToIdPhotoModule() {
+            console.log('切换到证件照模块');
+            // 模拟点击证件照模块
+            const idPhotoTool = $('[data-category="id-photo"][data-tool="generate"]');
+            if (idPhotoTool.length > 0) {
+                idPhotoTool.click();
+                console.log('已点击证件照模块');
+                setTimeout(checkStatus, 500); // 延迟检查状态
+            } else {
+                console.error('找不到证件照模块按钮');
+            }
+        }
+
+        function enableIdPhotoButton() {
+            console.log('强制启用证件照按钮');
+            $('.btn-process-id-photo').prop('disabled', false);
+            $('#processIdPhoto').prop('disabled', false);
+            console.log('证件照按钮已强制启用');
+            checkStatus();
+        }
+
+        function testIdPhotoFunction() {
+            console.log('测试证件照功能');
+            if (!window.currentUser) {
+                alert('请先登录！');
+                return;
+            }
+            if (!window.currentImage) {
+                alert('请先上传图片！');
+                return;
+            }
+
+            // 调用证件照处理函数
+            if (typeof processIdPhoto === 'function') {
+                console.log('调用 processIdPhoto 函数');
+                processIdPhoto();
+            } else {
+                console.error('processIdPhoto 函数未找到');
+            }
+        }
+
+        // 页面加载时检查状态
+        $(document).ready(function () {
+            console.log('调试页面已加载');
+            setTimeout(checkStatus, 1000); // 延迟1秒检查，确保其他脚本加载完成
         });
     </script>
 </body>
+
 </html>

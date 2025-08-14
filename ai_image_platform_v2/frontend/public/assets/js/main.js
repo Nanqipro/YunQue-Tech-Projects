@@ -2,8 +2,31 @@
 let currentImage = null;
 let currentTool = null;
 const isProcessing = false;
-let authToken = localStorage.getItem('authToken');
+let authToken = localStorage.getItem('authToken') || null;
 let currentUser = null;
+
+// 通用认证头设置函数
+function getAuthHeaders() {
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+    }
+
+    return headers;
+}
+
+// 确保AJAX请求设置认证头的辅助函数
+function ensureAuthHeader(xhr) {
+    if (authToken) {
+        xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
+        console.log('已设置认证头');
+    } else {
+        console.warn('未设置认证头 - authToken不存在');
+    }
+}
 
 // API 基础URL
 const API_BASE_URL = 'http://127.0.0.1:5002/api';
@@ -73,6 +96,8 @@ function initializeNotifications() {
 function bindEvents() {
     // 工具选择（使用委托事件避免重复绑定）
     $(document).on('click.toolitem', '.tool-item', function () {
+        $('.tool-item').removeClass('active');
+        $(this).addClass('active');
         const category = $(this).data('category');
         const tool = $(this).data('tool');
         selectTool(category, tool);
@@ -81,10 +106,15 @@ function bindEvents() {
     // 文件上传事件绑定
     $('#image-input').on('change', handleFileSelect);
 
-    // 上传区域点击触发文件选择
+    // 上传区域点击触发文件选择（但避免与label重复）
     $(document).on('click', '.upload-container', function (e) {
-        console.log('上传区域被点击');
+        // 如果点击的是label或按钮，不重复触发
+        if ($(e.target).closest('label').length > 0) {
+            console.log('点击的是label，不重复触发文件选择');
+            return;
+        }
 
+        console.log('上传区域被点击');
         const fileInput = document.getElementById('image-input');
         if (fileInput) {
             console.log('触发文件选择器');
@@ -98,10 +128,18 @@ function bindEvents() {
     console.log('文件选择功能已通过HTML label标签实现');
 
     // 处理按钮（使用委托事件避免重复绑定）
-    $(document).on('click.buttons', '#process-btn', processBeautyImage);
+    $(document).on('click.buttons', '#process-btn', function (e) {
+        e.preventDefault();
+        console.log('美颜按钮被点击 (ID选择器)');
+        processBeautyImage();
+    });
     $(document).on('click.buttons', '#resetBtn', resetImage);
     $(document).on('click.buttons', '#downloadBtn', downloadImage);
-    $(document).on('click', '.btn-process-beauty', processBeautyImage);
+    $(document).on('click', '.btn-process-beauty', function (e) {
+        e.preventDefault();
+        console.log('美颜按钮被点击 (类选择器)');
+        processBeautyImage();
+    });
     $(document).on('click', '.btn-process-id-photo', processIdPhoto);
     $(document).on('click', '.btn-process-background', processBackground);
 
@@ -233,9 +271,12 @@ function selectTool(category, tool) {
 function updateToolPanel(category, tool) {
     const panelContent = $('.panel-content');
 
+    console.log('更新工具面板:', category, tool);
+
     switch (category) {
         case 'beauty':
-            panelContent.html(getBeautyPanel(tool));
+            // 美颜面板已在HTML中定义，无需替换
+            console.log('切换到美颜面板 - 使用HTML中的面板');
             break;
         case 'filters':
             panelContent.html(getFiltersPanel(tool));
@@ -253,8 +294,17 @@ function updateToolPanel(category, tool) {
             panelContent.html(getIdPhotoPanel(tool));
             break;
         default:
+            console.log('未知工具类别:', category);
             panelContent.html('<p>请选择一个工具</p>');
     }
+
+    // 确保面板启用状态正确
+    setTimeout(() => {
+        if (window.simpleImageManager && window.simpleImageManager.getCurrentImage()) {
+            console.log('面板更新后启用功能');
+            window.simpleImageManager.enableCurrentModuleFeatures();
+        }
+    }, 100);
 }
 
 // 获取美颜面板
@@ -649,12 +699,14 @@ function updateProcessingButtons() {
     if (currentUser && currentImage) {
         console.log('启用证件照按钮');
         $('.btn-process-id-photo').prop('disabled', false);
+        $('#processIdPhoto').prop('disabled', false); // 同时启用ID选择器
     } else {
         console.log('禁用证件照按钮 - 原因:', {
             noUser: !currentUser,
             noImage: !currentImage
         });
         $('.btn-process-id-photo').prop('disabled', true);
+        $('#processIdPhoto').prop('disabled', true); // 同时禁用ID选择器
     }
 }
 
@@ -838,6 +890,8 @@ function handleFileSelect(e) {
     const file = e.target.files[0];
     if (file) {
         console.log('选择的文件:', file.name, file.size, file.type);
+        // 立即显示选择的文件信息
+        showNotification(`已选择: ${file.name}`, 'info');
         handleFile(file);
         // 清除文件选择，以便能够重新选择相同的文件
         e.target.value = '';
@@ -876,9 +930,18 @@ async function handleFile(file) {
 
         hideLoading();
         if (response.success) {
+            // 同时设置全局变量和简化版管理器
             currentImage = response.data;
             console.log('图片上传成功，设置currentImage:', currentImage);
-            displayImage(response.data.url);
+
+            if (window.simpleImageManager) {
+                window.simpleImageManager.setCurrentImage(response.data);
+                console.log('图片已设置到简化版管理器:', response.data);
+            } else {
+                // 后备方案，保持原有逻辑
+                displayImage(response.data.url);
+            }
+
             showNotification('图片上传成功', 'success');
             updateStatusBar(`已上传: ${file.name} (${formatFileSize(file.size)})`);
         } else {
@@ -920,6 +983,11 @@ function displayImage(imageUrl) {
         // 更新处理按钮状态（包括证件照按钮）
         console.log('调用updateProcessingButtons');
         updateProcessingButtons();
+
+        // 如果有简化版管理器，也调用其功能启用
+        if (window.simpleImageManager) {
+            window.simpleImageManager.enableCurrentModuleFeatures();
+        }
 
         // 更新文件信息
         if (currentImage) {
@@ -968,10 +1036,18 @@ function resetZoom() {
 
 // 处理美颜图片
 async function processBeautyImage() {
+    console.log('processBeautyImage 函数被调用');
+    console.log('当前图片:', currentImage);
+    console.log('当前用户:', currentUser);
+    console.log('认证token:', authToken);
+
     if (!currentImage) {
+        console.error('没有当前图片，无法处理');
         showNotification('请先上传图片', 'warning');
         return;
     }
+
+    console.log('开始美颜处理流程...');
 
     // 显示处理指示器
     $('#processing-indicator').show();
@@ -1081,7 +1157,10 @@ function processIdPhoto() {
         headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
         timeout: 60000, // 60秒超时
         beforeSend: function (xhr) {
-            console.log('发送请求前，headers:', xhr.getAllResponseHeaders());
+            // 使用辅助函数确保设置认证头
+            ensureAuthHeader(xhr);
+            console.log('发送请求前，认证token:', authToken ? '存在' : '不存在');
+            console.log('请求URL:', `${API_BASE_URL}/processing/id-photo`);
         },
         success: function (response, textStatus, xhr) {
             console.log('证件照处理响应状态:', textStatus);
@@ -1175,6 +1254,11 @@ function processBackground() {
         }),
         contentType: 'application/json',
         headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {},
+        beforeSend: function (xhr) {
+            // 使用辅助函数确保设置认证头
+            ensureAuthHeader(xhr);
+            console.log('背景处理请求，认证token:', authToken ? '存在' : '不存在');
+        },
         success: function (response) {
             hideLoading();
             // 隐藏处理指示器
