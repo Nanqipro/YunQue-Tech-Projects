@@ -19,12 +19,14 @@ def create_app(config_name='default'):
     
     # 初始化扩展
     db.init_app(app)
+    # 配置CORS - 允许所有来源（开发环境）
     cors.init_app(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:57365", "http://127.0.0.1:57365", "http://localhost:59457", "http://127.0.0.1:59457"],
+            "origins": "*",  # 允许所有来源
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
-            "supports_credentials": True
+            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
+            "supports_credentials": False,  # 设置为False以避免CORS问题
+            "expose_headers": ["Content-Type", "Authorization"]
         }
     })
     

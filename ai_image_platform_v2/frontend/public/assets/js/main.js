@@ -264,7 +264,16 @@ function selectTool(category, tool) {
     // 启用处理按钮
     if (currentImage) {
         $('#process-btn').prop('disabled', false);
+        console.log('已启用处理按钮，当前图片ID:', currentImage.id);
+    } else {
+        $('#process-btn').prop('disabled', true);
+        console.log('处理按钮已禁用，未选择图片');
     }
+
+    // 启用美颜面板（移除disabled类）
+    $('#beauty-panel').removeClass('disabled');
+
+    console.log('工具选择完成:', category, tool, '面板已启用');
 }
 
 // 更新工具面板
@@ -275,8 +284,16 @@ function updateToolPanel(category, tool) {
 
     switch (category) {
         case 'beauty':
-            // 美颜面板已在HTML中定义，无需替换
-            console.log('切换到美颜面板 - 使用HTML中的面板');
+            // 根据具体的美颜工具更新面板内容
+            console.log('切换到美颜面板:', tool);
+            if (tool === 'beauty') {
+                // 智能美颜 - 恢复HTML中已定义的面板内容
+                console.log('恢复HTML中的智能美颜面板');
+                restoreBeautyPanel();
+            } else {
+                // 其他美颜工具 - 动态生成面板内容
+                panelContent.html(getBeautyPanel(tool));
+            }
             break;
         case 'filters':
             panelContent.html(getFiltersPanel(tool));
@@ -303,6 +320,17 @@ function updateToolPanel(category, tool) {
         if (window.simpleImageManager && window.simpleImageManager.getCurrentImage()) {
             console.log('面板更新后启用功能');
             window.simpleImageManager.enableCurrentModuleFeatures();
+        }
+
+        // 调试：检查面板内容是否正确更新
+        console.log('面板内容更新完成，当前内容:', panelContent.html());
+        console.log('面板是否可见:', panelContent.is(':visible'));
+        console.log('美颜面板状态:', $('#beauty-panel').hasClass('disabled') ? '已禁用' : '已启用');
+
+        // 确保面板可见
+        if (category === 'beauty') {
+            $('#beauty-panel').removeClass('disabled');
+            console.log('美颜面板已确保启用');
         }
     }, 100);
 }
@@ -782,13 +810,50 @@ function handleRegister(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
 
+    // 获取表单数据
+    const username = formData.get('username');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirmPassword');
+
+    // 前端验证
+    if (!username || !email || !password || !confirmPassword) {
+        showNotification('请填写所有必填字段', 'error');
+        return;
+    }
+
+    // 验证用户名长度
+    if (username.length < 3 || username.length > 50) {
+        showNotification('用户名长度必须在3-50个字符之间', 'error');
+        return;
+    }
+
+    // 验证密码长度
+    if (password.length < 6) {
+        showNotification('密码长度至少6个字符', 'error');
+        return;
+    }
+
+    // 验证密码确认
+    if (password !== confirmPassword) {
+        showNotification('两次输入的密码不一致', 'error');
+        return;
+    }
+
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showNotification('请输入有效的邮箱地址', 'error');
+        return;
+    }
+
     $.ajax({
         url: `${API_BASE_URL}/users/register`,
         type: 'POST',
         data: JSON.stringify({
-            username: formData.get('username'),
-            email: formData.get('email'),
-            password: formData.get('password')
+            username: username,
+            email: email,
+            password: password
         }),
         contentType: 'application/json',
         success: function (response) {
@@ -796,6 +861,8 @@ function handleRegister(e) {
                 showNotification('注册成功，请登录', 'success');
                 $('#register-modal').hide();
                 $('#login-modal').show();
+                // 清空表单
+                e.target.reset();
             } else {
                 showNotification(response.message || '注册失败', 'error');
             }
@@ -807,7 +874,7 @@ function handleRegister(e) {
             if (xhr.status === 409) {
                 if (response?.message?.includes('用户名已存在')) {
                     errorMessage = '用户名已存在，请选择其他用户名';
-                } else if (response?.message?.includes('邮箱已存在')) {
+                } else if (response?.message?.includes('邮箱已被注册')) {
                     errorMessage = '邮箱已被注册，请使用其他邮箱';
                 } else {
                     errorMessage = response?.message || '用户信息冲突，请检查输入';
@@ -2389,4 +2456,165 @@ function loadProcessedImage(resultUrl) {
             console.error('加载处理后图片失败:', error);
             showNotification(`处理后的图片加载失败: ${error.message}`, 'error');
         });
+}
+
+// 恢复原始的美颜面板内容
+function restoreBeautyPanel() {
+    console.log('正在恢复原始美颜面板...');
+
+    // 恢复HTML中定义的原始美颜面板内容（与原始HTML完全一致）
+    const originalBeautyPanel = `
+        <!-- 磨皮设置 -->
+        <div class="parameter-group">
+            <div class="group-header">
+                <i class="fas fa-hand-sparkles"></i>
+                <span class="group-title">磨皮设置</span>
+            </div>
+            <div class="parameter-item">
+                <div class="parameter-label">
+                    <span>磨皮强度</span>
+                    <span class="parameter-value" id="smoothing-value">30</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="beauty-slider" id="smoothing" min="0" max="100" value="30">
+                    <div class="slider-track"></div>
+                </div>
+                <div class="parameter-tips">适度磨皮，保持肌肤自然质感</div>
+            </div>
+        </div>
+
+        <!-- 美白设置 -->
+        <div class="parameter-group">
+            <div class="group-header">
+                <i class="fas fa-sun"></i>
+                <span class="group-title">美白设置</span>
+            </div>
+            <div class="parameter-item">
+                <div class="parameter-label">
+                    <span>美白程度</span>
+                    <span class="parameter-value" id="whitening-value">40</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="beauty-slider" id="whitening" min="0" max="100" value="40">
+                    <div class="slider-track"></div>
+                </div>
+                <div class="parameter-tips">自然提亮肤色，避免过度美白</div>
+            </div>
+        </div>
+
+        <!-- 眼部增强 -->
+        <div class="parameter-group">
+            <div class="group-header">
+                <i class="fas fa-eye"></i>
+                <span class="group-title">眼部增强</span>
+            </div>
+            <div class="parameter-item">
+                <div class="parameter-label">
+                    <span>增强程度</span>
+                    <span class="parameter-value" id="eye-enhancement-value">60</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="beauty-slider" id="eye-enhancement" min="0" max="100" value="60">
+                    <div class="slider-track"></div>
+                </div>
+                <div class="parameter-tips">增强眼部轮廓，提升神采</div>
+            </div>
+        </div>
+
+        <!-- 唇部调整 -->
+        <div class="parameter-group">
+            <div class="group-header">
+                <i class="fas fa-kiss"></i>
+                <span class="group-title">唇部调整</span>
+            </div>
+            <div class="parameter-item">
+                <div class="parameter-label">
+                    <span>唇色增强</span>
+                    <span class="parameter-value" id="lip-adjustment-value">25</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="beauty-slider" id="lip-adjustment" min="0" max="100" value="25">
+                    <div class="slider-track"></div>
+                </div>
+                <div class="parameter-tips">自然提升唇部色彩饱和度</div>
+            </div>
+        </div>
+
+        <!-- 预设方案 -->
+        <div class="preset-section">
+            <div class="preset-header">
+                <i class="fas fa-magic"></i>
+                <span>快速预设</span>
+            </div>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-preset="natural">
+                    <i class="fas fa-leaf"></i>
+                    <span>自然</span>
+                </button>
+                <button class="preset-btn" data-preset="sweet">
+                    <i class="fas fa-heart"></i>
+                    <span>甜美</span>
+                </button>
+                <button class="preset-btn" data-preset="elegant">
+                    <i class="fas fa-gem"></i>
+                    <span>优雅</span>
+                </button>
+                <button class="preset-btn" data-preset="fresh">
+                    <i class="fas fa-snowflake"></i>
+                    <span>清新</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- AI建议 -->
+        <div class="ai-suggestions">
+            <div class="ai-header">
+                <i class="fas fa-robot"></i>
+                <span>AI智能建议</span>
+            </div>
+            <div class="suggestion-list" id="suggestion-list">
+                <div class="suggestion-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>上传照片后获取个性化建议</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // 更新面板内容
+    $('.panel-content').html(originalBeautyPanel);
+
+    // 确保操作按钮部分存在
+    const panelActions = $('.panel-actions');
+    if (panelActions.length === 0) {
+        // 如果panel-actions不存在，创建它
+        const actionsHtml = `
+                <div class="panel-actions">
+                    <button class="btn-process-beauty" id="process-btn" disabled>
+                        <i class="fas fa-magic"></i>
+                        <span>开始美颜</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </button>
+                </div>
+            `;
+        $('.beauty-panel').append(actionsHtml);
+        console.log('已创建操作按钮容器');
+    } else {
+        // 如果存在，确保按钮内容正确
+        panelActions.html(`
+                <button class="btn-process-beauty" id="process-btn" disabled>
+                    <i class="fas fa-magic"></i>
+                    <span>开始美颜</span>
+                    <div class="btn-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </button>
+            `);
+        console.log('已更新操作按钮内容');
+    }
+
+    // 重新绑定事件（如果需要）
+    console.log('美颜面板已完全恢复');
 }

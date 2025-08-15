@@ -58,7 +58,15 @@ def register():
                 'field': 'username'
             }), 409
         
-
+        # 检查邮箱是否已存在（如果提供了邮箱）
+        if data.get('email'):
+            email = data['email'].strip()
+            if User.find_by_email(email):
+                return jsonify({
+                    'success': False,
+                    'message': '邮箱已被注册',
+                    'field': 'email'
+                }), 409
         
         # 创建新用户
         user = User()
@@ -70,6 +78,8 @@ def register():
             user.nickname = data['nickname'].strip()
         if 'avatar_url' in data:
             user.avatar_url = data['avatar_url'].strip()
+        if 'email' in data:
+            user.email = data['email'].strip()
         
         db.session.add(user)
         db.session.commit()
