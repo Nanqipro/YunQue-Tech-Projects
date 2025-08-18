@@ -130,18 +130,32 @@ function bindEvents() {
     // 处理按钮（使用委托事件避免重复绑定）
     $(document).on('click.buttons', '#process-btn', function (e) {
         e.preventDefault();
+        if (!checkAuthentication()) return;
         console.log('美颜按钮被点击 (ID选择器)');
         processBeautyImage();
     });
-    $(document).on('click.buttons', '#resetBtn', resetImage);
-    $(document).on('click.buttons', '#downloadBtn', downloadImage);
+    $(document).on('click.buttons', '#resetBtn', function (e) {
+        if (!checkAuthentication()) return;
+        resetImage();
+    });
+    $(document).on('click.buttons', '#downloadBtn', function (e) {
+        if (!checkAuthentication()) return;
+        downloadImage();
+    });
     $(document).on('click', '.btn-process-beauty', function (e) {
         e.preventDefault();
+        if (!checkAuthentication()) return;
         console.log('美颜按钮被点击 (类选择器)');
         processBeautyImage();
     });
-    $(document).on('click', '.btn-process-id-photo', processIdPhoto);
-    $(document).on('click', '.btn-process-background', processBackground);
+    $(document).on('click', '.btn-process-id-photo', function (e) {
+        if (!checkAuthentication()) return;
+        processIdPhoto();
+    });
+    $(document).on('click', '.btn-process-background', function (e) {
+        if (!checkAuthentication()) return;
+        processBackground();
+    });
 
     // 创建防抖函数实例
     const debouncedPreviewEffect = debounce(previewEffect, 300);
@@ -170,19 +184,38 @@ function bindEvents() {
     });
 
     // 图片对比控制
-    $(document).on('click', '.btn-compare', toggleImageComparison);
-    $(document).on('click', '.btn-zoom-in', zoomIn);
-    $(document).on('click', '.btn-zoom-out', zoomOut);
-    $(document).on('click', '.btn-fullscreen', toggleFullscreen);
+    $(document).on('click', '.btn-compare', function (e) {
+        if (!checkAuthentication()) return;
+        toggleImageComparison();
+    });
+    $(document).on('click', '.btn-zoom-in', function (e) {
+        if (!checkAuthentication()) return;
+        zoomIn();
+    });
+    $(document).on('click', '.btn-zoom-out', function (e) {
+        if (!checkAuthentication()) return;
+        zoomOut();
+    });
+    $(document).on('click', '.btn-fullscreen', function (e) {
+        if (!checkAuthentication()) return;
+        toggleFullscreen();
+    });
 
     // 重置按钮
-    $(document).on('click', '.btn-reset-params', resetBeautyParams);
+    $(document).on('click', '.btn-reset-params', function (e) {
+        if (!checkAuthentication()) return;
+        resetBeautyParams();
+    });
 
     // 下载按钮
-    $(document).on('click', '.btn-download-result', downloadImage);
+    $(document).on('click', '.btn-download-result', function (e) {
+        if (!checkAuthentication()) return;
+        downloadImage();
+    });
 
     // 选择框（使用委托事件避免重复绑定）
     $(document).on('change.formselect', '.form-select', function () {
+        if (!checkAuthentication()) return;
         if (currentImage && !isProcessing) {
             previewEffect();
         }
@@ -190,6 +223,7 @@ function bindEvents() {
 
     // 用户菜单（使用委托事件避免重复绑定）
     $(document).on('click.usermenu', '.user-profile', function (e) {
+        if (!checkAuthentication()) return;
         e.stopPropagation();
         $('.user-dropdown').toggleClass('show');
     });
@@ -204,11 +238,24 @@ function bindEvents() {
     $(document).on('click.auth', '#logout-btn', logout);
 
     // 顶部菜单栏功能按钮
-    $(document).on('click', '#help-btn', showHelpCenter);
-    $(document).on('click', '#history-btn', showHistoryPanel);
-    $(document).on('click', '#favorites-btn', showFavoritesPanel);
-    $(document).on('click', '#notifications-btn', showNotificationsPanel);
+    $(document).on('click', '#help-btn', function (e) {
+        if (!checkAuthentication()) return;
+        showHelpCenter();
+    });
+    $(document).on('click', '#history-btn', function (e) {
+        if (!checkAuthentication()) return;
+        showHistoryPanel();
+    });
+    $(document).on('click', '#favorites-btn', function (e) {
+        if (!checkAuthentication()) return;
+        showFavoritesPanel();
+    });
+    $(document).on('click', '#notifications-btn', function (e) {
+        if (!checkAuthentication()) return;
+        showNotificationsPanel();
+    });
     $(document).on('click', '#user-menu-btn', function (e) {
+        if (!checkAuthentication()) return;
         e.stopPropagation();
         $('.user-dropdown').toggleClass('show');
     });
