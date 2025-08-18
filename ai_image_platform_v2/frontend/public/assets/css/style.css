@@ -19,7 +19,7 @@ body {
     display: flex;
     flex-direction: row;
     height: 100vh;
-    background: #f8f9fa;
+    background: transparent;
     min-width: 1200px;
     width: 100%;
     max-width: 100vw;
@@ -43,7 +43,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: transparent;
     overflow: hidden;
 }
 
@@ -210,7 +210,7 @@ body {
 /* 画布区域 */
 .canvas-area {
     flex: 1;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -232,7 +232,7 @@ body {
 .properties-panel {
     width: 20%;
     height: 100%;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-left: 1px solid #e9ecef;
     display: flex;
     flex-direction: column;
@@ -294,7 +294,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f8f9fa;
+    background: transparent;
     min-width: 0; /* 防止内容溢出 */
     overflow: hidden; /* 隐藏溢出内容 */
 }
