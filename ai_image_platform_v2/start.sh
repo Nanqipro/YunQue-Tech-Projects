@@ -100,6 +100,11 @@ main() {
     # 检查必要的命令
     print_info "检查系统依赖..."
     
+    if ! command_exists conda; then
+        print_error "Conda 未安装，请先安装 Anaconda 或 Miniconda"
+        exit 1
+    fi
+    
     if ! command_exists python3; then
         print_error "Python 3 未安装，请先安装 Python 3.8+"
         exit 1
@@ -131,14 +136,20 @@ main() {
     
     cd backend
     
-    # 检查虚拟环境
-    if [ ! -d "venv" ]; then
-        print_info "创建 Python 虚拟环境..."
-        python3 -m venv venv
+    # 检查并激活conda虚拟环境
+    print_info "检查conda虚拟环境 ai-image..."
+    
+    # 检查ai-image环境是否存在
+    if ! conda env list | grep -q "ai-image"; then
+        print_error "conda虚拟环境 'ai-image' 不存在，请先创建该环境"
+        print_info "创建命令: conda create -n ai-image python=3.8"
+        exit 1
     fi
     
-    # 激活虚拟环境
-    source venv/bin/activate
+    # 激活conda虚拟环境
+    print_info "激活conda虚拟环境 ai-image..."
+    source $(conda info --base)/etc/profile.d/conda.sh
+    conda activate ai-image
     
     # 安装依赖
     print_info "安装后端依赖..."
