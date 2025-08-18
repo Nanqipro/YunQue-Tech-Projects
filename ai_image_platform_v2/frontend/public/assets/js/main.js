@@ -636,6 +636,9 @@ function processImage() {
 
 // 重置图像
 function resetImage() {
+    if (!checkAuthentication()) {
+        return;
+    }
     if (currentImage) {
         // 重置到原始状态
         showNotification('图像已重置', 'info');
@@ -644,6 +647,9 @@ function resetImage() {
 
 // 下载图像
 function downloadImage() {
+    if (!checkAuthentication()) {
+        return;
+    }
     if (currentImage) {
         // 实现下载逻辑
         showNotification('图像下载中...', 'info');
@@ -758,6 +764,15 @@ function closeModal() {
     // 关闭通知面板
     $('#notifications-modal').hide();
     $('.modal-overlay').hide();
+}
+
+// 检查用户认证状态的通用辅助函数
+function checkAuthentication() {
+    if (!currentUser || !authToken) {
+        showLoginModal();
+        return false;
+    }
+    return true;
 }
 
 // 处理登录
@@ -907,6 +922,9 @@ function handleKeyboardShortcuts(e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o') {
         e.preventDefault();
         e.stopPropagation();
+        if (!checkAuthentication()) {
+            return;
+        }
         // 触发文件选择
         const input = $('#image-input');
         input.val(''); // 清除之前的选择
@@ -916,12 +934,18 @@ function handleKeyboardShortcuts(e) {
     // Ctrl/Cmd + S: 保存/下载
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
+        if (!checkAuthentication()) {
+            return;
+        }
         downloadImage();
     }
 
     // Ctrl/Cmd + Z: 重置
     if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
         e.preventDefault();
+        if (!checkAuthentication()) {
+            return;
+        }
         resetImage();
     }
 }
@@ -944,6 +968,10 @@ function initializeDragDrop() {
         e.preventDefault();
         $(this).removeClass('drag-over');
 
+        if (!checkAuthentication()) {
+            return;
+        }
+
         const files = e.originalEvent.dataTransfer.files;
         if (files.length > 0) {
             handleFile(files[0]);
@@ -954,6 +982,11 @@ function initializeDragDrop() {
 // 处理文件选择
 function handleFileSelect(e) {
     console.log('文件选择事件触发', e);
+    if (!checkAuthentication()) {
+        // 清除文件选择，以便能够重新选择相同的文件
+        e.target.value = '';
+        return;
+    }
     const file = e.target.files[0];
     if (file) {
         console.log('选择的文件:', file.name, file.size, file.type);
@@ -969,6 +1002,9 @@ function handleFileSelect(e) {
 
 // 处理文件
 async function handleFile(file) {
+    if (!checkAuthentication()) {
+        return;
+    }
     // 验证文件类型
     if (!file.type.startsWith('image/')) {
         showNotification('请选择图片文件', 'error');
@@ -1103,6 +1139,10 @@ function resetZoom() {
 
 // 处理美颜图片
 async function processBeautyImage() {
+    if (!checkAuthentication()) {
+        return;
+    }
+
     console.log('processBeautyImage 函数被调用');
     console.log('当前图片:', currentImage);
     console.log('当前用户:', currentUser);
@@ -1181,6 +1221,9 @@ async function processBeautyImage() {
 
 // 处理证件照生成
 function processIdPhoto() {
+    if (!checkAuthentication()) {
+        return;
+    }
     if (!currentImage) {
         showNotification('请先上传图片', 'warning');
         return;
@@ -1292,6 +1335,9 @@ function processIdPhoto() {
 
 // 处理背景替换
 function processBackground() {
+    if (!checkAuthentication()) {
+        return;
+    }
     if (!currentImage) {
         showNotification('请先上传图片', 'warning');
         return;
@@ -1480,8 +1526,7 @@ function showHelpCenter() {
 
 // 显示历史记录面板
 function showHistoryPanel() {
-    if (!authToken) {
-        showNotification('请先登录查看历史记录', 'warning');
+    if (!checkAuthentication()) {
         return;
     }
 
@@ -1552,6 +1597,9 @@ function displayHistoryModal(records) {
 
 // 显示收藏面板
 function showFavoritesPanel() {
+    if (!checkAuthentication()) {
+        return;
+    }
     const favoritesModal = $(`
         <div class="modal-overlay" id="favorites-modal">
             <div class="modal favorites-modal">
@@ -1613,8 +1661,7 @@ function checkNewNotifications() {
 
 // 显示通知面板
 async function showNotificationsPanel() {
-    if (!authToken) {
-        showNotification('请先登录查看通知', 'warning');
+    if (!checkAuthentication()) {
         return;
     }
 
@@ -2151,6 +2198,9 @@ async function updateNotificationBadge() {
 
 // 显示设置面板
 function showSettingsPanel() {
+    if (!checkAuthentication()) {
+        return;
+    }
     const settingsModal = $(`
         <div class="modal-overlay" id="settings-modal">
             <div class="modal settings-modal">
