@@ -202,7 +202,7 @@ if %errorlevel% neq 0 (
 REM 初始化数据库
 if not exist "app.db" (
     call :print_info "初始化数据库..."
-    python run.py init-db
+    python run.py --init-db
     if !errorlevel! neq 0 (
         call :print_error "数据库初始化失败"
         pause
