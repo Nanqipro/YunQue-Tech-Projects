@@ -29,7 +29,7 @@
     overflow-y: auto;
     position: relative;
     animation: modalSlideIn 0.3s ease-out;
-    display: none;
+    display: block;
 }
 
 .modal.show {

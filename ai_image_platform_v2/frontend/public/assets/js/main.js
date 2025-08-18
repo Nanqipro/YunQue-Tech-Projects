@@ -96,6 +96,7 @@ function initializeNotifications() {
 function bindEvents() {
     // 工具选择（使用委托事件避免重复绑定）
     $(document).on('click.toolitem', '.tool-item', function () {
+        if (!checkAuthentication()) return;
         $('.tool-item').removeClass('active');
         $(this).addClass('active');
         const category = $(this).data('category');
@@ -113,6 +114,9 @@ function bindEvents() {
             console.log('点击的是label，不重复触发文件选择');
             return;
         }
+
+        // 未登录则先弹出登录框
+        if (!checkAuthentication()) return;
 
         console.log('上传区域被点击');
         const fileInput = document.getElementById('image-input');
@@ -162,6 +166,7 @@ function bindEvents() {
 
     // 滑块控件（使用命名空间避免重复绑定）
     $(document).on('input.slider', '.slider', function () {
+        if (!checkAuthentication()) return;
         const value = $(this).val();
         $(this).siblings('.slider-value').text(value);
         if (currentImage && !isProcessing) {
@@ -171,6 +176,7 @@ function bindEvents() {
 
     // 美颜滑块值更新
     $(document).on('input', '.beauty-slider', function () {
+        if (!checkAuthentication()) return;
         const value = $(this).val();
         $(this).siblings('.parameter-label').find('.parameter-value').text(value);
         updateBeautyPreview();
@@ -178,6 +184,7 @@ function bindEvents() {
 
     // 预设方案选择
     $(document).on('click', '.preset-btn', function () {
+        if (!checkAuthentication()) return;
         $('.preset-btn').removeClass('active');
         $(this).addClass('active');
         applyBeautyPreset($(this).data('preset'));
@@ -188,6 +195,8 @@ function bindEvents() {
         if (!checkAuthentication()) return;
         toggleImageComparison();
     });
+
+    // 缩放控制：兼容类选择器与ID选择器
     $(document).on('click', '.btn-zoom-in', function (e) {
         if (!checkAuthentication()) return;
         zoomIn();
@@ -196,6 +205,19 @@ function bindEvents() {
         if (!checkAuthentication()) return;
         zoomOut();
     });
+    $(document).on('click', '#zoom-in', function (e) {
+        if (!checkAuthentication()) return;
+        zoomIn();
+    });
+    $(document).on('click', '#zoom-out', function (e) {
+        if (!checkAuthentication()) return;
+        zoomOut();
+    });
+    $(document).on('click', '#reset-zoom', function (e) {
+        if (!checkAuthentication()) return;
+        resetZoom();
+    });
+
     $(document).on('click', '.btn-fullscreen', function (e) {
         if (!checkAuthentication()) return;
         toggleFullscreen();
@@ -793,14 +815,16 @@ function updateProcessingButtons() {
 
 // 显示登录模态框
 function showLoginModal() {
+    $('#register-modal').hide();
     $('#login-modal').show();
-    $('#modal-overlay').show();
+    $('#modal-overlay').css('display', 'flex').show();
 }
 
 // 显示注册模态框
 function showRegisterModal() {
+    $('#login-modal').hide();
     $('#register-modal').show();
-    $('#modal-overlay').show();
+    $('#modal-overlay').css('display', 'flex').show();
 }
 
 // 关闭模态框
