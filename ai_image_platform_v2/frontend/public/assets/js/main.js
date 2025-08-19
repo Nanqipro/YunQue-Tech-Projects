@@ -107,16 +107,27 @@ function bindEvents() {
     // 文件上传事件绑定
     $('#image-input').on('change', handleFileSelect);
 
-    // 上传区域点击触发文件选择（但避免与label重复）
+    // 上传区域点击触发文件选择
     $(document).on('click', '.upload-container', function (e) {
-        // 如果点击的是label或按钮，不重复触发
-        if ($(e.target).closest('label').length > 0) {
-            console.log('点击的是label，不重复触发文件选择');
+        // 未登录则先弹出登录框
+        if (!checkAuthentication()) {
+            e.preventDefault();
+            e.stopPropagation();
             return;
         }
 
-        // 未登录则先弹出登录框
-        if (!checkAuthentication()) return;
+        // 如果点击的是label或按钮，不重复触发文件选择器
+        if ($(e.target).closest('label').length > 0) {
+            console.log('点击的是label，触发文件选择');
+            const fileInput = document.getElementById('image-input');
+            if (fileInput) {
+                console.log('触发文件选择器');
+                fileInput.click();
+            } else {
+                console.error('找不到文件输入框');
+            }
+            return;
+        }
 
         console.log('上传区域被点击');
         const fileInput = document.getElementById('image-input');
@@ -1094,9 +1105,6 @@ function handleFileSelect(e) {
 
 // 处理文件
 async function handleFile(file) {
-    if (!checkAuthentication()) {
-        return;
-    }
     // 验证文件类型
     if (!file.type.startsWith('image/')) {
         showNotification('请选择图片文件', 'error');
@@ -1116,6 +1124,9 @@ async function handleFile(file) {
     if (authToken && window.API.apiClient.token !== authToken) {
         console.log('同步API客户端token用于图片上传');
         window.API.apiClient.setToken(authToken);
+    } else if (!authToken) {
+        console.log('匿名上传模式');
+        window.API.apiClient.setToken(null);
     }
 
     try {

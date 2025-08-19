@@ -223,7 +223,7 @@ const imageAPI = {
     // 上传图片
     async upload(file, metadata = {}) {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', file);  // 后端期望的字段名是'file'
         
         // 添加元数据
         Object.keys(metadata).forEach(key => {
