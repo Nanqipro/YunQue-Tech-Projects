@@ -1,6 +1,6 @@
 // API 配置
 const API_CONFIG = {
-    baseURL: '/api',
+    baseURL: 'http://127.0.0.1:5002/api',
     timeout: 30000,
     retryAttempts: 3,
     retryDelay: 1000
@@ -25,9 +25,12 @@ class APIClient {
 
     // 获取请求头
     getHeaders(contentType = 'application/json') {
-        const headers = {
-            'Content-Type': contentType
-        };
+        const headers = {};
+        
+        // 只有当contentType不为null时才设置Content-Type
+        if (contentType !== null) {
+            headers['Content-Type'] = contentType;
+        }
 
         if (this.token) {
             headers['Authorization'] = `Bearer ${this.token}`;
@@ -82,11 +85,6 @@ class APIClient {
         }
 
         if (!response.ok) {
-            // 特殊处理：如果响应状态不OK但数据表明实际成功，则返回数据而不抛出错误
-            if (data && typeof data === 'object' && data.success === true) {
-                console.log('API returned error status but success data, treating as success:', data);
-                return data;
-            }
             throw new APIError(data.message || 'Request failed', response.status, data);
         }
 
@@ -225,7 +223,7 @@ const imageAPI = {
     // 上传图片
     async upload(file, metadata = {}) {
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append('file', file);
         
         // 添加元数据
         Object.keys(metadata).forEach(key => {

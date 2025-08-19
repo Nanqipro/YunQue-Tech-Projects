@@ -48,7 +48,11 @@ def register():
         
         # 验证密码强度
         if len(password) < 6:
-            return jsonify({'error': '密码长度至少6个字符'}), 400
+            return jsonify({
+                'success': False,
+                'message': '密码长度至少6个字符',
+                'field': 'password'
+            }), 400
         
         # 检查用户名是否已存在
         if User.find_by_username(username):

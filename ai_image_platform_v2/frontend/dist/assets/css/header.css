@@ -34,9 +34,11 @@
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 12px;
-    min-width: 400px;
+    gap: 16px;
+    min-width: 500px;
     justify-content: flex-end;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
 }
 
 /* 品牌信息 */
@@ -99,7 +101,8 @@
 .function-buttons {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 /* 分隔线 */
@@ -114,19 +117,21 @@
 .top-nav .btn-icon {
     background: rgba(255, 255, 255, 0.15) !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    padding: 8px 12px !important;
+    padding: 10px 16px !important;
     border-radius: 8px !important;
     cursor: pointer;
     transition: all 0.3s ease !important;
     color: rgba(255, 255, 255, 0.9) !important;
     display: flex !important;
     align-items: center !important;
-    gap: 6px !important;
-    font-size: 13px !important;
+    gap: 8px !important;
+    font-size: 14px !important;
     font-weight: 500 !important;
     backdrop-filter: blur(5px) !important;
-    min-height: 36px !important;
+    min-height: 40px !important;
+    min-width: 80px !important;
     position: relative;
+    white-space: nowrap !important;
 }
 
 .top-nav .btn-icon:hover {
@@ -171,14 +176,15 @@
 .auth-buttons {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 .btn-primary {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
     border: none !important;
     color: #ffffff !important;
-    padding: 10px 20px !important;
+    padding: 12px 24px !important;
     border-radius: 25px !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -188,6 +194,8 @@
     align-items: center !important;
     gap: 8px !important;
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+    min-width: 90px !important;
+    white-space: nowrap !important;
 }
 
 .btn-primary:hover {
@@ -200,7 +208,7 @@
     background: rgba(255, 255, 255, 0.2) !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     color: #ffffff !important;
-    padding: 10px 20px !important;
+    padding: 12px 24px !important;
     border-radius: 25px !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -210,6 +218,8 @@
     align-items: center !important;
     gap: 8px !important;
     backdrop-filter: blur(10px) !important;
+    min-width: 90px !important;
+    white-space: nowrap !important;
 }
 
 .btn-secondary:hover {
@@ -1475,4 +1485,349 @@ kbd {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+}
+
+/* ==================== 响应式设计 ==================== */
+
+/* 大屏幕优化 (1400px+) */
+@media (min-width: 1400px) {
+    .nav-right {
+        min-width: 600px;
+        gap: 20px;
+    }
+    
+    .function-buttons {
+        gap: 16px;
+    }
+    
+    .auth-buttons {
+        gap: 16px;
+    }
+}
+
+/* 中等屏幕 (1200px - 1399px) */
+@media (max-width: 1399px) and (min-width: 1200px) {
+    .nav-right {
+        min-width: 480px;
+        gap: 14px;
+    }
+}
+
+/* 小屏幕 (992px - 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+    .nav-right {
+        min-width: 420px;
+        gap: 12px;
+    }
+    
+    .top-nav .btn-icon {
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+        min-width: 70px !important;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 10px 18px !important;
+        font-size: 13px !important;
+        min-width: 80px !important;
+    }
+}
+
+/* 平板屏幕 (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+    .nav-right {
+        min-width: 350px;
+        gap: 10px;
+    }
+    
+    .function-buttons {
+        gap: 8px;
+    }
+    
+    .auth-buttons {
+        gap: 8px;
+    }
+    
+    .top-nav .btn-icon span {
+        display: none;
+    }
+    
+    .top-nav .btn-icon {
+        padding: 8px !important;
+        min-width: 36px !important;
+        justify-content: center !important;
+    }
+    
+    .btn-primary span,
+    .btn-secondary span {
+        display: none;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 10px !important;
+        min-width: 40px !important;
+        justify-content: center !important;
+    }
+}
+
+/* 手机屏幕 (576px - 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+    .top-nav {
+        padding: 0 16px;
+    }
+    
+    .nav-left {
+        min-width: 200px;
+    }
+    
+    .nav-right {
+        min-width: 280px;
+        gap: 8px;
+    }
+    
+    .function-buttons {
+        gap: 6px;
+    }
+    
+    .auth-buttons {
+        gap: 6px;
+    }
+    
+    .top-nav .btn-icon span {
+        display: none;
+    }
+    
+    .top-nav .btn-icon {
+        padding: 6px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        font-size: 12px !important;
+        justify-content: center !important;
+    }
+    
+    .btn-primary span,
+    .btn-secondary span {
+        display: none;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 8px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        justify-content: center !important;
+        font-size: 12px !important;
+    }
+    
+    .page-title {
+        font-size: 16px;
+    }
+    
+    .nav-center {
+        display: none;
+    }
+}
+
+/* 小手机屏幕 (最大575px) */
+@media (max-width: 575px) {
+    .top-nav {
+        padding: 0 12px;
+    }
+    
+    .nav-left {
+        min-width: 150px;
+    }
+    
+    .nav-right {
+        min-width: 200px;
+        gap: 6px;
+    }
+    
+    .function-buttons {
+        gap: 4px;
+    }
+    
+    .auth-buttons {
+        gap: 4px;
+    }
+    
+    /* 隐藏帮助按钮和通知按钮，只保留核心功能 */
+    #help-btn,
+    #notifications-btn {
+        display: none !important;
+    }
+    
+    .top-nav .btn-icon span {
+        display: none;
+    }
+    
+    .top-nav .btn-icon {
+        padding: 4px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        font-size: 11px !important;
+        justify-content: center !important;
+    }
+    
+    .btn-primary span,
+    .btn-secondary span {
+        display: none;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 6px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        justify-content: center !important;
+        font-size: 11px !important;
+    }
+    
+    .page-title {
+        font-size: 14px;
+    }
+    
+    .version-tag {
+        display: none;
+    }
+    
+    .nav-center {
+        display: none;
+    }
+    
+    .nav-divider {
+        display: none;
+    }
+}
+
+/* 主题切换器样式 */
+.theme-switcher {
+    position: relative;
+    display: inline-block;
+}
+
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    font-size: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    padding: 0 !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2) !important;
+}
+
+.theme-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(30, 58, 138, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    animation: themeDropdownFadeIn 0.3s ease-out;
+}
+
+@keyframes themeDropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #374151;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.theme-option:last-child {
+    border-bottom: none;
+}
+
+.theme-option:hover {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    color: #1f2937;
+    transform: translateX(4px);
+}
+
+.theme-option.active {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    border-left: 3px solid #2563eb;
+}
+
+.theme-option.active:hover {
+    background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+    color: #1d4ed8;
+}
+
+.theme-option i {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.theme-option .fa-sun {
+    color: #f59e0b;
+}
+
+.theme-option .fa-moon {
+    color: #6366f1;
+}
+
+.theme-option .fa-desktop {
+    color: #6b7280;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 14px !important;
+    }
+    
+    .theme-dropdown {
+        min-width: 160px;
+        right: -20px;
+    }
+    
+    .theme-option {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
 }

@@ -851,13 +851,22 @@ function checkAuthentication() {
 function handleLogin(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
+    
+    const username = formData.get('username');
+    const password = formData.get('password');
+    
+    // 前端基础验证
+    if (!username || !password) {
+        window.errorModal.showLoginError('VALIDATION_ERROR', '用户名和密码不能为空');
+        return;
+    }
 
     $.ajax({
         url: `${API_BASE_URL}/users/login`,
         type: 'POST',
         data: JSON.stringify({
-            username: formData.get('username'),
-            password: formData.get('password')
+            username: username,
+            password: password
         }),
         contentType: 'application/json',
         success: function (response) {
@@ -871,22 +880,29 @@ function handleLogin(e) {
                 closeModal();
                 showNotification('登录成功', 'success');
             } else {
-                showNotification(response.message || '登录失败', 'error');
+                window.errorModal.showLoginError('VALIDATION_ERROR', response.message || '登录失败');
             }
         },
         error: function (xhr) {
             const response = xhr.responseJSON;
+            let errorCode = 'SERVER_ERROR';
             let errorMessage = '登录失败';
 
             if (xhr.status === 401) {
-                errorMessage = '用户名或密码错误';
+                errorCode = 'INVALID_CREDENTIALS';
+            } else if (xhr.status === 404) {
+                errorCode = 'USER_NOT_FOUND';
+            } else if (xhr.status === 403) {
+                errorCode = 'ACCOUNT_DISABLED';
             } else if (xhr.status === 400) {
+                errorCode = 'VALIDATION_ERROR';
                 errorMessage = response?.message || '输入信息有误，请检查';
             } else if (xhr.status === 500) {
+                errorCode = 'SERVER_ERROR';
                 errorMessage = '服务器错误，请稍后重试';
             }
 
-            showNotification(errorMessage, 'error');
+            window.errorModal.showLoginError(errorCode, errorMessage);
             console.error('登录失败:', xhr.status, response);
         }
     });
@@ -905,32 +921,32 @@ function handleRegister(e) {
 
     // 前端验证
     if (!username || !email || !password || !confirmPassword) {
-        showNotification('请填写所有必填字段', 'error');
+        window.errorModal.showRegisterError('VALIDATION_ERROR', '请填写所有必填字段');
         return;
     }
 
     // 验证用户名长度
     if (username.length < 3 || username.length > 50) {
-        showNotification('用户名长度必须在3-50个字符之间', 'error');
+        window.errorModal.showRegisterError('USERNAME_TOO_SHORT', '用户名长度必须在3-50个字符之间');
         return;
     }
 
     // 验证密码长度
     if (password.length < 6) {
-        showNotification('密码长度至少6个字符', 'error');
+        window.errorModal.showRegisterError('PASSWORD_TOO_SHORT', '密码长度至少需要6个字符');
         return;
     }
 
     // 验证密码确认
     if (password !== confirmPassword) {
-        showNotification('两次输入的密码不一致', 'error');
+        window.errorModal.showRegisterError('PASSWORD_MISMATCH', '两次输入的密码不相同');
         return;
     }
 
     // 验证邮箱格式
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        showNotification('请输入有效的邮箱地址', 'error');
+        window.errorModal.showRegisterError('INVALID_EMAIL', '请输入有效的邮箱地址');
         return;
     }
 
@@ -951,28 +967,32 @@ function handleRegister(e) {
                 // 清空表单
                 e.target.reset();
             } else {
-                showNotification(response.message || '注册失败', 'error');
+                window.errorModal.showRegisterError('VALIDATION_ERROR', response.message || '注册失败');
             }
         },
         error: function (xhr) {
             const response = xhr.responseJSON;
+            let errorCode = 'SERVER_ERROR';
             let errorMessage = '注册失败';
 
             if (xhr.status === 409) {
-                if (response?.message?.includes('用户名已存在')) {
-                    errorMessage = '用户名已存在，请选择其他用户名';
-                } else if (response?.message?.includes('邮箱已被注册')) {
-                    errorMessage = '邮箱已被注册，请使用其他邮箱';
+                if (response?.message?.includes('用户名已存在') || response?.message?.includes('用户名')) {
+                    errorCode = 'USERNAME_EXISTS';
+                } else if (response?.message?.includes('邮箱已被注册') || response?.message?.includes('邮箱')) {
+                    errorCode = 'EMAIL_EXISTS';
                 } else {
+                    errorCode = 'VALIDATION_ERROR';
                     errorMessage = response?.message || '用户信息冲突，请检查输入';
                 }
             } else if (xhr.status === 400) {
+                errorCode = 'VALIDATION_ERROR';
                 errorMessage = response?.message || '输入信息有误，请检查';
             } else if (xhr.status === 500) {
+                errorCode = 'SERVER_ERROR';
                 errorMessage = '服务器错误，请稍后重试';
             }
 
-            showNotification(errorMessage, 'error');
+            window.errorModal.showRegisterError(errorCode, errorMessage);
             console.error('注册失败:', xhr.status, response);
         }
     });
