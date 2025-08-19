@@ -16,29 +16,13 @@ from config.config import Config
 image_bp = Blueprint('image', __name__, url_prefix='/api/images')
 
 @image_bp.route('/upload', methods=['POST'])
-def upload_image():
-    """上传图片（支持匿名上传）"""
+@token_required
+def upload_image(current_user):
+    """上传图片（需要登录）"""
     current_app.logger.info(f"收到图片上传请求，Content-Type: {request.content_type}")
     current_app.logger.info(f"请求文件: {list(request.files.keys())}")
     current_app.logger.info(f"请求表单: {list(request.form.keys())}")
-    
-    # 检查是否有认证令牌
-    current_user = None
-    auth_header = request.headers.get('Authorization')
-    if auth_header and auth_header.startswith('Bearer '):
-        try:
-            import jwt
-            token = auth_header.split(' ')[1]
-            data = jwt.decode(
-                token, 
-                current_app.config['SECRET_KEY'], 
-                algorithms=['HS256']
-            )
-            current_user = User.query.get(data['user_id'])
-            current_app.logger.info(f"用户认证成功: {current_user.id if current_user else 'None'}")
-        except Exception as e:
-            current_app.logger.warning(f"用户认证失败: {str(e)}")
-            pass  # 忽略认证错误，允许匿名上传
+    current_app.logger.info(f"用户认证成功: {current_user.id}")
     
     try:
         if 'file' not in request.files:
@@ -87,7 +71,7 @@ def upload_image():
             width=width,
             height=height,
             format=format,
-            user_id=current_user.id if current_user else None
+            user_id=current_user.id
         )
         
         image.color_mode = color_mode

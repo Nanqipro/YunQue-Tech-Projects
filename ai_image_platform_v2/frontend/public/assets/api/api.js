@@ -148,8 +148,7 @@ class APIClient {
         return this.request(endpoint, {
             method: 'POST',
             body: formData,
-            contentType: null, // 让浏览器自动设置
-            headers: this.token ? { 'Authorization': `Bearer ${this.token}` } : {}
+            contentType: null // 让浏览器自动设置multipart/form-data
         });
     }
 }

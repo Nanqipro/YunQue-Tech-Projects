@@ -63,7 +63,7 @@ Page({
 
         // 上传图片
         try {
-          const uploadRes = await imageAPI.upload(imagePath, !this.data.isLoggedIn)
+          const uploadRes = await imageAPI.upload(imagePath)
           
           if (uploadRes.success) {
             const imageData = uploadRes.data

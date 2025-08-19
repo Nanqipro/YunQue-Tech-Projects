@@ -159,12 +159,8 @@ class UserAPI extends ApiService {
 // 图片相关API
 class ImageAPI extends ApiService {
   // 上传图片
-  upload(filePath, isAnonymous = false) {
-    const formData = {}
-    if (isAnonymous) {
-      formData.anonymous = 'true'
-    }
-    return this.uploadFile(filePath, formData)
+  upload(filePath) {
+    return this.uploadFile(filePath, {})
   }
 
   // 获取图片列表

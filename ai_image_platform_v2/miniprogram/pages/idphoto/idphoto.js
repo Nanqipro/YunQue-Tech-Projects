@@ -91,7 +91,7 @@ Page({
         })
 
         try {
-          const uploadRes = await imageAPI.upload(imagePath, !app.globalData.isLoggedIn)
+          const uploadRes = await imageAPI.upload(imagePath)
           
           if (uploadRes.success) {
             const imageData = uploadRes.data
