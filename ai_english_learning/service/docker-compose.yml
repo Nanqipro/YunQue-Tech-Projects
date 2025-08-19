@@ -6,7 +6,7 @@ services:
     image: mysql:8.0
     container_name: ai-english-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: root123456
       MYSQL_DATABASE: ai_english_learning
       MYSQL_USER: aiuser
       MYSQL_PASSWORD: aipassword
