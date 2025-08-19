@@ -610,7 +610,7 @@ function getIdPhotoPanel(tool) {
 function updatePageTitle(category, tool) {
     const titles = {
         beauty: { beauty: 'AI美颜', smooth: '磨皮', whiten: '美白', eyes: '眼部', lips: '唇部' },
-        filters: { vintage: '复古', modern: '现代', artistic: '艺术' },
+        filters: { vintage: '复古', bw: '黑白滤镜', sepia: '棕褐滤镜', cool: '冷色调', warm: '暖色调', modern: '现代', artistic: '艺术' },
         color: { brightness: '亮度', contrast: '对比度', saturation: '饱和度' },
         background: { remove: '背景移除', replace: '背景替换', blur: '背景模糊' },
         repair: { scratch: '划痕修复', noise: '噪点去除', enhance: '细节增强' },

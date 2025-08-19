@@ -167,7 +167,7 @@ body {
     position: relative !important;
     overflow: hidden !important;
     background: var(--bg-card) !important;
-    border-radius: 12px !important;
+    border-radius: 0 !important;
 }
 
 .upload-section::before {
@@ -206,6 +206,7 @@ body {
             rgba(26, 26, 26, 0.95) 50%, 
             rgba(42, 42, 42, 0.9) 75%, 
             rgba(30, 30, 30, 0.8) 100%);
+    /* background-size: 500px 500px, 400px 400px, 350px 350px, 100% 100%; */
     background-size: 300px 300px, 250px 250px, 200px 200px, 100% 100%;
     background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
     animation: 
@@ -223,7 +224,7 @@ body {
     border: 1px solid var(--border-primary) !important;
     border-radius: 12px !important;
     padding: 40px !important;
-    margin: 20px !important;
+    margin: 1px !important;
     box-shadow: var(--shadow-heavy) !important;
 }
 

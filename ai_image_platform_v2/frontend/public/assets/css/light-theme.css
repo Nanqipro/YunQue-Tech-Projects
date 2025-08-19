@@ -251,6 +251,7 @@ body {
     background: var(--bg-primary) !important;
     position: relative !important;
     overflow: hidden !important;
+    border-radius: 0 !important;
 }
 
 .upload-section::before {
@@ -271,7 +272,7 @@ body {
             rgba(255, 255, 255, 0.98) 50%, 
             rgba(241, 243, 244, 0.95) 75%, 
             rgba(248, 249, 250, 0.9) 100%);
-    background-size: 300px 300px, 250px 250px, 200px 200px, 100% 100%;
+    background-size: 500px 500px, 400px 400px, 350px 350px, 100% 100%;
     background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
     animation: 
         floatingImagesLight1 12s linear infinite,
@@ -288,7 +289,7 @@ body {
     border: 1px solid var(--border-primary) !important;
     border-radius: 12px !important;
     padding: 40px !important;
-    margin: 20px !important;
+    margin: 1px !important;
     box-shadow: var(--shadow-heavy) !important;
 }
 
