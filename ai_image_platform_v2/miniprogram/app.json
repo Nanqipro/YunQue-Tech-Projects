@@ -1,0 +1,66 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/beauty/beauty",
+    "pages/idphoto/idphoto",
+    "pages/background/background",
+    "pages/profile/profile",
+    "pages/history/history"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2c3e50",
+    "navigationBarTitleText": "AI图像处理",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8f9fa"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/home.svg",
+        "selectedIconPath": "images/home-active.svg",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/beauty/beauty",
+        "iconPath": "images/beauty.svg",
+        "selectedIconPath": "images/beauty-active.svg",
+        "text": "美颜"
+      },
+      {
+        "pagePath": "pages/idphoto/idphoto",
+        "iconPath": "images/idphoto.svg",
+        "selectedIconPath": "images/idphoto-active.svg",
+        "text": "证件照"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "iconPath": "images/profile.svg",
+        "selectedIconPath": "images/profile-active.svg",
+        "text": "我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 60000,
+    "downloadFile": 60000,
+    "uploadFile": 60000
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "requiredBackgroundModes": ["audio"],
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents"
+}

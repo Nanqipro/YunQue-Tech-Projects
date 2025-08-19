@@ -1,0 +1,158 @@
+<!--pages/profile/profile.wxml-->
+<view class="profile-container">
+  <!-- 用户信息区域 -->
+  <view class="user-info-section">
+    <view class="user-avatar" bindtap="changeAvatar">
+      <image src="{{userInfo.avatar || '/images/default-avatar.png'}}" mode="aspectFill" />
+      <view class="avatar-edit-icon">
+        <text class="iconfont icon-camera"></text>
+      </view>
+    </view>
+    
+    <view class="user-details">
+      <view class="user-name">{{userInfo.nickname || '未设置昵称'}}</view>
+      <view class="user-id">ID: {{userInfo.user_id || '未登录'}}</view>
+      <view class="user-level">
+        <text class="level-badge level-{{userInfo.level || 'free'}}">{{levelText}}</text>
+        <text class="level-desc">{{levelDesc}}</text>
+      </view>
+    </view>
+    
+    <view class="user-stats">
+      <view class="stat-item">
+        <text class="stat-number">{{userStats.total_processed || 0}}</text>
+        <text class="stat-label">处理次数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{userStats.total_saved || 0}}</text>
+        <text class="stat-label">保存图片</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{userStats.days_used || 0}}</text>
+        <text class="stat-label">使用天数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 会员服务区域 -->
+  <view class="vip-section" wx:if="{{!userInfo.is_vip}}">
+    <view class="vip-banner" bindtap="goToVip">
+      <view class="vip-icon">
+        <text class="iconfont icon-vip"></text>
+      </view>
+      <view class="vip-content">
+        <view class="vip-title">升级会员，享受更多特权</view>
+        <view class="vip-desc">无限处理次数 · 高清输出 · 专属滤镜</view>
+      </view>
+      <view class="vip-arrow">
+        <text class="iconfont icon-arrow-right"></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单区域 -->
+  <view class="menu-section">
+    <!-- 我的作品 -->
+    <view class="menu-group">
+      <view class="menu-item" bindtap="goToHistory">
+        <view class="menu-icon">
+          <text class="iconfont icon-history"></text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">我的作品</text>
+          <text class="menu-desc">查看处理历史</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
+      
+      <view class="menu-item" bindtap="goToFavorites">
+        <view class="menu-icon">
+          <text class="iconfont icon-heart"></text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">我的收藏</text>
+          <text class="menu-desc">收藏的模板和作品</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 设置选项 -->
+    <view class="menu-group">
+      <view class="menu-item" bindtap="goToSettings">
+        <view class="menu-icon">
+          <text class="iconfont icon-settings"></text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">设置</text>
+          <text class="menu-desc">个人信息和偏好设置</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
+      
+      <view class="menu-item" bindtap="goToHelp">
+        <view class="menu-icon">
+          <text class="iconfont icon-help"></text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">帮助与反馈</text>
+          <text class="menu-desc">使用指南和问题反馈</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
+      
+      <view class="menu-item" bindtap="goToAbout">
+        <view class="menu-icon">
+          <text class="iconfont icon-info"></text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">关于我们</text>
+          <text class="menu-desc">版本信息和服务条款</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登录/退出按钮 -->
+  <view class="action-section">
+    <button 
+      wx:if="{{!isLoggedIn}}" 
+      class="login-btn" 
+      bindtap="goToLogin"
+    >
+      立即登录
+    </button>
+    
+    <button 
+      wx:else 
+      class="logout-btn" 
+      bindtap="logout"
+    >
+      退出登录
+    </button>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>版本 {{appVersion}}</text>
+  </view>
+</view>
+
+<!-- 加载遮罩 -->
+<view class="loading-mask" wx:if="{{loading}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{loadingText}}</text>
+  </view>
+</view>

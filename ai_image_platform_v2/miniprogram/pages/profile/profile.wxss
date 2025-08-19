@@ -1,0 +1,382 @@
+/* pages/profile/profile.wxss */
+.profile-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding-bottom: 40rpx;
+}
+
+/* 用户信息区域 */
+.user-info-section {
+  padding: 60rpx 40rpx 40rpx;
+  color: white;
+}
+
+.user-avatar {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 auto 30rpx;
+}
+
+.user-avatar image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.avatar-edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 48rpx;
+  height: 48rpx;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4rpx solid white;
+}
+
+.avatar-edit-icon .iconfont {
+  font-size: 24rpx;
+  color: white;
+}
+
+.user-details {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.user-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.user-id {
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-bottom: 20rpx;
+}
+
+.user-level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+}
+
+.level-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: bold;
+}
+
+.level-free {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.level-vip {
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  color: #333;
+}
+
+.level-desc {
+  font-size: 22rpx;
+  opacity: 0.8;
+}
+
+.user-stats {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20rpx;
+  padding: 30rpx 20rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stat-number {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  opacity: 0.8;
+}
+
+/* 会员服务区域 */
+.vip-section {
+  margin: 0 40rpx 30rpx;
+}
+
+.vip-banner {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(255, 165, 0, 0.3);
+}
+
+.vip-icon {
+  width: 60rpx;
+  height: 60rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vip-icon .iconfont {
+  font-size: 32rpx;
+  color: white;
+}
+
+.vip-content {
+  flex: 1;
+}
+
+.vip-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.vip-desc {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.vip-arrow .iconfont {
+  font-size: 24rpx;
+  color: #333;
+}
+
+/* 功能菜单区域 */
+.menu-section {
+  margin: 0 40rpx;
+}
+
+.menu-group {
+  background: white;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background-color: #f8f8f8;
+}
+
+.menu-icon {
+  width: 60rpx;
+  height: 60rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+.menu-icon .iconfont {
+  font-size: 28rpx;
+  color: white;
+}
+
+.menu-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.menu-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.menu-desc {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.menu-arrow .iconfont {
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+/* 操作按钮区域 */
+.action-section {
+  margin: 40rpx;
+}
+
+.login-btn, .logout-btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  box-shadow: 0 8rpx 32rpx rgba(76, 175, 80, 0.3);
+}
+
+.login-btn:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 16rpx rgba(76, 175, 80, 0.3);
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #f44336;
+  border: 2rpx solid rgba(244, 67, 54, 0.2);
+}
+
+.logout-btn:active {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* 版本信息 */
+.version-info {
+  text-align: center;
+  padding: 20rpx;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 22rpx;
+}
+
+/* 加载遮罩 */
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  background: white;
+  border-radius: 20rpx;
+  padding: 60rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30rpx;
+  min-width: 200rpx;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #f0f0f0;
+  border-top: 4rpx solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 响应式适配 */
+@media (max-width: 375px) {
+  .user-info-section {
+    padding: 40rpx 30rpx 30rpx;
+  }
+  
+  .menu-section {
+    margin: 0 30rpx;
+  }
+  
+  .action-section {
+    margin: 30rpx;
+  }
+  
+  .user-avatar {
+    width: 140rpx;
+    height: 140rpx;
+  }
+  
+  .user-name {
+    font-size: 32rpx;
+  }
+  
+  .stat-number {
+    font-size: 28rpx;
+  }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .menu-group {
+    background: #2a2a2a;
+  }
+  
+  .menu-item {
+    border-bottom-color: #404040;
+  }
+  
+  .menu-title {
+    color: #fff;
+  }
+  
+  .menu-desc {
+    color: #ccc;
+  }
+  
+  .loading-content {
+    background: #2a2a2a;
+  }
+  
+  .loading-text {
+    color: #ccc;
+  }
+}

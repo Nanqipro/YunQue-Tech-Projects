@@ -1,0 +1,305 @@
+/* components/image-cropper/image-cropper.wxss */
+
+.image-cropper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.cropper-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.cropper-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 头部工具栏 */
+.cropper-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.header-title {
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  gap: 30rpx;
+}
+
+.action-btn {
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.action-btn.primary {
+  background: #667eea;
+  color: white;
+}
+
+.action-btn:active {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+/* 裁剪区域 */
+.cropper-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.cropper-canvas {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* 裁剪框 */
+.crop-box {
+  position: absolute;
+  border: 2rpx solid #667eea;
+  box-shadow: 0 0 0 9999rpx rgba(0, 0, 0, 0.5);
+  cursor: move;
+}
+
+.crop-border {
+  position: absolute;
+  top: -2rpx;
+  left: -2rpx;
+  right: -2rpx;
+  bottom: -2rpx;
+  border: 2rpx solid #667eea;
+  pointer-events: none;
+}
+
+/* 控制点 */
+.control-point {
+  position: absolute;
+  width: 20rpx;
+  height: 20rpx;
+  background: #667eea;
+  border: 2rpx solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.control-point.top-left {
+  top: -12rpx;
+  left: -12rpx;
+  cursor: nw-resize;
+}
+
+.control-point.top-right {
+  top: -12rpx;
+  right: -12rpx;
+  cursor: ne-resize;
+}
+
+.control-point.bottom-left {
+  bottom: -12rpx;
+  left: -12rpx;
+  cursor: sw-resize;
+}
+
+.control-point.bottom-right {
+  bottom: -12rpx;
+  right: -12rpx;
+  cursor: se-resize;
+}
+
+.control-point:active {
+  transform: scale(1.2);
+}
+
+/* 网格线 */
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.grid-line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.grid-line.vertical {
+  width: 1rpx;
+  height: 100%;
+}
+
+.grid-line.horizontal {
+  width: 100%;
+  height: 1rpx;
+}
+
+/* 底部工具栏 */
+.cropper-footer {
+  padding: 30rpx;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.tool-group {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30rpx;
+}
+
+.tool-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  min-width: 120rpx;
+}
+
+.tool-item:active {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(0.95);
+}
+
+.tool-item .iconfont {
+  font-size: 40rpx;
+}
+
+.tool-text {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 比例选择 */
+.ratio-group {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.ratio-label {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ratio-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.ratio-option {
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  border: 1rpx solid transparent;
+}
+
+.ratio-option.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.ratio-option:active {
+  transform: scale(0.95);
+}
+
+/* 响应式适配 */
+@media (max-width: 375px) {
+  .cropper-header {
+    padding: 15rpx 20rpx;
+  }
+  
+  .header-title {
+    font-size: 28rpx;
+  }
+  
+  .action-btn {
+    padding: 10rpx 20rpx;
+    font-size: 26rpx;
+  }
+  
+  .tool-item {
+    padding: 15rpx;
+    min-width: 100rpx;
+  }
+  
+  .tool-item .iconfont {
+    font-size: 36rpx;
+  }
+  
+  .tool-text {
+    font-size: 20rpx;
+  }
+  
+  .ratio-option {
+    padding: 10rpx 16rpx;
+    font-size: 22rpx;
+  }
+}
+
+/* 动画效果 */
+.crop-box {
+  transition: all 0.1s ease;
+}
+
+.control-point {
+  transition: transform 0.2s ease;
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .cropper-header,
+  .cropper-footer {
+    background: rgba(0, 0, 0, 0.9);
+  }
+  
+  .action-btn {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .tool-item {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .ratio-option {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}

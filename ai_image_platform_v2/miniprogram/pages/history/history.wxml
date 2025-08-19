@@ -1,0 +1,135 @@
+<!--pages/history/history.wxml-->
+<view class="container">
+  <!-- 头部筛选区域 -->
+  <view class="filter-section">
+    <view class="filter-tabs">
+      <view wx:for="{{filterTabs}}" wx:key="id" 
+            class="filter-tab {{activeFilter === item.id ? 'active' : ''}}"
+            bindtap="switchFilter" data-filter="{{item.id}}">
+        {{item.name}}
+      </view>
+    </view>
+    
+    <!-- 排序选择 -->
+    <view class="sort-section">
+      <picker bindchange="onSortChange" value="{{sortIndex}}" range="{{sortOptions}}" range-key="name">
+        <view class="sort-picker">
+          <text class="sort-text">{{sortOptions[sortIndex].name}}</text>
+          <text class="sort-icon">▼</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 历史记录列表 -->
+  <view class="history-list">
+    <!-- 空状态 -->
+    <view wx:if="{{historyList.length === 0 && !loading}}" class="empty-state">
+      <view class="empty-icon">📷</view>
+      <text class="empty-text">暂无处理记录</text>
+      <text class="empty-desc">开始使用AI图像处理功能吧</text>
+      <button class="empty-btn" bindtap="goToIndex">开始处理</button>
+    </view>
+    
+    <!-- 历史记录项 -->
+    <view wx:for="{{historyList}}" wx:key="id" class="history-item" 
+          bindtap="viewHistoryDetail" data-item="{{item}}">
+      <view class="item-images">
+        <!-- 原图 -->
+        <view class="image-container original">
+          <image src="{{item.original_image_url}}" mode="aspectFill" class="history-image" />
+          <text class="image-label">原图</text>
+        </view>
+        
+        <!-- 箭头 -->
+        <view class="arrow-icon">→</view>
+        
+        <!-- 处理后图片 -->
+        <view class="image-container processed">
+          <image src="{{item.processed_image_url}}" mode="aspectFill" class="history-image" />
+          <text class="image-label">处理后</text>
+        </view>
+      </view>
+      
+      <!-- 处理信息 -->
+      <view class="item-info">
+        <view class="info-header">
+          <text class="process-type">{{item.process_type_name}}</text>
+          <text class="process-time">{{item.formatted_time}}</text>
+        </view>
+        
+        <view class="info-details">
+          <text class="process-desc">{{item.description}}</text>
+          <view class="process-status {{item.status}}">
+            <text class="status-text">{{item.status_name}}</text>
+          </view>
+        </view>
+        
+        <!-- 操作按钮 -->
+        <view class="item-actions">
+          <button class="action-btn preview" 
+                  bindtap="previewImages" data-item="{{item}}" catchtap="true">
+            预览
+          </button>
+          <button class="action-btn download" 
+                  bindtap="downloadImage" data-item="{{item}}" catchtap="true">
+            下载
+          </button>
+          <button class="action-btn share" 
+                  bindtap="shareImage" data-item="{{item}}" catchtap="true">
+            分享
+          </button>
+          <button class="action-btn delete" 
+                  bindtap="deleteHistory" data-item="{{item}}" catchtap="true">
+            删除
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view wx:if="{{hasMore}}" class="load-more">
+    <button class="load-more-btn {{loading ? 'loading' : ''}}" 
+            bindtap="loadMore" disabled="{{loading}}">
+      {{loading ? '加载中...' : '加载更多'}}
+    </button>
+  </view>
+  
+  <!-- 没有更多 -->
+  <view wx:if="{{!hasMore && historyList.length > 0}}" class="no-more">
+    <text class="no-more-text">没有更多记录了</text>
+  </view>
+
+  <!-- 批量操作 -->
+  <view wx:if="{{showBatchActions}}" class="batch-actions">
+    <view class="batch-header">
+      <text class="batch-title">已选择 {{selectedItems.length}} 项</text>
+      <button class="batch-cancel" bindtap="cancelBatch">取消</button>
+    </view>
+    
+    <view class="batch-buttons">
+      <button class="batch-btn download" bindtap="batchDownload">
+        批量下载
+      </button>
+      <button class="batch-btn delete" bindtap="batchDelete">
+        批量删除
+      </button>
+    </view>
+  </view>
+
+  <!-- 浮动操作按钮 -->
+  <view class="fab-container">
+    <button class="fab-btn" bindtap="toggleBatchMode">
+      {{batchMode ? '完成' : '批量操作'}}
+    </button>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view wx:if="{{processing}}" class="loading-mask">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">{{processingText}}</text>
+    </view>
+  </view>
+</view>

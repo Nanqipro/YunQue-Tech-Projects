@@ -1,0 +1,380 @@
+/* pages/idphoto/idphoto.wxss */
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 图片预览区域 */
+.image-preview {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.no-image {
+  text-align: center;
+  padding: 80rpx 40rpx;
+}
+
+.upload-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.upload-text {
+  display: block;
+  color: #666;
+  font-size: 28rpx;
+  margin-bottom: 40rpx;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  font-size: 28rpx;
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-compare {
+  display: flex;
+  gap: 20rpx;
+}
+
+.compare-item {
+  flex: 1;
+  text-align: center;
+  border-radius: 12rpx;
+  overflow: hidden;
+  border: 3rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.compare-item.active {
+  border-color: #667eea;
+  box-shadow: 0 4rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+
+.single-image {
+  text-align: center;
+}
+
+.preview-image {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 12rpx;
+}
+
+.view-label {
+  display: block;
+  padding: 15rpx;
+  background: #f8f9fa;
+  color: #666;
+  font-size: 24rpx;
+}
+
+.compare-item.active .view-label {
+  background: #667eea;
+  color: white;
+}
+
+.image-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 30rpx;
+  justify-content: center;
+}
+
+.action-btn {
+  flex: 1;
+  max-width: 200rpx;
+  padding: 20rpx;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  border: 2rpx solid #e0e0e0;
+  background: white;
+  color: #666;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+}
+
+/* 规格选择区域 */
+.spec-section {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+.spec-list {
+  white-space: nowrap;
+}
+
+.spec-item {
+  display: inline-block;
+  text-align: center;
+  margin-right: 30rpx;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #e0e0e0;
+  background: white;
+  transition: all 0.3s ease;
+  min-width: 160rpx;
+}
+
+.spec-item.active {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.spec-preview {
+  margin: 0 auto 15rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.spec-ratio {
+  font-size: 20rpx;
+  color: #999;
+  transform: scale(0.8);
+}
+
+.spec-name {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.spec-size {
+  display: block;
+  font-size: 22rpx;
+  color: #666;
+}
+
+/* 背景颜色选择 */
+.background-section {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.color-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.color-item {
+  text-align: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #e0e0e0;
+  background: white;
+  transition: all 0.3s ease;
+  min-width: 120rpx;
+}
+
+.color-item.active {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.color-preview {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin: 0 auto 15rpx;
+  border: 2rpx solid #ddd;
+}
+
+.color-name {
+  display: block;
+  font-size: 24rpx;
+  color: #333;
+}
+
+/* 高级选项 */
+.advanced-section {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.option-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.option-item:last-child {
+  border-bottom: none;
+}
+
+.option-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 生成按钮 */
+.generate-section {
+  margin-bottom: 30rpx;
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 30rpx;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 8rpx 30rpx rgba(102, 126, 234, 0.4);
+}
+
+.generate-btn.disabled {
+  background: #ccc;
+  box-shadow: none;
+}
+
+/* AI建议区域 */
+.ai-suggestions {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.suggestion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 25rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.suggestion-item:active {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.suggestion-icon {
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+
+.suggestion-content {
+  flex: 1;
+}
+
+.suggestion-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.suggestion-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.suggestion-action {
+  padding: 10rpx 20rpx;
+  background: #667eea;
+  color: white;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+/* 加载遮罩 */
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  background: white;
+  padding: 60rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  min-width: 300rpx;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #f3f3f3;
+  border-top: 4rpx solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 30rpx;
+}
+
+.loading-text {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

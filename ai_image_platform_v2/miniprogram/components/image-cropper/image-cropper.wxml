@@ -1,0 +1,97 @@
+<!-- components/image-cropper/image-cropper.wxml -->
+<view class="image-cropper" wx:if="{{visible}}">
+  <view class="cropper-mask" bindtap="onCancel"></view>
+  <view class="cropper-container">
+    <!-- 头部工具栏 -->
+    <view class="cropper-header">
+      <view class="header-title">裁剪图片</view>
+      <view class="header-actions">
+        <text class="action-btn" bindtap="onCancel">取消</text>
+        <text class="action-btn primary" bindtap="onConfirm">确定</text>
+      </view>
+    </view>
+    
+    <!-- 裁剪区域 -->
+    <view class="cropper-content">
+      <canvas 
+        class="cropper-canvas" 
+        canvas-id="cropperCanvas"
+        disable-scroll="{{true}}"
+        bindtouchstart="onTouchStart"
+        bindtouchmove="onTouchMove"
+        bindtouchend="onTouchEnd"
+      ></canvas>
+      
+      <!-- 裁剪框 -->
+      <view 
+        class="crop-box" 
+        style="left: {{cropBox.left}}px; top: {{cropBox.top}}px; width: {{cropBox.width}}px; height: {{cropBox.height}}px;"
+      >
+        <!-- 四个角的控制点 -->
+        <view class="control-point top-left" data-type="resize" data-direction="nw" bindtouchstart="onControlStart" bindtouchmove="onControlMove" bindtouchend="onControlEnd"></view>
+        <view class="control-point top-right" data-type="resize" data-direction="ne" bindtouchstart="onControlStart" bindtouchmove="onControlMove" bindtouchend="onControlEnd"></view>
+        <view class="control-point bottom-left" data-type="resize" data-direction="sw" bindtouchstart="onControlStart" bindtouchmove="onControlMove" bindtouchend="onControlEnd"></view>
+        <view class="control-point bottom-right" data-type="resize" data-direction="se" bindtouchstart="onControlStart" bindtouchmove="onControlMove" bindtouchend="onControlEnd"></view>
+        
+        <!-- 边框线 -->
+        <view class="crop-border"></view>
+        
+        <!-- 网格线 -->
+        <view class="grid-lines" wx:if="{{showGrid}}">
+          <view class="grid-line vertical" style="left: 33.33%;"></view>
+          <view class="grid-line vertical" style="left: 66.66%;"></view>
+          <view class="grid-line horizontal" style="top: 33.33%;"></view>
+          <view class="grid-line horizontal" style="top: 66.66%;"></view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 底部工具栏 -->
+    <view class="cropper-footer">
+      <view class="tool-group">
+        <view class="tool-item" bindtap="onRotateLeft">
+          <text class="iconfont icon-rotate-left"></text>
+          <text class="tool-text">左转</text>
+        </view>
+        <view class="tool-item" bindtap="onRotateRight">
+          <text class="iconfont icon-rotate-right"></text>
+          <text class="tool-text">右转</text>
+        </view>
+        <view class="tool-item" bindtap="onFlipHorizontal">
+          <text class="iconfont icon-flip-horizontal"></text>
+          <text class="tool-text">水平翻转</text>
+        </view>
+        <view class="tool-item" bindtap="onFlipVertical">
+          <text class="iconfont icon-flip-vertical"></text>
+          <text class="tool-text">垂直翻转</text>
+        </view>
+      </view>
+      
+      <view class="ratio-group">
+        <text class="ratio-label">比例:</text>
+        <view class="ratio-options">
+          <text 
+            class="ratio-option {{aspectRatio === 0 ? 'active' : ''}}"
+            data-ratio="0"
+            bindtap="onRatioChange"
+          >自由</text>
+          <text 
+            class="ratio-option {{aspectRatio === 1 ? 'active' : ''}}"
+            data-ratio="1"
+            bindtap="onRatioChange"
+          >1:1</text>
+          <text 
+            class="ratio-option {{aspectRatio === 1.33 ? 'active' : ''}}"
+            data-ratio="1.33"
+            bindtap="onRatioChange"
+          >4:3</text>
+          <text 
+            class="ratio-option {{aspectRatio === 1.78 ? 'active' : ''}}"
+            data-ratio="1.78"
+            bindtap="onRatioChange"
+          >16:9</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

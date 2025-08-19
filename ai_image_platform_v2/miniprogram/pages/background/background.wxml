@@ -1,0 +1,174 @@
+<!--pages/background/background.wxml-->
+<view class="container">
+  <!-- 图片预览区域 -->
+  <view class="image-preview">
+    <view wx:if="{{!currentImage}}" class="no-image">
+      <view class="upload-icon">🖼️</view>
+      <text class="upload-text">选择照片进行背景处理</text>
+      <button class="upload-btn" bindtap="chooseImage">选择照片</button>
+    </view>
+    
+    <view wx:else class="image-container">
+      <!-- 图片对比视图 -->
+      <view wx:if="{{processedImage}}" class="image-compare">
+        <view class="compare-item {{activeView === 'original' ? 'active' : ''}}" 
+              bindtap="switchView" data-view="original">
+          <image src="{{currentImage}}" mode="aspectFit" class="preview-image" />
+          <text class="view-label">原图</text>
+        </view>
+        <view class="compare-item {{activeView === 'processed' ? 'active' : ''}}" 
+              bindtap="switchView" data-view="processed">
+          <image src="{{processedImage}}" mode="aspectFit" class="preview-image" />
+          <text class="view-label">处理后</text>
+        </view>
+      </view>
+      
+      <!-- 单图显示 -->
+      <view wx:else class="single-image">
+        <image src="{{currentImage}}" mode="aspectFit" class="preview-image" 
+               bindtap="previewImage" />
+      </view>
+      
+      <!-- 图片操作按钮 -->
+      <view class="image-actions">
+        <button class="action-btn" bindtap="chooseImage">重新选择</button>
+        <button class="action-btn" bindtap="previewImage">预览</button>
+        <button wx:if="{{processedImage}}" class="action-btn primary" bindtap="saveImage">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 背景处理工具 -->
+  <view class="tools-section">
+    <view class="section-title">背景处理工具</view>
+    
+    <!-- 快速操作 -->
+    <view class="quick-tools">
+      <view class="tool-item" bindtap="removeBackground">
+        <view class="tool-icon">✂️</view>
+        <text class="tool-name">移除背景</text>
+        <text class="tool-desc">一键去除背景</text>
+      </view>
+      <view class="tool-item" bindtap="blurBackground">
+        <view class="tool-icon">🌫️</view>
+        <text class="tool-name">背景虚化</text>
+        <text class="tool-desc">模糊背景突出主体</text>
+      </view>
+      <view class="tool-item" bindtap="showBackgroundTemplates">
+        <view class="tool-icon">🎨</view>
+        <text class="tool-name">更换背景</text>
+        <text class="tool-desc">选择新背景</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 背景模板选择 -->
+  <view wx:if="{{showTemplates}}" class="template-section">
+    <view class="section-title">
+      <text>选择背景模板</text>
+      <button class="close-btn" bindtap="hideBackgroundTemplates">×</button>
+    </view>
+    
+    <!-- 背景分类 -->
+    <view class="template-categories">
+      <view wx:for="{{templateCategories}}" wx:key="id" 
+            class="category-item {{selectedCategory === item.id ? 'active' : ''}}"
+            bindtap="selectCategory" data-category="{{item.id}}">
+        {{item.name}}
+      </view>
+    </view>
+    
+    <!-- 背景模板列表 -->
+    <scroll-view class="template-list" scroll-y="true">
+      <view wx:for="{{currentTemplates}}" wx:key="id" 
+            class="template-item {{selectedTemplate && selectedTemplate.id === item.id ? 'active' : ''}}"
+            bindtap="selectTemplate" data-template="{{item}}">
+        <image src="{{item.thumbnail}}" mode="aspectFill" class="template-preview" />
+        <text class="template-name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+    
+    <!-- 应用按钮 -->
+    <view class="template-actions">
+      <button class="apply-btn {{selectedTemplate ? '' : 'disabled'}}" 
+              bindtap="applyTemplate" disabled="{{!selectedTemplate}}">
+        应用背景
+      </button>
+    </view>
+  </view>
+
+  <!-- 高级调节 -->
+  <view wx:if="{{showAdvanced}}" class="advanced-section">
+    <view class="section-title">高级调节</view>
+    
+    <view class="adjustment-list">
+      <!-- 边缘羽化 -->
+      <view class="adjustment-item">
+        <view class="adjustment-header">
+          <text class="adjustment-label">边缘羽化</text>
+          <text class="adjustment-value">{{edgeFeather}}</text>
+        </view>
+        <slider value="{{edgeFeather}}" min="0" max="100" 
+                bindchange="onEdgeFeatherChange" class="adjustment-slider" />
+      </view>
+      
+      <!-- 背景透明度 -->
+      <view class="adjustment-item">
+        <view class="adjustment-header">
+          <text class="adjustment-label">背景透明度</text>
+          <text class="adjustment-value">{{backgroundOpacity}}</text>
+        </view>
+        <slider value="{{backgroundOpacity}}" min="0" max="100" 
+                bindchange="onBackgroundOpacityChange" class="adjustment-slider" />
+      </view>
+      
+      <!-- 主体突出度 -->
+      <view class="adjustment-item">
+        <view class="adjustment-header">
+          <text class="adjustment-label">主体突出度</text>
+          <text class="adjustment-value">{{subjectEnhance}}</text>
+        </view>
+        <slider value="{{subjectEnhance}}" min="0" max="100" 
+                bindchange="onSubjectEnhanceChange" class="adjustment-slider" />
+      </view>
+    </view>
+    
+    <!-- 应用调节 -->
+    <view class="advanced-actions">
+      <button class="apply-btn" bindtap="applyAdvancedSettings">应用调节</button>
+      <button class="reset-btn" bindtap="resetAdvancedSettings">重置</button>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button class="action-toggle {{showAdvanced ? 'active' : ''}}" 
+            bindtap="toggleAdvanced">
+      {{showAdvanced ? '收起高级调节' : '展开高级调节'}}
+    </button>
+  </view>
+
+  <!-- AI建议区域 -->
+  <view wx:if="{{aiSuggestions.length > 0}}" class="ai-suggestions">
+    <view class="section-title">AI建议</view>
+    <view class="suggestion-list">
+      <view wx:for="{{aiSuggestions}}" wx:key="index" class="suggestion-item"
+            bindtap="applySuggestion" data-suggestion="{{item}}">
+        <view class="suggestion-icon">💡</view>
+        <view class="suggestion-content">
+          <text class="suggestion-title">{{item.title}}</text>
+          <text class="suggestion-desc">{{item.description}}</text>
+        </view>
+        <view class="suggestion-action">应用</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view wx:if="{{processing}}" class="loading-mask">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">{{processingText}}</text>
+    </view>
+  </view>
+</view>

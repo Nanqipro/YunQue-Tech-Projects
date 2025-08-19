@@ -1,0 +1,174 @@
+<!--pages/register/register.wxml-->
+<view class="register-container">
+  <!-- 头部区域 -->
+  <view class="header-section">
+    <view class="logo-container">
+      <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+      <text class="app-name">AI图像处理</text>
+    </view>
+    <text class="welcome-text">创建您的账户</text>
+    <text class="subtitle">加入我们，开启AI图像处理之旅</text>
+  </view>
+
+  <!-- 注册表单 -->
+  <view class="form-section">
+    <view class="form-container">
+      <!-- 用户名输入 -->
+      <view class="input-group">
+        <view class="input-label">
+          <text class="iconfont icon-user"></text>
+          <text class="label-text">用户名</text>
+        </view>
+        <input 
+          class="form-input {{errors.username ? 'error' : ''}}"
+          type="text"
+          placeholder="请输入用户名"
+          value="{{formData.username}}"
+          bindinput="onUsernameInput"
+          maxlength="20"
+        />
+        <text class="error-text" wx:if="{{errors.username}}">{{errors.username}}</text>
+      </view>
+
+      <!-- 邮箱输入 -->
+      <view class="input-group">
+        <view class="input-label">
+          <text class="iconfont icon-email"></text>
+          <text class="label-text">邮箱</text>
+        </view>
+        <input 
+          class="form-input {{errors.email ? 'error' : ''}}"
+          type="text"
+          placeholder="请输入邮箱地址"
+          value="{{formData.email}}"
+          bindinput="onEmailInput"
+        />
+        <text class="error-text" wx:if="{{errors.email}}">{{errors.email}}</text>
+      </view>
+
+      <!-- 手机号输入 -->
+      <view class="input-group">
+        <view class="input-label">
+          <text class="iconfont icon-phone"></text>
+          <text class="label-text">手机号</text>
+        </view>
+        <input 
+          class="form-input {{errors.phone ? 'error' : ''}}"
+          type="number"
+          placeholder="请输入手机号"
+          value="{{formData.phone}}"
+          bindinput="onPhoneInput"
+          maxlength="11"
+        />
+        <text class="error-text" wx:if="{{errors.phone}}">{{errors.phone}}</text>
+      </view>
+
+      <!-- 密码输入 -->
+      <view class="input-group">
+        <view class="input-label">
+          <text class="iconfont icon-lock"></text>
+          <text class="label-text">密码</text>
+        </view>
+        <view class="password-container">
+          <input 
+            class="form-input password-input {{errors.password ? 'error' : ''}}"
+            type="{{showPassword ? 'text' : 'password'}}"
+            placeholder="请输入密码"
+            value="{{formData.password}}"
+            bindinput="onPasswordInput"
+          />
+          <text 
+            class="password-toggle iconfont {{showPassword ? 'icon-eye-open' : 'icon-eye-close'}}"
+            bindtap="togglePassword"
+          ></text>
+        </view>
+        <text class="error-text" wx:if="{{errors.password}}">{{errors.password}}</text>
+      </view>
+
+      <!-- 确认密码输入 -->
+      <view class="input-group">
+        <view class="input-label">
+          <text class="iconfont icon-lock"></text>
+          <text class="label-text">确认密码</text>
+        </view>
+        <view class="password-container">
+          <input 
+            class="form-input password-input {{errors.confirmPassword ? 'error' : ''}}"
+            type="{{showConfirmPassword ? 'text' : 'password'}}"
+            placeholder="请再次输入密码"
+            value="{{formData.confirmPassword}}"
+            bindinput="onConfirmPasswordInput"
+          />
+          <text 
+            class="password-toggle iconfont {{showConfirmPassword ? 'icon-eye-open' : 'icon-eye-close'}}"
+            bindtap="toggleConfirmPassword"
+          ></text>
+        </view>
+        <text class="error-text" wx:if="{{errors.confirmPassword}}">{{errors.confirmPassword}}</text>
+      </view>
+
+      <!-- 验证码输入 -->
+      <view class="input-group">
+        <view class="input-label">
+          <text class="iconfont icon-shield"></text>
+          <text class="label-text">验证码</text>
+        </view>
+        <view class="verification-container">
+          <input 
+            class="form-input verification-input {{errors.verificationCode ? 'error' : ''}}"
+            type="number"
+            placeholder="请输入验证码"
+            value="{{formData.verificationCode}}"
+            bindinput="onVerificationCodeInput"
+            maxlength="6"
+          />
+          <button 
+            class="verification-btn {{canSendCode ? '' : 'disabled'}}"
+            bindtap="sendVerificationCode"
+            disabled="{{!canSendCode}}"
+          >
+            {{codeButtonText}}
+          </button>
+        </view>
+        <text class="error-text" wx:if="{{errors.verificationCode}}">{{errors.verificationCode}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务条款 -->
+  <view class="terms-section">
+    <view class="terms-container">
+      <label class="checkbox-container">
+        <checkbox value="agree" checked="{{agreedToTerms}}" bindchange="onTermsChange"/>
+        <text class="checkbox-text">我已阅读并同意</text>
+      </label>
+      <text class="terms-link" bindtap="showTerms">《服务条款》</text>
+      <text class="checkbox-text">和</text>
+      <text class="terms-link" bindtap="showPrivacy">《隐私政策》</text>
+    </view>
+  </view>
+
+  <!-- 注册按钮 -->
+  <view class="action-section">
+    <button 
+      class="register-btn {{canRegister ? '' : 'disabled'}}"
+      bindtap="handleRegister"
+      disabled="{{!canRegister || loading}}"
+    >
+      <text class="btn-text">{{loading ? '注册中...' : '注册'}}</text>
+    </button>
+    
+    <view class="login-link">
+      <text class="link-text">已有账户？</text>
+      <text class="link-action" bindtap="goToLogin">立即登录</text>
+    </view>
+  </view>
+</view>
+
+<!-- 加载遮罩 -->
+<view class="loading-overlay" wx:if="{{loading}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{loadingText}}</text>
+  </view>
+</view>

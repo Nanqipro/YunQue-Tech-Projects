@@ -1,0 +1,60 @@
+<!-- components/loading/loading.wxml -->
+<view class="loading-overlay" wx:if="{{visible}}">
+  <view class="loading-container">
+    <!-- 加载动画 -->
+    <view class="loading-animation">
+      <view class="spinner" wx:if="{{type === 'spinner'}}">
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+        <view class="spinner-dot"></view>
+      </view>
+      
+      <view class="pulse" wx:elif="{{type === 'pulse'}}">
+        <view class="pulse-circle"></view>
+        <view class="pulse-circle"></view>
+        <view class="pulse-circle"></view>
+      </view>
+      
+      <view class="wave" wx:elif="{{type === 'wave'}}">
+        <view class="wave-bar"></view>
+        <view class="wave-bar"></view>
+        <view class="wave-bar"></view>
+        <view class="wave-bar"></view>
+        <view class="wave-bar"></view>
+      </view>
+      
+      <view class="dots" wx:elif="{{type === 'dots'}}">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+      
+      <view class="circle" wx:else>
+        <view class="circle-path"></view>
+      </view>
+    </view>
+    
+    <!-- 加载文本 -->
+    <view class="loading-text" wx:if="{{text}}">
+      {{text}}
+    </view>
+    
+    <!-- 进度条 -->
+    <view class="progress-container" wx:if="{{showProgress && progress >= 0}}">
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{progress}}%;"></view>
+      </view>
+      <view class="progress-text">{{progress}}%</view>
+    </view>
+    
+    <!-- 取消按钮 -->
+    <view class="cancel-btn" wx:if="{{showCancel}}" bindtap="onCancel">
+      取消
+    </view>
+  </view>
+</view>

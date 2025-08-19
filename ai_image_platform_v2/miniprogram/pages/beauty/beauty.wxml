@@ -1,0 +1,227 @@
+<!--pages/beauty/beauty.wxml-->
+<view class="container">
+  <!-- 图片预览区域 -->
+  <view class="preview-section">
+    <view class="preview-card card">
+      <view class="preview-container">
+        <view wx:if="{{!currentImage}}" class="no-image">
+          <view class="no-image-icon">📷</view>
+          <text class="no-image-text">请先选择图片</text>
+          <button class="btn btn-primary" bindtap="chooseImage">选择图片</button>
+        </view>
+        <view wx:else class="image-container">
+          <!-- 原图/处理后对比 -->
+          <view class="image-comparison" wx:if="{{processedImage}}">
+            <view class="comparison-item {{activeView === 'original' ? 'active' : ''}}" bindtap="switchView" data-view="original">
+              <image src="{{currentImage}}" class="comparison-image" mode="aspectFit"></image>
+              <text class="comparison-label">原图</text>
+            </view>
+            <view class="comparison-item {{activeView === 'processed' ? 'active' : ''}}" bindtap="switchView" data-view="processed">
+              <image src="{{processedImage}}" class="comparison-image" mode="aspectFit"></image>
+              <text class="comparison-label">处理后</text>
+            </view>
+          </view>
+          <!-- 单图显示 -->
+          <view wx:else class="single-image">
+            <image src="{{currentImage}}" class="preview-image" mode="aspectFit"></image>
+          </view>
+          
+          <!-- 图片操作按钮 -->
+          <view class="image-actions">
+            <button class="action-btn" bindtap="chooseImage">
+              <text class="action-icon">🔄</text>
+              <text class="action-text">换图</text>
+            </button>
+            <button class="action-btn" bindtap="previewImage">
+              <text class="action-icon">🔍</text>
+              <text class="action-text">预览</text>
+            </button>
+            <button class="action-btn" bindtap="saveImage" wx:if="{{processedImage}}">
+              <text class="action-icon">💾</text>
+              <text class="action-text">保存</text>
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 美颜工具区域 -->
+  <view class="tools-section" wx:if="{{currentImage}}">
+    <view class="tools-card card">
+      <view class="card-header">
+        <text>美颜工具</text>
+        <view class="header-actions">
+          <button class="btn btn-outline" size="mini" bindtap="resetAll">重置</button>
+        </view>
+      </view>
+      <view class="card-body">
+        <!-- 快速美颜 -->
+        <view class="quick-beauty">
+          <text class="section-title">快速美颜</text>
+          <view class="quick-options">
+            <button 
+              class="quick-btn {{quickBeautyLevel === 'light' ? 'active' : ''}}" 
+              bindtap="applyQuickBeauty" 
+              data-level="light"
+            >
+              轻度
+            </button>
+            <button 
+              class="quick-btn {{quickBeautyLevel === 'medium' ? 'active' : ''}}" 
+              bindtap="applyQuickBeauty" 
+              data-level="medium"
+            >
+              中度
+            </button>
+            <button 
+              class="quick-btn {{quickBeautyLevel === 'heavy' ? 'active' : ''}}" 
+              bindtap="applyQuickBeauty" 
+              data-level="heavy"
+            >
+              重度
+            </button>
+          </view>
+        </view>
+
+        <!-- 精细调节 -->
+        <view class="fine-tuning">
+          <text class="section-title">精细调节</text>
+          
+          <!-- 磨皮 -->
+          <view class="adjustment-item">
+            <view class="adjustment-header">
+              <text class="adjustment-name">磨皮</text>
+              <text class="adjustment-value">{{beautyParams.smooth}}</text>
+            </view>
+            <slider 
+              class="adjustment-slider"
+              min="0" 
+              max="100" 
+              value="{{beautyParams.smooth}}"
+              bindchange="onSmoothChange"
+              activeColor="#667eea"
+              backgroundColor="#e9ecef"
+            />
+          </view>
+
+          <!-- 美白 -->
+          <view class="adjustment-item">
+            <view class="adjustment-header">
+              <text class="adjustment-name">美白</text>
+              <text class="adjustment-value">{{beautyParams.whiten}}</text>
+            </view>
+            <slider 
+              class="adjustment-slider"
+              min="0" 
+              max="100" 
+              value="{{beautyParams.whiten}}"
+              bindchange="onWhitenChange"
+              activeColor="#667eea"
+              backgroundColor="#e9ecef"
+            />
+          </view>
+
+          <!-- 瘦脸 -->
+          <view class="adjustment-item">
+            <view class="adjustment-header">
+              <text class="adjustment-name">瘦脸</text>
+              <text class="adjustment-value">{{beautyParams.thinFace}}</text>
+            </view>
+            <slider 
+              class="adjustment-slider"
+              min="0" 
+              max="100" 
+              value="{{beautyParams.thinFace}}"
+              bindchange="onThinFaceChange"
+              activeColor="#667eea"
+              backgroundColor="#e9ecef"
+            />
+          </view>
+
+          <!-- 大眼 -->
+          <view class="adjustment-item">
+            <view class="adjustment-header">
+              <text class="adjustment-name">大眼</text>
+              <text class="adjustment-value">{{beautyParams.bigEye}}</text>
+            </view>
+            <slider 
+              class="adjustment-slider"
+              min="0" 
+              max="100" 
+              value="{{beautyParams.bigEye}}"
+              bindchange="onBigEyeChange"
+              activeColor="#667eea"
+              backgroundColor="#e9ecef"
+            />
+          </view>
+
+          <!-- 红润 -->
+          <view class="adjustment-item">
+            <view class="adjustment-header">
+              <text class="adjustment-name">红润</text>
+              <text class="adjustment-value">{{beautyParams.ruddy}}</text>
+            </view>
+            <slider 
+              class="adjustment-slider"
+              min="0" 
+              max="100" 
+              value="{{beautyParams.ruddy}}"
+              bindchange="onRuddyChange"
+              activeColor="#667eea"
+              backgroundColor="#e9ecef"
+            />
+          </view>
+        </view>
+
+        <!-- 应用按钮 -->
+        <view class="apply-section">
+          <button 
+            class="btn btn-primary btn-block {{processing ? 'btn-disabled' : ''}}" 
+            bindtap="applyBeauty"
+            disabled="{{processing}}"
+          >
+            <text wx:if="{{processing}}">处理中...</text>
+            <text wx:else>应用美颜</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI建议区域 -->
+  <view class="suggestions-section" wx:if="{{aiSuggestions.length > 0}}">
+    <view class="suggestions-card card">
+      <view class="card-header">
+        <text>AI美颜建议</text>
+      </view>
+      <view class="card-body">
+        <view class="suggestions-list">
+          <view 
+            class="suggestion-item" 
+            wx:for="{{aiSuggestions}}" 
+            wx:key="id"
+            bindtap="applySuggestion"
+            data-suggestion="{{item}}"
+          >
+            <view class="suggestion-content">
+              <text class="suggestion-title">{{item.title}}</text>
+              <text class="suggestion-desc">{{item.description}}</text>
+            </view>
+            <view class="suggestion-action">
+              <text class="action-text">应用</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 加载遮罩 -->
+<view class="loading-overlay" wx:if="{{processing}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{processingText}}</text>
+  </view>
+</view>

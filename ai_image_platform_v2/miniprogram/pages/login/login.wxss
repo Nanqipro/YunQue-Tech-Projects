@@ -1,0 +1,246 @@
+/* pages/login/login.wxss */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 头部Logo区域 */
+.header-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300rpx;
+}
+
+.logo-container {
+  text-align: center;
+  color: #fff;
+}
+
+.logo-image {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.app-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.app-subtitle {
+  display: block;
+  font-size: 28rpx;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* 表单区域 */
+.form-section {
+  flex: 2;
+}
+
+.form-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10rpx);
+  border: none;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.1);
+}
+
+.form-card .card-header {
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 1rpx solid #eee;
+}
+
+/* 密码输入容器 */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input {
+  flex: 1;
+  padding-right: 80rpx !important;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10rpx;
+  z-index: 10;
+}
+
+.toggle-icon {
+  font-size: 32rpx;
+  color: #6c757d;
+}
+
+/* 模式切换 */
+.mode-switch {
+  text-align: center;
+  margin-top: 40rpx;
+  padding-top: 30rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.switch-text {
+  font-size: 26rpx;
+  color: #6c757d;
+  margin-right: 10rpx;
+}
+
+.switch-link {
+  font-size: 26rpx;
+  color: #667eea;
+  font-weight: 500;
+}
+
+/* 快速登录 */
+.quick-login {
+  margin-top: 40rpx;
+}
+
+.divider-container {
+  display: flex;
+  align-items: center;
+  margin: 30rpx 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background: #dee2e6;
+}
+
+.divider-text {
+  margin: 0 20rpx;
+  font-size: 24rpx;
+  color: #6c757d;
+}
+
+.quick-options {
+  margin-top: 20rpx;
+}
+
+/* 服务条款 */
+.terms-section {
+  margin-top: 30rpx;
+}
+
+.terms-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-right: 8rpx;
+}
+
+.checkbox-text {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-left: 8rpx;
+}
+
+.terms-link {
+  font-size: 24rpx;
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* 错误状态 */
+.form-input.error {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.form-error {
+  color: #dc3545;
+  font-size: 22rpx;
+  margin-top: 8rpx;
+  display: block;
+}
+
+/* 按钮状态 */
+.btn-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* 加载遮罩 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  background: #fff;
+  padding: 60rpx;
+  border-radius: 16rpx;
+  text-align: center;
+  min-width: 300rpx;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 30rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #495057;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 响应式调整 */
+@media (max-height: 800rpx) {
+  .header-section {
+    min-height: 200rpx;
+  }
+  
+  .logo-image {
+    width: 100rpx;
+    height: 100rpx;
+  }
+  
+  .app-title {
+    font-size: 40rpx;
+  }
+}

@@ -1,0 +1,120 @@
+<!--pages/idphoto/idphoto.wxml-->
+<view class="container">
+  <!-- 图片预览区域 -->
+  <view class="image-preview">
+    <view wx:if="{{!currentImage}}" class="no-image">
+      <view class="upload-icon">📷</view>
+      <text class="upload-text">选择照片制作证件照</text>
+      <button class="upload-btn" bindtap="chooseImage">选择照片</button>
+    </view>
+    
+    <view wx:else class="image-container">
+      <!-- 图片对比视图 -->
+      <view wx:if="{{processedImage}}" class="image-compare">
+        <view class="compare-item {{activeView === 'original' ? 'active' : ''}}" 
+              bindtap="switchView" data-view="original">
+          <image src="{{currentImage}}" mode="aspectFit" class="preview-image" />
+          <text class="view-label">原图</text>
+        </view>
+        <view class="compare-item {{activeView === 'processed' ? 'active' : ''}}" 
+              bindtap="switchView" data-view="processed">
+          <image src="{{processedImage}}" mode="aspectFit" class="preview-image" />
+          <text class="view-label">证件照</text>
+        </view>
+      </view>
+      
+      <!-- 单图显示 -->
+      <view wx:else class="single-image">
+        <image src="{{currentImage}}" mode="aspectFit" class="preview-image" 
+               bindtap="previewImage" />
+      </view>
+      
+      <!-- 图片操作按钮 -->
+      <view class="image-actions">
+        <button class="action-btn" bindtap="chooseImage">重新选择</button>
+        <button class="action-btn" bindtap="previewImage">预览</button>
+        <button wx:if="{{processedImage}}" class="action-btn primary" bindtap="saveImage">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 证件照规格选择 -->
+  <view class="spec-section">
+    <view class="section-title">选择证件照规格</view>
+    <scroll-view class="spec-list" scroll-x="true">
+      <view wx:for="{{specList}}" wx:key="id" 
+            class="spec-item {{selectedSpec.id === item.id ? 'active' : ''}}"
+            bindtap="selectSpec" data-spec="{{item}}">
+        <view class="spec-preview" style="width: {{item.width/10}}rpx; height: {{item.height/10}}rpx;">
+          <text class="spec-ratio">{{item.width}}×{{item.height}}</text>
+        </view>
+        <text class="spec-name">{{item.name}}</text>
+        <text class="spec-size">{{item.width}}×{{item.height}}像素</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 背景颜色选择 -->
+  <view class="background-section">
+    <view class="section-title">选择背景颜色</view>
+    <view class="color-list">
+      <view wx:for="{{backgroundColors}}" wx:key="name" 
+            class="color-item {{selectedBackground === item.value ? 'active' : ''}}"
+            bindtap="selectBackground" data-color="{{item.value}}">
+        <view class="color-preview" style="background-color: {{item.value}};"></view>
+        <text class="color-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 高级选项 -->
+  <view class="advanced-section">
+    <view class="section-title">高级选项</view>
+    <view class="option-list">
+      <view class="option-item">
+        <text class="option-label">美颜处理</text>
+        <switch checked="{{enableBeauty}}" bindchange="toggleBeauty" />
+      </view>
+      <view class="option-item">
+        <text class="option-label">自动裁剪</text>
+        <switch checked="{{autoCrop}}" bindchange="toggleAutoCrop" />
+      </view>
+      <view class="option-item">
+        <text class="option-label">智能换装</text>
+        <switch checked="{{smartDress}}" bindchange="toggleSmartDress" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 生成按钮 -->
+  <view class="generate-section">
+    <button class="generate-btn {{currentImage ? '' : 'disabled'}}" 
+            bindtap="generateIdPhoto" disabled="{{!currentImage || processing}}">
+      {{processing ? processingText : '生成证件照'}}
+    </button>
+  </view>
+
+  <!-- AI建议区域 -->
+  <view wx:if="{{aiSuggestions.length > 0}}" class="ai-suggestions">
+    <view class="section-title">AI建议</view>
+    <view class="suggestion-list">
+      <view wx:for="{{aiSuggestions}}" wx:key="index" class="suggestion-item"
+            bindtap="applySuggestion" data-suggestion="{{item}}">
+        <view class="suggestion-icon">💡</view>
+        <view class="suggestion-content">
+          <text class="suggestion-title">{{item.title}}</text>
+          <text class="suggestion-desc">{{item.description}}</text>
+        </view>
+        <view class="suggestion-action">应用</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view wx:if="{{processing}}" class="loading-mask">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">{{processingText}}</text>
+    </view>
+  </view>
+</view>

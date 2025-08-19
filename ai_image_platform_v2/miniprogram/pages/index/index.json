@@ -1,0 +1,7 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "AI图像处理",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#667eea",
+  "backgroundTextStyle": "light"
+}

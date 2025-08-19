@@ -1,0 +1,139 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <!-- 头部Logo区域 -->
+  <view class="header-section">
+    <view class="logo-container">
+      <image src="../../images/logo.png" class="logo-image" mode="aspectFit"></image>
+      <text class="app-title">AI图像处理</text>
+      <text class="app-subtitle">让每一张照片都更精彩</text>
+    </view>
+  </view>
+
+  <!-- 登录表单 -->
+  <view class="form-section">
+    <view class="form-card card">
+      <view class="card-header">
+        <text>{{isLoginMode ? '登录账户' : '注册账户'}}</text>
+      </view>
+      <view class="card-body">
+        <form bindsubmit="handleSubmit">
+          <!-- 用户名输入 -->
+          <view class="form-group">
+            <label class="form-label">用户名</label>
+            <input 
+              class="form-input {{errors.username ? 'error' : ''}}" 
+              type="text" 
+              placeholder="请输入用户名" 
+              value="{{formData.username}}"
+              bindinput="onUsernameInput"
+              maxlength="20"
+            />
+            <text class="form-error" wx:if="{{errors.username}}">{{errors.username}}</text>
+          </view>
+
+          <!-- 邮箱输入（注册时显示） -->
+          <view class="form-group" wx:if="{{!isLoginMode}}">
+            <label class="form-label">邮箱</label>
+            <input 
+              class="form-input {{errors.email ? 'error' : ''}}" 
+              type="text" 
+              placeholder="请输入邮箱地址" 
+              value="{{formData.email}}"
+              bindinput="onEmailInput"
+            />
+            <text class="form-error" wx:if="{{errors.email}}">{{errors.email}}</text>
+          </view>
+
+          <!-- 密码输入 -->
+          <view class="form-group">
+            <label class="form-label">密码</label>
+            <view class="password-input-container">
+              <input 
+                class="form-input password-input {{errors.password ? 'error' : ''}}" 
+                type="{{showPassword ? 'text' : 'password'}}" 
+                placeholder="请输入密码" 
+                value="{{formData.password}}"
+                bindinput="onPasswordInput"
+                maxlength="50"
+              />
+              <view class="password-toggle" bindtap="togglePassword">
+                <text class="toggle-icon">{{showPassword ? '🙈' : '👁️'}}</text>
+              </view>
+            </view>
+            <text class="form-error" wx:if="{{errors.password}}">{{errors.password}}</text>
+          </view>
+
+          <!-- 确认密码（注册时显示） -->
+          <view class="form-group" wx:if="{{!isLoginMode}}">
+            <label class="form-label">确认密码</label>
+            <input 
+              class="form-input {{errors.confirmPassword ? 'error' : ''}}" 
+              type="password" 
+              placeholder="请再次输入密码" 
+              value="{{formData.confirmPassword}}"
+              bindinput="onConfirmPasswordInput"
+              maxlength="50"
+            />
+            <text class="form-error" wx:if="{{errors.confirmPassword}}">{{errors.confirmPassword}}</text>
+          </view>
+
+          <!-- 提交按钮 -->
+          <button 
+            class="btn btn-primary btn-block {{loading ? 'btn-disabled' : ''}}" 
+            form-type="submit"
+            disabled="{{loading}}"
+          >
+            <text wx:if="{{loading}}">{{loadingText}}</text>
+            <text wx:else>{{isLoginMode ? '登录' : '注册'}}</text>
+          </button>
+        </form>
+
+        <!-- 切换登录/注册模式 -->
+        <view class="mode-switch">
+          <text class="switch-text">
+            {{isLoginMode ? '还没有账户？' : '已有账户？'}}
+          </text>
+          <text class="switch-link" bindtap="switchMode">
+            {{isLoginMode ? '立即注册' : '立即登录'}}
+          </text>
+        </view>
+
+        <!-- 快速登录选项 -->
+        <view class="quick-login" wx:if="{{isLoginMode}}">
+          <view class="divider-container">
+            <view class="divider-line"></view>
+            <text class="divider-text">或</text>
+            <view class="divider-line"></view>
+          </view>
+          
+          <view class="quick-options">
+            <button class="btn btn-outline btn-block" bindtap="guestLogin">
+              <text>游客体验</text>
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务条款 -->
+  <view class="terms-section" wx:if="{{!isLoginMode}}">
+    <view class="terms-container">
+      <label class="checkbox-container">
+        <checkbox value="agree" checked="{{agreedToTerms}}" bindchange="onTermsChange"/>
+        <text class="checkbox-text">我已阅读并同意</text>
+      </label>
+      <text class="terms-link" bindtap="showTerms">《服务条款》</text>
+      <text class="checkbox-text">和</text>
+      <text class="terms-link" bindtap="showPrivacy">《隐私政策》</text>
+    </view>
+  </view>
+</view>
+
+<!-- 加载遮罩 -->
+<view class="loading-overlay" wx:if="{{loading}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{loadingText}}</text>
+  </view>
+</view>

@@ -1,0 +1,315 @@
+/* pages/beauty/beauty.wxss */
+
+.container {
+  padding: 20rpx;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* 预览区域 */
+.preview-section {
+  margin-bottom: 30rpx;
+}
+
+.preview-container {
+  min-height: 400rpx;
+  position: relative;
+}
+
+.no-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400rpx;
+  color: #6c757d;
+}
+
+.no-image-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.no-image-text {
+  font-size: 28rpx;
+  margin-bottom: 30rpx;
+}
+
+/* 图片对比 */
+.image-comparison {
+  display: flex;
+  gap: 20rpx;
+  height: 400rpx;
+}
+
+.comparison-item {
+  flex: 1;
+  position: relative;
+  border-radius: 12rpx;
+  overflow: hidden;
+  border: 3rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.comparison-item.active {
+  border-color: #667eea;
+  box-shadow: 0 0 20rpx rgba(102, 126, 234, 0.3);
+}
+
+.comparison-image {
+  width: 100%;
+  height: 100%;
+}
+
+.comparison-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-align: center;
+  padding: 12rpx;
+  font-size: 24rpx;
+}
+
+/* 单图显示 */
+.single-image {
+  height: 400rpx;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 12rpx;
+}
+
+/* 图片操作按钮 */
+.image-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30rpx;
+  margin-top: 20rpx;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.action-btn:active {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.action-icon {
+  font-size: 36rpx;
+  margin-bottom: 8rpx;
+}
+
+.action-text {
+  font-size: 22rpx;
+  color: #6c757d;
+}
+
+/* 工具区域 */
+.tools-section {
+  margin-bottom: 30rpx;
+}
+
+.tools-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10rpx;
+}
+
+/* 快速美颜 */
+.quick-beauty {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20rpx;
+}
+
+.quick-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.quick-btn {
+  flex: 1;
+  padding: 24rpx;
+  background: #f8f9fa;
+  border: 2rpx solid #dee2e6;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #495057;
+  transition: all 0.3s ease;
+}
+
+.quick-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: #fff;
+}
+
+.quick-btn:active {
+  transform: scale(0.95);
+}
+
+/* 精细调节 */
+.fine-tuning {
+  margin-bottom: 40rpx;
+}
+
+.adjustment-item {
+  margin-bottom: 30rpx;
+}
+
+.adjustment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.adjustment-name {
+  font-size: 26rpx;
+  color: #495057;
+  font-weight: 500;
+}
+
+.adjustment-value {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: 600;
+  min-width: 60rpx;
+  text-align: right;
+}
+
+.adjustment-slider {
+  width: 100%;
+}
+
+/* 应用按钮 */
+.apply-section {
+  margin-top: 40rpx;
+  padding-top: 30rpx;
+  border-top: 1rpx solid #eee;
+}
+
+/* AI建议区域 */
+.suggestions-section {
+  margin-bottom: 30rpx;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  border: 1rpx solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.suggestion-item:active {
+  background: #e9ecef;
+  transform: scale(0.98);
+}
+
+.suggestion-content {
+  flex: 1;
+}
+
+.suggestion-title {
+  display: block;
+  font-size: 26rpx;
+  color: #2c3e50;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.suggestion-desc {
+  display: block;
+  font-size: 22rpx;
+  color: #6c757d;
+}
+
+.suggestion-action {
+  padding: 12rpx 24rpx;
+  background: #667eea;
+  color: #fff;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+/* 加载遮罩 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  background: #fff;
+  padding: 60rpx;
+  border-radius: 16rpx;
+  text-align: center;
+  min-width: 300rpx;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 30rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #495057;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 按钮禁用状态 */
+.btn-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

@@ -1,0 +1,114 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 头部欢迎区域 -->
+  <view class="header-section">
+    <view class="welcome-card card">
+      <view class="welcome-content">
+        <text class="welcome-title">AI图像处理平台</text>
+        <text class="welcome-subtitle">让每一张照片都更精彩</text>
+      </view>
+      <view class="welcome-avatar">
+        <image src="../../images/ai-icon.png" class="avatar-img" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快速上传区域 -->
+  <view class="upload-section">
+    <view class="upload-card card">
+      <view class="card-header">
+        <text>选择图片开始处理</text>
+      </view>
+      <view class="card-body">
+        <view class="upload-area" bindtap="chooseImage">
+          <view wx:if="{{!currentImage}}" class="upload-placeholder">
+            <view class="upload-icon">📷</view>
+            <text class="upload-text">点击选择图片</text>
+            <text class="upload-hint">支持JPG、PNG格式</text>
+          </view>
+          <view wx:else class="image-preview-container">
+            <image src="{{currentImage}}" class="preview-image" mode="aspectFit"></image>
+            <view class="image-actions">
+              <button class="btn btn-outline" size="mini" bindtap="chooseImage">重新选择</button>
+              <button class="btn btn-primary" size="mini" bindtap="previewImage">预览</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能工具区域 -->
+  <view class="tools-section">
+    <view class="tools-card card">
+      <view class="card-header">
+        <text>AI处理工具</text>
+      </view>
+      <view class="card-body">
+        <view class="tools-grid">
+          <view class="tool-item" bindtap="navigateToBeauty">
+            <view class="tool-icon">✨</view>
+            <text class="tool-name">AI美颜</text>
+            <text class="tool-desc">智能美颜处理</text>
+          </view>
+          <view class="tool-item" bindtap="navigateToIdPhoto">
+            <view class="tool-icon">📋</view>
+            <text class="tool-name">证件照</text>
+            <text class="tool-desc">一键生成证件照</text>
+          </view>
+          <view class="tool-item" bindtap="navigateToBackground">
+            <view class="tool-icon">🎨</view>
+            <text class="tool-name">背景处理</text>
+            <text class="tool-desc">背景替换/移除</text>
+          </view>
+          <view class="tool-item" bindtap="navigateToHistory">
+            <view class="tool-icon">📚</view>
+            <text class="tool-name">处理历史</text>
+            <text class="tool-desc">查看历史记录</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近处理 -->
+  <view class="recent-section" wx:if="{{recentImages.length > 0}}">
+    <view class="recent-card card">
+      <view class="card-header">
+        <text>最近处理</text>
+        <text class="more-link" bindtap="navigateToHistory">查看更多</text>
+      </view>
+      <view class="card-body">
+        <scroll-view class="recent-scroll" scroll-x="true">
+          <view class="recent-list">
+            <view class="recent-item" wx:for="{{recentImages}}" wx:key="id" bindtap="viewRecentImage" data-image="{{item}}">
+              <image src="{{item.thumbnail}}" class="recent-image" mode="aspectFill"></image>
+              <text class="recent-time">{{item.created_time}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户状态提示 -->
+  <view class="status-section" wx:if="{{!isLoggedIn}}">
+    <view class="status-card card">
+      <view class="card-body">
+        <view class="status-content">
+          <text class="status-title">登录后享受更多功能</text>
+          <text class="status-desc">保存处理历史、云端同步、高级功能等</text>
+          <button class="btn btn-primary btn-block mt-20" bindtap="navigateToLogin">立即登录</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 加载提示 -->
+<view class="loading-overlay" wx:if="{{loading}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{loadingText}}</text>
+  </view>
+</view>
