@@ -2,7 +2,7 @@
 const app = getApp()
 
 // 请求基础配置
-const BASE_URL = 'https://api.example.com' // 替换为实际的API地址
+const BASE_URL = 'http://localhost:5002' // 后端API地址
 const TIMEOUT = 10000 // 请求超时时间
 
 /**

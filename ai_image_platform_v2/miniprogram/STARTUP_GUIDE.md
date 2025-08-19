@@ -132,8 +132,15 @@
    # 进入小程序目录
    cd /home/nanqipro01/gitlocal/YunQue-Tech-Projects/ai_image_platform_v2/miniprogram
    
-   # 使用命令行工具打开项目
-   miniprogram-cli open --project-path .
+
+
+   npx miniprogram-ci preview \
+  --pp ./ \
+  --pkp ./private.key \
+  --appid wxf9f3f5a62adc0266 \
+  --uv 1.0.0 \
+  --ud "预览版本"
+
    ```
 
 ### 方法三：直接启动开发者工具

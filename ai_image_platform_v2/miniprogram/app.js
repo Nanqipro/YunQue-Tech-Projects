@@ -3,7 +3,7 @@ App({
   globalData: {
     userInfo: null,
     token: null,
-    baseUrl: 'https://your-api-domain.com/api', // 请替换为实际的API地址
+    baseUrl: 'http://localhost:5002/api', // 请替换为实际的API地址
     currentImage: null,
     isLoggedIn: false
   },
