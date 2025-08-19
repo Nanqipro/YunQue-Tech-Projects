@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="assets/css/modal.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/beauty.css">
-    <link rel="stylesheet" href="assets/css/element-slider.css">
     <link rel="stylesheet" href="assets/css/light-theme.css" id="light-theme" disabled>
     <link rel="stylesheet" href="assets/css/dark-theme.css" id="dark-theme">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -364,7 +363,7 @@
                 <!-- 控制面板区域 -->
                 <div class="properties-panel">
                     <!-- 美颜参数面板 -->
-                    <div class="beauty-panel" id="beauty-panel">
+                    <div class="beauty-panel disabled" id="beauty-panel">
                         <div class="panel-header">
                             <div class="panel-title">
                                 <i class="fas fa-sparkles"></i>
@@ -376,142 +375,82 @@
                         <!-- 美颜参数控制 -->
                         <div class="panel-content">
                             <!-- 磨皮设置 -->
-                            <div class="parameter-group-el">
-                                <div class="group-header-el">
+                            <div class="parameter-group">
+                                <div class="group-header">
                                     <i class="fa-solid fa-hand-sparkles"></i>
-                                    <span class="group-title-el">磨皮设置</span>
+                                    <span class="group-title">磨皮设置</span>
                                 </div>
-                                <div class="parameter-item-el">
-                                    <div class="parameter-label-el">
-                                        <span class="label-text">磨皮强度</span>
+                                <div class="parameter-item">
+                                    <div class="parameter-label">
+                                        <span>磨皮强度</span>
+                                        <span class="parameter-value" id="smoothing-value">30</span>
                                     </div>
-                                    <div class="slider-demo-block">
-                                        <div class="el-slider el-slider--with-input" id="smoothing-slider">
-                                            <div class="el-slider__runway">
-                                                <div class="el-slider__bar" style="width: 30%; left: 0%;"></div>
-                                                <div class="el-slider__button-wrapper" style="left: 30%;">
-                                                    <div class="el-slider__button"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="el-input-number">
-                                            <span class="el-input-number__decrease">
-                                                <i class="fas fa-minus"></i>
-                                            </span>
-                                            <span class="el-input-number__increase">
-                                                <i class="fas fa-plus"></i>
-                                            </span>
-                                            <div class="el-input">
-                                                <input type="number" class="el-input__inner" id="smoothing" min="0" max="100" value="30">
-                                            </div>
-                                        </div>
+                                    <div class="slider-container">
+                                        <input type="range" class="beauty-slider" id="smoothing" min="0" max="100"
+                                            value="30">
+                                        <div class="slider-track"></div>
                                     </div>
-                                    <div class="parameter-tips-el">适度磨皮，保持肌肤自然质感</div>
+                                    <div class="parameter-tips">适度磨皮，保持肌肤自然质感</div>
                                 </div>
                             </div>
 
                             <!-- 美白设置 -->
-                            <div class="parameter-group-el">
-                                <div class="group-header-el">
+                            <div class="parameter-group">
+                                <div class="group-header">
                                     <i class="fas fa-sun"></i>
-                                    <span class="group-title-el">美白设置</span>
+                                    <span class="group-title">美白设置</span>
                                 </div>
-                                <div class="parameter-item-el">
-                                    <div class="parameter-label-el">
-                                        <span class="label-text">美白程度</span>
+                                <div class="parameter-item">
+                                    <div class="parameter-label">
+                                        <span>美白程度</span>
+                                        <span class="parameter-value" id="whitening-value">40</span>
                                     </div>
-                                    <div class="slider-demo-block">
-                                        <div class="el-slider el-slider--with-input" id="whitening-slider">
-                                            <div class="el-slider__runway">
-                                                <div class="el-slider__bar" style="width: 40%; left: 0%;"></div>
-                                                <div class="el-slider__button-wrapper" style="left: 40%;">
-                                                    <div class="el-slider__button"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="el-input-number">
-                                            <span class="el-input-number__decrease">
-                                                <i class="fas fa-minus"></i>
-                                            </span>
-                                            <span class="el-input-number__increase">
-                                                <i class="fas fa-plus"></i>
-                                            </span>
-                                            <div class="el-input">
-                                                <input type="number" class="el-input__inner" id="whitening" min="0" max="100" value="40">
-                                            </div>
-                                        </div>
+                                    <div class="slider-container">
+                                        <input type="range" class="beauty-slider" id="whitening" min="0" max="100"
+                                            value="40">
+                                        <div class="slider-track"></div>
                                     </div>
-                                    <div class="parameter-tips-el">自然提亮肤色，避免过度美白</div>
+                                    <div class="parameter-tips">自然提亮肤色，避免过度美白</div>
                                 </div>
                             </div>
 
                             <!-- 眼部增强 -->
-                            <div class="parameter-group-el">
-                                <div class="group-header-el">
+                            <div class="parameter-group">
+                                <div class="group-header">
                                     <i class="fas fa-eye"></i>
-                                    <span class="group-title-el">眼部增强</span>
+                                    <span class="group-title">眼部增强</span>
                                 </div>
-                                <div class="parameter-item-el">
-                                    <div class="parameter-label-el">
-                                        <span class="label-text">增强程度</span>
+                                <div class="parameter-item">
+                                    <div class="parameter-label">
+                                        <span>增强程度</span>
+                                        <span class="parameter-value" id="eye-enhancement-value">60</span>
                                     </div>
-                                    <div class="slider-demo-block">
-                                        <div class="el-slider el-slider--with-input" id="eye-enhancement-slider">
-                                            <div class="el-slider__runway">
-                                                <div class="el-slider__bar" style="width: 60%; left: 0%;"></div>
-                                                <div class="el-slider__button-wrapper" style="left: 60%;">
-                                                    <div class="el-slider__button"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="el-input-number">
-                                            <span class="el-input-number__decrease">
-                                                <i class="fas fa-minus"></i>
-                                            </span>
-                                            <span class="el-input-number__increase">
-                                                <i class="fas fa-plus"></i>
-                                            </span>
-                                            <div class="el-input">
-                                                <input type="number" class="el-input__inner" id="eye-enhancement" min="0" max="100" value="60">
-                                            </div>
-                                        </div>
+                                    <div class="slider-container">
+                                        <input type="range" class="beauty-slider" id="eye-enhancement" min="0" max="100"
+                                            value="60">
+                                        <div class="slider-track"></div>
                                     </div>
-                                    <div class="parameter-tips-el">增强眼部轮廓，提升神采</div>
+                                    <div class="parameter-tips">增强眼部轮廓，提升神采</div>
                                 </div>
                             </div>
 
                             <!-- 唇部调整 -->
-                            <div class="parameter-group-el">
-                                <div class="group-header-el">
+                            <div class="parameter-group">
+                                <div class="group-header">
                                     <i class="fas fa-kiss"></i>
-                                    <span class="group-title-el">唇部调整</span>
+                                    <span class="group-title">唇部调整</span>
                                 </div>
-                                <div class="parameter-item-el">
-                                    <div class="parameter-label-el">
-                                        <span class="label-text">唇色增强</span>
+                                <div class="parameter-item">
+                                    <div class="parameter-label">
+                                        <span>唇色增强</span>
+                                        <span class="parameter-value" id="lip-adjustment-value">25</span>
                                     </div>
-                                    <div class="slider-demo-block">
-                                        <div class="el-slider el-slider--with-input" id="lip-adjustment-slider">
-                                            <div class="el-slider__runway">
-                                                <div class="el-slider__bar" style="width: 25%; left: 0%;"></div>
-                                                <div class="el-slider__button-wrapper" style="left: 25%;">
-                                                    <div class="el-slider__button"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="el-input-number">
-                                            <span class="el-input-number__decrease">
-                                                <i class="fas fa-minus"></i>
-                                            </span>
-                                            <span class="el-input-number__increase">
-                                                <i class="fas fa-plus"></i>
-                                            </span>
-                                            <div class="el-input">
-                                                <input type="number" class="el-input__inner" id="lip-adjustment" min="0" max="100" value="25">
-                                            </div>
-                                        </div>
+                                    <div class="slider-container">
+                                        <input type="range" class="beauty-slider" id="lip-adjustment" min="0" max="100"
+                                            value="25">
+                                        <div class="slider-track"></div>
                                     </div>
-                                    <div class="parameter-tips-el">自然提升唇部色彩饱和度</div>
+                                    <div class="parameter-tips">自然提升唇部色彩饱和度</div>
                                 </div>
                             </div>
 
@@ -651,10 +590,8 @@
 
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/auth.js"></script>
+    <script src="assets/api/api.js"></script>
     <script src="assets/js/simple-image-manager.js"></script>
-    <script src="assets/js/element-slider.js"></script>
     <script src="assets/js/main.js"></script>
     
     <!-- 主题切换功能 -->

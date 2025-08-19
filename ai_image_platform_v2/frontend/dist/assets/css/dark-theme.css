@@ -1,27 +1,30 @@
-/* 亚光黑高端主题 */
+/* 亚光黑色系主题样式 */
+
+/* 配色方案定义 */
 :root {
     /* 主色调 - 亚光黑色系 */
-    --bg-primary: #1a1a1a;        /* 主背景 - 深黑色 */
-    --bg-secondary: #2a2a2a;      /* 卡片背景 - 亚光黑 */
-    --bg-tertiary: #3a3a3a;       /* 次级背景 - 浅亚光黑 */
-    --bg-hover: #4a4a4a;          /* 悬停背景 */
+    --bg-primary: #0a0a0a;           /* 主背景 - 深黑 */
+    --bg-secondary: #1a1a1a;         /* 次要背景 - 炭黑 */
+    --bg-tertiary: #2a2a2a;          /* 第三背景 - 深灰 */
+    --bg-card: #1e1e1e;              /* 卡片背景 - 亚光黑 */
+    --bg-hover: #333333;             /* 悬停背景 */
     
     /* 文字颜色 */
-    --text-primary: #ffffff;       /* 主要文字 - 纯白 */
-    --text-secondary: #e0e0e0;     /* 次要文字 - 浅灰 */
-    --text-muted: #a0a0a0;         /* 弱化文字 - 中灰 */
-    --text-accent: #64ffda;        /* 强调文字 - 青色 */
+    --text-primary: #ffffff;          /* 主要文字 - 纯白 */
+    --text-secondary: #cccccc;        /* 次要文字 - 浅灰 */
+    --text-muted: #888888;            /* 弱化文字 - 中灰 */
+    --text-accent: #64ffda;           /* 强调文字 - 青色 */
     
     /* 边框颜色 */
-    --border-primary: #404040;     /* 主边框 */
-    --border-secondary: #505050;   /* 次边框 */
-    --border-accent: #64ffda;      /* 强调边框 */
+    --border-primary: #333333;        /* 主要边框 */
+    --border-secondary: #444444;      /* 次要边框 */
+    --border-accent: #64ffda;         /* 强调边框 */
     
     /* 按钮颜色 */
-    --btn-primary-bg: #2a2a2a;
-    --btn-primary-hover: #3a3a3a;
-    --btn-accent-bg: #64ffda;
-    --btn-accent-hover: #4fd3b8;
+    --btn-primary-bg: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    --btn-primary-hover: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    --btn-accent-bg: linear-gradient(135deg, #64ffda 0%, #4fd3b8 100%);
+    --btn-accent-hover: linear-gradient(135deg, #4fd3b8 0%, #3bb89f 100%);
     
     /* 阴影效果 */
     --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -34,10 +37,11 @@
 body {
     background: var(--bg-primary) !important;
     color: var(--text-primary) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* 主容器 */
-.container {
+.main-container {
     background: var(--bg-primary) !important;
 }
 
@@ -48,123 +52,98 @@ body {
     box-shadow: var(--shadow-medium) !important;
 }
 
-.sidebar-header {
+.logo-section {
     background: var(--bg-tertiary) !important;
     border-bottom: 1px solid var(--border-primary) !important;
+}
+
+.logo {
     color: var(--text-primary) !important;
 }
 
-.brand-text {
-    color: var(--text-primary) !important;
+.logo i {
+    color: var(--text-accent) !important;
 }
 
-.brand-subtitle {
+.category-title {
     color: var(--text-secondary) !important;
-}
-
-.tool-category {
+    background: var(--bg-tertiary) !important;
     border-bottom: 1px solid var(--border-primary) !important;
 }
 
-.category-header {
-    background: var(--bg-tertiary) !important;
-    color: var(--text-primary) !important;
-    border-bottom: 1px solid var(--border-secondary) !important;
+.category-title i {
+    color: var(--text-accent) !important;
 }
 
 .tool-item {
     color: var(--text-secondary) !important;
-    border-bottom: 1px solid var(--border-secondary) !important;
+    border-bottom: 1px solid var(--border-primary) !important;
     transition: all 0.3s ease !important;
 }
 
 .tool-item:hover {
     background: var(--bg-hover) !important;
     color: var(--text-primary) !important;
-    border-left: 3px solid var(--border-accent) !important;
+    transform: translateX(4px) !important;
 }
 
 .tool-item.active {
-    background: var(--bg-tertiary) !important;
+    background: var(--bg-hover) !important;
     color: var(--text-accent) !important;
-    border-left: 3px solid var(--border-accent) !important;
+    border-left: 3px solid var(--text-accent) !important;
 }
 
-.tool-icon {
+.tool-item i {
     color: var(--text-accent) !important;
 }
 
 /* 顶部导航主题 */
-.header {
+.top-nav {
     background: var(--bg-secondary) !important;
     border-bottom: 1px solid var(--border-primary) !important;
-    box-shadow: var(--shadow-light) !important;
-}
-
-.nav-item {
-    color: var(--text-secondary) !important;
-}
-
-.nav-item:hover {
-    color: var(--text-primary) !important;
-    background: var(--bg-hover) !important;
-}
-
-.nav-item.active {
-    color: var(--text-accent) !important;
-    background: var(--bg-tertiary) !important;
-}
-
-.user-menu {
-    background: var(--bg-tertiary) !important;
-    border: 1px solid var(--border-primary) !important;
     box-shadow: var(--shadow-medium) !important;
 }
 
-.user-menu-item {
-    color: var(--text-secondary) !important;
+.page-title {
+    color: var(--text-primary) !important;
 }
 
-.user-menu-item:hover {
-    background: var(--bg-hover) !important;
-    color: var(--text-primary) !important;
+.version-tag {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-accent) !important;
+    border: 1px solid var(--border-accent) !important;
+}
+
+.breadcrumb {
+    color: var(--text-muted) !important;
 }
 
 /* 按钮主题 */
-.btn {
-    background: var(--btn-primary-bg) !important;
-    color: var(--text-primary) !important;
-    border: 1px solid var(--border-secondary) !important;
-    transition: all 0.3s ease !important;
-}
-
-.btn:hover {
-    background: var(--btn-primary-hover) !important;
-    border-color: var(--border-accent) !important;
-    box-shadow: var(--shadow-light) !important;
-}
-
 .btn-primary {
     background: var(--btn-accent-bg) !important;
     color: var(--bg-primary) !important;
     border: none !important;
+    box-shadow: var(--shadow-light) !important;
+    transition: all 0.3s ease !important;
 }
 
 .btn-primary:hover {
     background: var(--btn-accent-hover) !important;
     box-shadow: var(--shadow-glow) !important;
+    transform: translateY(-2px) !important;
 }
 
-.btn-icon {
-    background: var(--bg-tertiary) !important;
-    color: var(--text-secondary) !important;
-    border: 1px solid var(--border-secondary) !important;
-}
-
-.btn-icon:hover {
-    background: var(--bg-hover) !important;
+.btn-secondary {
+    background: var(--btn-primary-bg) !important;
     color: var(--text-primary) !important;
+    border: 1px solid var(--border-secondary) !important;
+    box-shadow: var(--shadow-light) !important;
+}
+
+.btn-secondary:hover {
+    background: var(--btn-primary-hover) !important;
     border-color: var(--border-accent) !important;
+    box-shadow: var(--shadow-medium) !important;
 }
 
 /* 工作区主题 */
@@ -172,32 +151,52 @@ body {
     background: var(--bg-primary) !important;
 }
 
-.image-processing-area {
-    background: var(--bg-secondary) !important;
-    border: 1px solid var(--border-primary) !important;
-    box-shadow: var(--shadow-medium) !important;
+.image-operation-area {
+    background: var(--bg-primary) !important;
 }
 
-.canvas-container {
-    background: var(--bg-tertiary) !important;
+.image-processing-area {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-primary) !important;
+    box-shadow: var(--shadow-medium) !important;
+    border-radius: 12px !important;
 }
 
 /* 上传区域动态背景 */
 .upload-section {
-    background: var(--bg-primary) !important;
     position: relative !important;
     overflow: hidden !important;
+    background: var(--bg-card) !important;
+    border-radius: 12px !important;
 }
 
 .upload-section::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    background: 
-        radial-gradient(circle at 60% 20%, rgba(100, 255, 218, 0.12) 0%, transparent 50%),
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(100, 255, 218, 0.05) 0%, 
+        rgba(26, 26, 26, 0.95) 25%, 
+        rgba(42, 42, 42, 0.9) 50%, 
+        rgba(26, 26, 26, 0.95) 75%, 
+        rgba(100, 255, 218, 0.05) 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* 动态图片拼凑背景 */
+.upload-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
         radial-gradient(circle at 20% 30%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(100, 255, 218, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 40% 80%, rgba(100, 255, 218, 0.06) 0%, transparent 50%),
@@ -341,6 +340,55 @@ body {
     border: 1px solid var(--border-secondary) !important;
 }
 
+/* 动画定义 */
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes floatingImages1 {
+    0% {
+        background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%, 0% 0%, 150% 150%, 0% 0%;
+    }
+}
+
+@keyframes floatingImages2 {
+    0% {
+        background-position: 100% 0%, 0% 100%, 25% 75%, 0% 0%;
+    }
+    100% {
+        background-position: 0% 100%, 100% 0%, 125% 175%, 0% 0%;
+    }
+}
+
+@keyframes floatingImages3 {
+    0% {
+        background-position: 50% 100%, 150% 50%, 75% 25%, 0% 0%;
+    }
+    100% {
+        background-position: 150% 0%, 50% 150%, 175% 125%, 0% 0%;
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .upload-container {
+        margin: 10px !important;
+        padding: 20px !important;
+    }
+    
+    .upload-main-icon {
+        font-size: 36px !important;
+    }
+}
+
 /* 美颜参数面板主题 */
 .beauty-panel {
     background: var(--bg-secondary) !important;
@@ -400,11 +448,13 @@ body {
 /* 美颜滑块样式 */
 .beauty-slider {
     background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-secondary) !important;
 }
 
 .beauty-slider::-webkit-slider-thumb {
     background: linear-gradient(135deg, var(--btn-accent-bg) 0%, var(--text-accent) 100%) !important;
     box-shadow: 0 2px 8px rgba(100, 255, 218, 0.4) !important;
+    border: 2px solid var(--bg-primary) !important;
 }
 
 .beauty-slider::-webkit-slider-thumb:hover {
@@ -414,10 +464,24 @@ body {
 .beauty-slider::-moz-range-thumb {
     background: linear-gradient(135deg, var(--btn-accent-bg) 0%, var(--text-accent) 100%) !important;
     box-shadow: 0 2px 8px rgba(100, 255, 218, 0.4) !important;
+    border: 2px solid var(--bg-primary) !important;
 }
 
 .beauty-slider::-moz-range-thumb:hover {
     box-shadow: 0 4px 12px rgba(100, 255, 218, 0.6) !important;
+}
+
+/* 滑块轨道进度效果 */
+.beauty-slider::-webkit-slider-track {
+    background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-secondary) !important;
+    border-radius: 4px !important;
+}
+
+.beauty-slider::-moz-range-track {
+    background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-secondary) !important;
+    border-radius: 4px !important;
 }
 
 .parameter-tips {
@@ -484,55 +548,6 @@ body {
     box-shadow: none !important;
 }
 
-/* 动画定义 */
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-@keyframes floatingImages1 {
-    0% {
-        background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
-    }
-    100% {
-        background-position: 100% 100%, 0% 0%, 150% 150%, 0% 0%;
-    }
-}
-
-@keyframes floatingImages2 {
-    0% {
-        background-position: 100% 0%, 0% 100%, 25% 75%, 0% 0%;
-    }
-    100% {
-        background-position: 0% 100%, 100% 0%, 125% 175%, 0% 0%;
-    }
-}
-
-@keyframes floatingImages3 {
-    0% {
-        background-position: 50% 100%, 150% 50%, 75% 25%, 0% 0%;
-    }
-    100% {
-        background-position: 150% 0%, 50% 150%, 175% 125%, 0% 0%;
-    }
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .upload-container {
-        margin: 10px !important;
-        padding: 20px !important;
-    }
-    
-    .upload-main-icon {
-        font-size: 36px !important;
-    }
-}
-
 /* 滚动条主题 */
 ::-webkit-scrollbar {
     width: 8px;
@@ -545,57 +560,46 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--border-secondary);
+    background: var(--bg-hover);
     border-radius: 4px;
+    border: 1px solid var(--border-primary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--border-accent);
+    background: var(--text-accent);
 }
 
 /* 模态框主题 */
 .modal-overlay {
     background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
 }
 
-.modal {
-    background: var(--bg-secondary) !important;
+.modal, .modal-content {
+    background: var(--bg-card) !important;
     border: 1px solid var(--border-primary) !important;
     box-shadow: var(--shadow-heavy) !important;
 }
 
 .modal-header {
-    background: var(--bg-tertiary) !important;
+    background: var(--bg-secondary) !important;
     border-bottom: 1px solid var(--border-primary) !important;
     color: var(--text-primary) !important;
 }
 
 .modal-body {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-card) !important;
     color: var(--text-primary) !important;
-}
-
-.modal-close {
-    color: var(--text-secondary) !important;
-}
-
-.modal-close:hover {
-    color: var(--text-primary) !important;
-    background: var(--bg-hover) !important;
 }
 
 /* 表单元素主题 */
-.form-group label {
-    color: var(--text-secondary) !important;
-}
-
-.form-control {
+.form-input {
     background: var(--bg-tertiary) !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--border-secondary) !important;
 }
 
-.form-control:focus {
+.form-input:focus {
     border-color: var(--border-accent) !important;
     box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.2) !important;
 }
@@ -603,60 +607,80 @@ body {
 /* 状态栏主题 */
 .status-bar {
     background: var(--bg-secondary) !important;
-    border-top: 1px solid var(--border-primary) !important;
     color: var(--text-secondary) !important;
+    border-top: 1px solid var(--border-primary) !important;
 }
 
-/* 加载覆盖层主题 */
+/* 加载遮罩主题 */
 .loading-overlay {
-    background: rgba(26, 26, 26, 0.9) !important;
+    background: rgba(10, 10, 10, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
 }
 
-.loading-content {
-    background: var(--bg-secondary) !important;
-    border: 1px solid var(--border-primary) !important;
+.loading-text {
     color: var(--text-primary) !important;
-    box-shadow: var(--shadow-heavy) !important;
 }
 
-/* 图片预览主题 */
+.spinner {
+    border-color: var(--bg-tertiary) !important;
+    border-top-color: var(--text-accent) !important;
+}
+
+/* 图片预览区域主题 */
 .image-preview {
-    background: var(--bg-tertiary) !important;
+    background: var(--bg-card) !important;
 }
 
 .image-controls {
-    background: rgba(42, 42, 42, 0.9) !important;
-    border: 1px solid var(--border-secondary) !important;
+    background: rgba(26, 26, 26, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid var(--border-primary) !important;
 }
 
 /* 工具提示主题 */
-.tooltip {
+.tooltip::after {
     background: var(--bg-tertiary) !important;
     color: var(--text-primary) !important;
-    border: 1px solid var(--border-secondary) !important;
-    box-shadow: var(--shadow-medium) !important;
-}
-
-/* 通知主题 */
-.notification {
-    background: var(--bg-secondary) !important;
     border: 1px solid var(--border-primary) !important;
+}
+
+/* 通知样式主题 */
+.notification-item {
+    background: var(--bg-tertiary) !important;
+    border-left-color: var(--text-accent) !important;
     color: var(--text-primary) !important;
-    box-shadow: var(--shadow-medium) !important;
 }
 
-.notification.success {
-    border-left: 4px solid #4ade80 !important;
+.notification-item.unread {
+    background: var(--bg-hover) !important;
+    border-left-color: var(--text-accent) !important;
 }
 
-.notification.error {
-    border-left: 4px solid #f87171 !important;
+/* 高级视觉效果 */
+.upload-section {
+    position: relative;
 }
 
-.notification.warning {
-    border-left: 4px solid #fbbf24 !important;
+.upload-section::before {
+    animation-duration: 12s;
 }
 
-.notification.info {
-    border-left: 4px solid var(--text-accent) !important;
+/* 增强的悬停效果 */
+.feature-item:hover,
+.tool-item:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    filter: brightness(1.1) !important;
+}
+
+/* 焦点状态 */
+*:focus {
+    outline: 2px solid var(--text-accent) !important;
+    outline-offset: 2px !important;
+}
+
+/* 选择状态 */
+::selection {
+    background: var(--text-accent) !important;
+    color: var(--bg-primary) !important;
 }

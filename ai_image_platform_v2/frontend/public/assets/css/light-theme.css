@@ -463,25 +463,39 @@ body {
 
 /* 美颜滑块样式 */
 .beauty-slider {
-    background: var(--bg-tertiary) !important;
+    background: #cbd5e1 !important;
+    border: 1px solid #94a3b8 !important;
 }
 
 .beauty-slider::-webkit-slider-thumb {
-    background: linear-gradient(135deg, var(--btn-accent-bg) 0%, var(--text-accent) 100%) !important;
-    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.4) !important;
+    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.5) !important;
+    border: 2px solid #ffffff !important;
 }
 
 .beauty-slider::-webkit-slider-thumb:hover {
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.6) !important;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.7) !important;
 }
 
 .beauty-slider::-moz-range-thumb {
-    background: linear-gradient(135deg, var(--btn-accent-bg) 0%, var(--text-accent) 100%) !important;
-    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.4) !important;
+    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.5) !important;
+    border: 2px solid #ffffff !important;
 }
 
 .beauty-slider::-moz-range-thumb:hover {
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.6) !important;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.7) !important;
+}
+
+/* 滑块轨道进度效果 */
+.beauty-slider::-webkit-slider-track {
+    background: #cbd5e1 !important;
+    border: 1px solid #94a3b8 !important;
+}
+
+.beauty-slider::-moz-range-track {
+    background: #cbd5e1 !important;
+    border: 1px solid #94a3b8 !important;
 }
 
 .parameter-tips {

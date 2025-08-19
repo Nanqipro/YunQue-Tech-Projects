@@ -2,28 +2,22 @@
 
 // 初始化所有 Element Plus 滑块
 function initializeElementSliders() {
-    console.log('Initializing Element Plus sliders...');
     // 初始化每个滑块
     initializeSlider('smoothing', 30);
     initializeSlider('whitening', 40);
     initializeSlider('eye-enhancement', 60);
     initializeSlider('lip-adjustment', 25);
-    console.log('All sliders initialized');
 }
 
 // 初始化单个滑块
 function initializeSlider(id, initialValue) {
-    console.log(`Initializing slider: ${id}`);
     const slider = document.getElementById(id + '-slider');
     const input = document.getElementById(id);
     
     if (!slider || !input) {
         console.warn(`滑块元素未找到: ${id}`);
-        console.log(`Slider element: ${slider}, Input element: ${input}`);
         return;
     }
-    
-    console.log(`Found elements for ${id}: slider=${!!slider}, input=${!!input}`);
 
     const bar = slider.querySelector('.el-slider__bar');
     const buttonWrapper = slider.querySelector('.el-slider__button-wrapper');
@@ -199,13 +193,8 @@ function applyElementSliderPreset(preset) {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Element Slider: DOM Content Loaded');
     // 延迟初始化，确保HTML完全加载
-    setTimeout(function() {
-        console.log('Element Slider: Starting initialization');
-        initializeElementSliders();
-        console.log('Element Slider: Initialization completed');
-    }, 100);
+    setTimeout(initializeElementSliders, 100);
 });
 
 // 导出函数供其他脚本使用

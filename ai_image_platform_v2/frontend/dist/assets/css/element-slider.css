@@ -10,13 +10,13 @@
 
 /* Element Plus 滑块主容器 */
 .el-slider {
-    position: relative !important;
-    flex: 1 !important;
-    margin-top: 0 !important;
-    margin-left: 12px !important;
-    height: 32px !important;
-    display: flex !important;
-    align-items: center !important;
+    position: relative;
+    flex: 1;
+    margin-top: 0;
+    margin-left: 12px;
+    height: 32px;
+    display: flex;
+    align-items: center;
 }
 
 /* 滑块轨道 */
@@ -305,12 +305,12 @@
 
 /* 参数组Element Plus风格 */
 .parameter-group-el {
-    margin-bottom: 24px !important;
-    background: #fff !important;
-    border-radius: 8px !important;
-    padding: 16px !important;
-    border: 1px solid #e4e7ed !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 24px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #e4e7ed;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .group-header-el {
