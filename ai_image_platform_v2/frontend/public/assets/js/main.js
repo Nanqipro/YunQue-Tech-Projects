@@ -174,11 +174,18 @@ function bindEvents() {
         }
     });
 
-    // 美颜滑块值更新
+    // 美颜滑块值更新 - 兼容Element Plus风格
     $(document).on('input', '.beauty-slider', function () {
         if (!checkAuthentication()) return;
         const value = $(this).val();
         $(this).siblings('.parameter-label').find('.parameter-value').text(value);
+        updateBeautyPreview();
+    });
+
+    // Element Plus滑块变化事件监听
+    document.addEventListener('sliderChange', function(e) {
+        if (!checkAuthentication()) return;
+        console.log('Element滑块值变化:', e.detail.id, e.detail.value);
         updateBeautyPreview();
     });
 
@@ -1230,14 +1237,28 @@ async function processBeautyImage() {
     // 显示处理指示器
     $('#processing-indicator').show();
 
-    // 获取美颜参数
-    const params = {
-        smoothing: parseFloat($('#smoothing').val() || 30) / 100,
-        whitening: parseFloat($('#whitening').val() || 40) / 100,
-        eye_enhancement: parseFloat($('#eye-enhancement').val() || 60) / 100,
-        lip_enhancement: parseFloat($('#lip-adjustment').val() || 25) / 100,
-        ai_mode: true
-    };
+    // 获取美颜参数 - 兼容Element Plus滑块
+    let params;
+    if (window.ElementSlider && typeof window.ElementSlider.getAllValues === 'function') {
+        // 使用Element Plus滑块值
+        const sliderValues = window.ElementSlider.getAllValues();
+        params = {
+            smoothing: parseFloat(sliderValues.smoothing || 30) / 100,
+            whitening: parseFloat(sliderValues.whitening || 40) / 100,
+            eye_enhancement: parseFloat(sliderValues.eyeEnhancement || 60) / 100,
+            lip_enhancement: parseFloat(sliderValues.lipAdjustment || 25) / 100,
+            ai_mode: true
+        };
+    } else {
+        // 回退到传统滑块值
+        params = {
+            smoothing: parseFloat($('#smoothing').val() || 30) / 100,
+            whitening: parseFloat($('#whitening').val() || 40) / 100,
+            eye_enhancement: parseFloat($('#eye-enhancement').val() || 60) / 100,
+            lip_enhancement: parseFloat($('#lip-adjustment').val() || 25) / 100,
+            ai_mode: true
+        };
+    }
 
     // 禁用处理按钮
     $('.btn-process-beauty').prop('disabled', true);
@@ -1490,6 +1511,13 @@ function updateBeautyPreview() {
 
 // 应用美颜预设
 function applyBeautyPreset(preset) {
+    // 优先使用Element Plus滑块
+    if (window.ElementSlider && typeof window.ElementSlider.applyPreset === 'function') {
+        window.ElementSlider.applyPreset(preset);
+        return;
+    }
+
+    // 回退到传统滑块
     const presets = {
         natural: { beauty_strength: 30, smoothing: 20, whitening: 25, eye_enhancement: 40, lip_adjustment: 15 },
         sweet: { beauty_strength: 60, smoothing: 40, whitening: 50, eye_enhancement: 70, lip_adjustment: 35 },
@@ -1523,11 +1551,17 @@ function toggleFullscreen() {
 
 // 重置美颜参数
 function resetBeautyParams() {
-    $('#beauty-strength').val(50).trigger('input');
-    $('#smoothing').val(30).trigger('input');
-    $('#whitening').val(40).trigger('input');
-    $('#eye-enhancement').val(60).trigger('input');
-    $('#lip-adjustment').val(25).trigger('input');
+    // 优先使用Element Plus滑块
+    if (window.ElementSlider && typeof window.ElementSlider.reset === 'function') {
+        window.ElementSlider.reset();
+    } else {
+        // 回退到传统滑块
+        $('#beauty-strength').val(50).trigger('input');
+        $('#smoothing').val(30).trigger('input');
+        $('#whitening').val(40).trigger('input');
+        $('#eye-enhancement').val(60).trigger('input');
+        $('#lip-adjustment').val(25).trigger('input');
+    }
 
     // 移除预设选择
     $('.preset-btn').removeClass('active');

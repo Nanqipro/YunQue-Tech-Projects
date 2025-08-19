@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>图文动态批量生产工具</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/sidebar.css">
     <link rel="stylesheet" href="assets/css/modal.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/beauty.css">
+    <link rel="stylesheet" href="assets/css/element-slider.css">
+    <link rel="stylesheet" href="assets/css/light-theme.css" id="light-theme" disabled>
+    <link rel="stylesheet" href="assets/css/dark-theme.css" id="dark-theme">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <!-- 加载遮罩 -->
     <div id="loading-overlay" class="loading-overlay">
@@ -28,7 +35,7 @@
             <div class="logo-section">
                 <div class="logo">
                     <i class="fa-solid fa-magic"></i>
-    <span>批量生产工具</span>
+                    <span>批量生产工具</span>
                 </div>
             </div>
 
@@ -36,7 +43,7 @@
             <nav class="tool-categories">
                 <div class="category-group">
                     <h3 class="category-title">
-                        <i class="fa-solid fa-magic"></i>
+                        <i class="fas fa-magic"></i>
                         AI美颜
                     </h3>
                     <ul class="tool-list">
@@ -45,7 +52,7 @@
                             <span>智能美颜</span>
                         </li>
                         <li class="tool-item" data-category="beauty" data-tool="smooth">
-                            <i class="fa-solid fa-hand-sparkles"></i>
+                            <i class="fa-solid fa-wand-sparkles"></i>
                             <span>智能磨皮</span>
                         </li>
                         <li class="tool-item" data-category="beauty" data-tool="whiten">
@@ -159,7 +166,7 @@
                         <span class="version-tag">v2.0</span>
                     </div>
                 </div>
-                
+
                 <div class="nav-center">
                     <div class="breadcrumb">
                         <span class="breadcrumb-item"><i class="fas fa-home"></i> 首页</span>
@@ -167,10 +174,31 @@
                         <span class="breadcrumb-item active">AI美颜</span>
                     </div>
                 </div>
-                
+
                 <div class="nav-right">
                     <!-- 功能按钮组 -->
                     <div class="function-buttons">
+                        <!-- 主题切换按钮 -->
+                        <div class="theme-switcher">
+                            <button class="btn-icon theme-btn" id="theme-toggle" title="切换主题">
+                                <i class="fas fa-moon" id="theme-icon"></i>
+                            </button>
+                            <div class="theme-dropdown" id="theme-dropdown">
+                                <div class="theme-option" data-theme="light">
+                                    <i class="fas fa-sun"></i>
+                                    <span>浅色主题</span>
+                                </div>
+                                <div class="theme-option" data-theme="dark">
+                                    <i class="fas fa-moon"></i>
+                                    <span>深色主题</span>
+                                </div>
+                                <div class="theme-option" data-theme="auto">
+                                    <i class="fas fa-desktop"></i>
+                                    <span>跟随系统</span>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <button class="btn-icon" id="help-btn" title="帮助中心">
                             <i class="fas fa-question-circle"></i>
                         </button>
@@ -187,10 +215,10 @@
                             <span class="notification-badge">3</span>
                         </button>
                     </div>
-                    
+
                     <!-- 分隔线 -->
                     <div class="nav-divider"></div>
-                    
+
                     <!-- 认证按钮 -->
                     <div class="auth-buttons">
                         <button class="btn-primary" id="loginBtn">
@@ -202,7 +230,7 @@
                             <span>注册</span>
                         </button>
                     </div>
-                    
+
                     <!-- 用户信息 -->
                     <div class="user-info" style="display: none;">
                         <div class="user-profile">
@@ -235,7 +263,7 @@
                         <div class="upload-section" id="upload-section">
                             <div class="upload-container">
                                 <div class="upload-icon-wrapper">
-                                    <i class="fas fa-camera-retro upload-main-icon"></i>
+                                    <i class="fa-solid fa-camera-retro upload-main-icon"></i>
                                 </div>
                                 <h2 class="upload-title">AI智能美颜处理</h2>
                                 <p class="upload-subtitle">上传您的照片，体验专业级美颜效果</p>
@@ -258,7 +286,8 @@
                                     </div>
                                 </div>
                                 <div class="upload-actions">
-                                    <label for="image-input" class="btn-upload-primary" style="cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0;">
+                                    <label for="image-input" class="btn-upload-primary"
+                                        style="cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0;">
                                         <i class="fa-solid fa-upload"></i>
                                         选择照片
                                     </label>
@@ -279,7 +308,7 @@
                                 </h3>
                                 <!-- 移除对比视图和全屏按钮 -->
                             </div>
-                            
+
                             <div class="image-comparison-container">
                                 <div class="image-panel original-panel">
                                     <div class="panel-header">
@@ -289,18 +318,19 @@
                                         <img id="original-image" src="" alt="原始图片">
                                     </div>
                                 </div>
-                                
+
                                 <div class="comparison-divider">
                                     <div class="divider-line"></div>
                                     <div class="divider-handle">
                                         <i class="fas fa-arrows-alt-h"></i>
                                     </div>
                                 </div>
-                                
+
                                 <div class="image-panel processed-panel">
                                     <div class="panel-header">
                                         <span class="panel-label">美颜后</span>
-                                        <div class="processing-indicator" id="processing-indicator" style="display: none;">
+                                        <div class="processing-indicator" id="processing-indicator"
+                                            style="display: none;">
                                             <div class="processing-spinner"></div>
                                             <span>处理中...</span>
                                         </div>
@@ -314,172 +344,233 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="image-actions">
-                                <button class="btn-icon btn-zoom-in" title="放大">
+                                <button class="btn-icon" id="zoom-in">
                                     <i class="fas fa-search-plus"></i>
                                 </button>
-                                <button class="btn-icon btn-zoom-out" title="缩小">
+                                <button class="btn-icon" id="zoom-out">
                                     <i class="fas fa-search-minus"></i>
                                 </button>
-                                <button class="btn-icon btn-reset-zoom" title="重置缩放">
+                                <button class="btn-icon" id="reset-zoom">
                                     <i class="fas fa-expand-arrows-alt"></i>
-                                </button>
-                                <button class="btn-icon btn-fullscreen" title="全屏">
-                                    <i class="fas fa-expand"></i>
                                 </button>
                                 <div class="zoom-level" id="zoom-level">100%</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 控制面板区域 -->
                 <div class="properties-panel">
-            <!-- 美颜参数面板 -->
-            <div class="beauty-panel disabled" id="beauty-panel">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <i class="fas fa-sparkles"></i>
-                        AI智能美颜
-                    </div>
-                    <div class="panel-subtitle">调整参数获得最佳效果</div>
-                </div>
+                    <!-- 美颜参数面板 -->
+                    <div class="beauty-panel" id="beauty-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">
+                                <i class="fas fa-sparkles"></i>
+                                AI智能美颜
+                            </div>
+                            <div class="panel-subtitle">调整参数获得最佳效果</div>
+                        </div>
 
-                <!-- 美颜参数控制 -->
-                <div class="panel-content">
-                    <!-- 磨皮设置 -->
-                    <div class="parameter-group">
-                        <div class="group-header">
-                            <i class="fas fa-hand-sparkles"></i>
-                            <span class="group-title">磨皮设置</span>
-                        </div>
-                        <div class="parameter-item">
-                            <div class="parameter-label">
-                                <span>磨皮强度</span>
-                                <span class="parameter-value" id="smoothing-value">30</span>
+                        <!-- 美颜参数控制 -->
+                        <div class="panel-content">
+                            <!-- 磨皮设置 -->
+                            <div class="parameter-group-el">
+                                <div class="group-header-el">
+                                    <i class="fa-solid fa-hand-sparkles"></i>
+                                    <span class="group-title-el">磨皮设置</span>
+                                </div>
+                                <div class="parameter-item-el">
+                                    <div class="parameter-label-el">
+                                        <span class="label-text">磨皮强度</span>
+                                    </div>
+                                    <div class="slider-demo-block">
+                                        <div class="el-slider el-slider--with-input" id="smoothing-slider">
+                                            <div class="el-slider__runway">
+                                                <div class="el-slider__bar" style="width: 30%; left: 0%;"></div>
+                                                <div class="el-slider__button-wrapper" style="left: 30%;">
+                                                    <div class="el-slider__button"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="el-input-number">
+                                            <span class="el-input-number__decrease">
+                                                <i class="fas fa-minus"></i>
+                                            </span>
+                                            <span class="el-input-number__increase">
+                                                <i class="fas fa-plus"></i>
+                                            </span>
+                                            <div class="el-input">
+                                                <input type="number" class="el-input__inner" id="smoothing" min="0" max="100" value="30">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="parameter-tips-el">适度磨皮，保持肌肤自然质感</div>
+                                </div>
                             </div>
-                            <div class="slider-container">
-                                <input type="range" class="beauty-slider" id="smoothing" min="0" max="100" value="30">
-                                <div class="slider-track"></div>
-                            </div>
-                            <div class="parameter-tips">适度磨皮，保持肌肤自然质感</div>
-                        </div>
-                    </div>
 
-                    <!-- 美白设置 -->
-                    <div class="parameter-group">
-                        <div class="group-header">
-                            <i class="fas fa-sun"></i>
-                            <span class="group-title">美白设置</span>
-                        </div>
-                        <div class="parameter-item">
-                            <div class="parameter-label">
-                                <span>美白程度</span>
-                                <span class="parameter-value" id="whitening-value">40</span>
+                            <!-- 美白设置 -->
+                            <div class="parameter-group-el">
+                                <div class="group-header-el">
+                                    <i class="fas fa-sun"></i>
+                                    <span class="group-title-el">美白设置</span>
+                                </div>
+                                <div class="parameter-item-el">
+                                    <div class="parameter-label-el">
+                                        <span class="label-text">美白程度</span>
+                                    </div>
+                                    <div class="slider-demo-block">
+                                        <div class="el-slider el-slider--with-input" id="whitening-slider">
+                                            <div class="el-slider__runway">
+                                                <div class="el-slider__bar" style="width: 40%; left: 0%;"></div>
+                                                <div class="el-slider__button-wrapper" style="left: 40%;">
+                                                    <div class="el-slider__button"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="el-input-number">
+                                            <span class="el-input-number__decrease">
+                                                <i class="fas fa-minus"></i>
+                                            </span>
+                                            <span class="el-input-number__increase">
+                                                <i class="fas fa-plus"></i>
+                                            </span>
+                                            <div class="el-input">
+                                                <input type="number" class="el-input__inner" id="whitening" min="0" max="100" value="40">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="parameter-tips-el">自然提亮肤色，避免过度美白</div>
+                                </div>
                             </div>
-                            <div class="slider-container">
-                                <input type="range" class="beauty-slider" id="whitening" min="0" max="100" value="40">
-                                <div class="slider-track"></div>
-                            </div>
-                            <div class="parameter-tips">自然提亮肤色，避免过度美白</div>
-                        </div>
-                    </div>
 
-                    <!-- 眼部增强 -->
-                    <div class="parameter-group">
-                        <div class="group-header">
-                            <i class="fas fa-eye"></i>
-                            <span class="group-title">眼部增强</span>
-                        </div>
-                        <div class="parameter-item">
-                            <div class="parameter-label">
-                                <span>增强程度</span>
-                                <span class="parameter-value" id="eye-enhancement-value">60</span>
+                            <!-- 眼部增强 -->
+                            <div class="parameter-group-el">
+                                <div class="group-header-el">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="group-title-el">眼部增强</span>
+                                </div>
+                                <div class="parameter-item-el">
+                                    <div class="parameter-label-el">
+                                        <span class="label-text">增强程度</span>
+                                    </div>
+                                    <div class="slider-demo-block">
+                                        <div class="el-slider el-slider--with-input" id="eye-enhancement-slider">
+                                            <div class="el-slider__runway">
+                                                <div class="el-slider__bar" style="width: 60%; left: 0%;"></div>
+                                                <div class="el-slider__button-wrapper" style="left: 60%;">
+                                                    <div class="el-slider__button"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="el-input-number">
+                                            <span class="el-input-number__decrease">
+                                                <i class="fas fa-minus"></i>
+                                            </span>
+                                            <span class="el-input-number__increase">
+                                                <i class="fas fa-plus"></i>
+                                            </span>
+                                            <div class="el-input">
+                                                <input type="number" class="el-input__inner" id="eye-enhancement" min="0" max="100" value="60">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="parameter-tips-el">增强眼部轮廓，提升神采</div>
+                                </div>
                             </div>
-                            <div class="slider-container">
-                                <input type="range" class="beauty-slider" id="eye-enhancement" min="0" max="100" value="60">
-                                <div class="slider-track"></div>
-                            </div>
-                            <div class="parameter-tips">增强眼部轮廓，提升神采</div>
-                        </div>
-                    </div>
 
-                    <!-- 唇部调整 -->
-                    <div class="parameter-group">
-                        <div class="group-header">
-                            <i class="fas fa-kiss"></i>
-                            <span class="group-title">唇部调整</span>
-                        </div>
-                        <div class="parameter-item">
-                            <div class="parameter-label">
-                                <span>唇色增强</span>
-                                <span class="parameter-value" id="lip-adjustment-value">25</span>
+                            <!-- 唇部调整 -->
+                            <div class="parameter-group-el">
+                                <div class="group-header-el">
+                                    <i class="fas fa-kiss"></i>
+                                    <span class="group-title-el">唇部调整</span>
+                                </div>
+                                <div class="parameter-item-el">
+                                    <div class="parameter-label-el">
+                                        <span class="label-text">唇色增强</span>
+                                    </div>
+                                    <div class="slider-demo-block">
+                                        <div class="el-slider el-slider--with-input" id="lip-adjustment-slider">
+                                            <div class="el-slider__runway">
+                                                <div class="el-slider__bar" style="width: 25%; left: 0%;"></div>
+                                                <div class="el-slider__button-wrapper" style="left: 25%;">
+                                                    <div class="el-slider__button"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="el-input-number">
+                                            <span class="el-input-number__decrease">
+                                                <i class="fas fa-minus"></i>
+                                            </span>
+                                            <span class="el-input-number__increase">
+                                                <i class="fas fa-plus"></i>
+                                            </span>
+                                            <div class="el-input">
+                                                <input type="number" class="el-input__inner" id="lip-adjustment" min="0" max="100" value="25">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="parameter-tips-el">自然提升唇部色彩饱和度</div>
+                                </div>
                             </div>
-                            <div class="slider-container">
-                                <input type="range" class="beauty-slider" id="lip-adjustment" min="0" max="100" value="25">
-                                <div class="slider-track"></div>
-                            </div>
-                            <div class="parameter-tips">自然提升唇部色彩饱和度</div>
-                        </div>
-                    </div>
 
-                    <!-- 预设方案 -->
-                    <div class="preset-section">
-                        <div class="preset-header">
-                            <i class="fas fa-magic"></i>
-                            <span>快速预设</span>
+                            <!-- 预设方案 -->
+                            <div class="preset-section">
+                                <div class="preset-header">
+                                    <i class="fas fa-magic"></i>
+                                    <span>快速预设</span>
+                                </div>
+                                <div class="preset-buttons">
+                                    <button class="preset-btn" data-preset="natural">
+                                        <i class="fas fa-leaf"></i>
+                                        <span>自然</span>
+                                    </button>
+                                    <button class="preset-btn" data-preset="sweet">
+                                        <i class="fas fa-heart"></i>
+                                        <span>甜美</span>
+                                    </button>
+                                    <button class="preset-btn" data-preset="elegant">
+                                        <i class="fas fa-gem"></i>
+                                        <span>优雅</span>
+                                    </button>
+                                    <button class="preset-btn" data-preset="fresh">
+                                        <i class="fas fa-snowflake"></i>
+                                        <span>清新</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- AI建议 -->
+                            <div class="ai-suggestions">
+                                <div class="ai-header">
+                                    <i class="fas fa-robot"></i>
+                                    <span>AI智能建议</span>
+                                </div>
+                                <div class="suggestion-list" id="suggestion-list">
+                                    <div class="suggestion-item">
+                                        <i class="fas fa-lightbulb"></i>
+                                        <span>上传照片后获取个性化建议</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="preset-buttons">
-                            <button class="preset-btn" data-preset="natural">
-                                <i class="fas fa-leaf"></i>
-                                <span>自然</span>
+
+                        <!-- 操作按钮 -->
+                        <div class="panel-actions">
+                            <button class="btn-process-beauty" id="process-btn" disabled>
+                                <i class="fas fa-magic"></i>
+                                <span>开始美颜</span>
+                                <div class="btn-loading" style="display: none;">
+                                    <div class="loading-spinner"></div>
+                                </div>
                             </button>
-                            <button class="preset-btn" data-preset="sweet">
-                                <i class="fas fa-heart"></i>
-                                <span>甜美</span>
-                            </button>
-                            <button class="preset-btn" data-preset="elegant">
-                                <i class="fas fa-gem"></i>
-                                <span>优雅</span>
-                            </button>
-                            <button class="preset-btn" data-preset="fresh">
-                                <i class="fas fa-snowflake"></i>
-                                <span>清新</span>
-                            </button>
                         </div>
                     </div>
-
-                    <!-- AI建议 -->
-                    <div class="ai-suggestions">
-                        <div class="ai-header">
-                            <i class="fas fa-robot"></i>
-                            <span>AI智能建议</span>
-                        </div>
-                        <div class="suggestion-list" id="suggestion-list">
-                            <div class="suggestion-item">
-                                <i class="fas fa-lightbulb"></i>
-                                <span>上传照片后获取个性化建议</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 操作按钮 -->
-                <div class="panel-actions">
-                    <button class="btn-process-beauty" id="process-btn" disabled>
-                        <i class="fas fa-magic"></i>
-                        <span>开始美颜</span>
-                        <div class="btn-loading" style="display: none;">
-                            <div class="loading-spinner"></div>
-                        </div>
-                    </button>
                 </div>
             </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+    </div>
+    </main>
     </div>
 
     <!-- 底部状态栏 -->
@@ -560,7 +651,156 @@
 
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="assets/api/api.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/simple-image-manager.js"></script>
+    <script src="assets/js/element-slider.js"></script>
     <script src="assets/js/main.js"></script>
+    
+    <!-- 主题切换功能 -->
+    <script>
+        // 主题管理器
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = localStorage.getItem('theme') || 'dark';
+                this.lightThemeLink = document.getElementById('light-theme');
+                this.darkThemeLink = document.getElementById('dark-theme');
+                this.themeIcon = document.getElementById('theme-icon');
+                this.themeToggle = document.getElementById('theme-toggle');
+                this.themeDropdown = document.getElementById('theme-dropdown');
+                
+                this.init();
+            }
+            
+            init() {
+                // 应用保存的主题
+                this.applyTheme(this.currentTheme);
+                
+                // 绑定事件
+                this.bindEvents();
+                
+                // 监听系统主题变化
+                if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                        if (this.currentTheme === 'auto') {
+                            this.applySystemTheme();
+                        }
+                    });
+                }
+            }
+            
+            bindEvents() {
+                // 主题切换按钮点击
+                this.themeToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleDropdown();
+                });
+                
+                // 主题选项点击
+                this.themeDropdown.addEventListener('click', (e) => {
+                    const option = e.target.closest('.theme-option');
+                    if (option) {
+                        const theme = option.dataset.theme;
+                        this.setTheme(theme);
+                        this.hideDropdown();
+                    }
+                });
+                
+                // 点击其他地方关闭下拉菜单
+                document.addEventListener('click', () => {
+                    this.hideDropdown();
+                });
+            }
+            
+            toggleDropdown() {
+                const isVisible = this.themeDropdown.style.display === 'block';
+                if (isVisible) {
+                    this.hideDropdown();
+                } else {
+                    this.showDropdown();
+                }
+            }
+            
+            showDropdown() {
+                this.themeDropdown.style.display = 'block';
+                this.updateDropdownSelection();
+            }
+            
+            hideDropdown() {
+                this.themeDropdown.style.display = 'none';
+            }
+            
+            updateDropdownSelection() {
+                // 更新下拉菜单中的选中状态
+                const options = this.themeDropdown.querySelectorAll('.theme-option');
+                options.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.theme === this.currentTheme) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+            
+            setTheme(theme) {
+                this.currentTheme = theme;
+                localStorage.setItem('theme', theme);
+                this.applyTheme(theme);
+            }
+            
+            applyTheme(theme) {
+                switch (theme) {
+                    case 'light':
+                        this.enableLightTheme();
+                        this.updateIcon('sun');
+                        break;
+                    case 'dark':
+                        this.enableDarkTheme();
+                        this.updateIcon('moon');
+                        break;
+                    case 'auto':
+                        this.applySystemTheme();
+                        this.updateIcon('desktop');
+                        break;
+                }
+            }
+            
+            enableLightTheme() {
+                this.lightThemeLink.disabled = false;
+                this.darkThemeLink.disabled = true;
+            }
+            
+            enableDarkTheme() {
+                this.lightThemeLink.disabled = true;
+                this.darkThemeLink.disabled = false;
+            }
+            
+            applySystemTheme() {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    this.enableDarkTheme();
+                } else {
+                    this.enableLightTheme();
+                }
+            }
+            
+            updateIcon(iconType) {
+                const iconClasses = {
+                    'sun': 'fas fa-sun',
+                    'moon': 'fas fa-moon',
+                    'desktop': 'fas fa-desktop'
+                };
+                
+                this.themeIcon.className = iconClasses[iconType] || iconClasses['moon'];
+            }
+        }
+        
+        // 初始化主题管理器
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+        });
+    </script>
+    
+    <!-- Element Plus 滑块组件 -->
+    <script src="assets/js/element-slider.js"></script>
 </body>
+
 </html>

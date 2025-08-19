@@ -1701,3 +1701,133 @@ kbd {
         display: none;
     }
 }
+
+/* 主题切换器样式 */
+.theme-switcher {
+    position: relative;
+    display: inline-block;
+}
+
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    font-size: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    padding: 0 !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2) !important;
+}
+
+.theme-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(30, 58, 138, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    animation: themeDropdownFadeIn 0.3s ease-out;
+}
+
+@keyframes themeDropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #374151;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.theme-option:last-child {
+    border-bottom: none;
+}
+
+.theme-option:hover {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    color: #1f2937;
+    transform: translateX(4px);
+}
+
+.theme-option.active {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    border-left: 3px solid #2563eb;
+}
+
+.theme-option.active:hover {
+    background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+    color: #1d4ed8;
+}
+
+.theme-option i {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.theme-option .fa-sun {
+    color: #f59e0b;
+}
+
+.theme-option .fa-moon {
+    color: #6366f1;
+}
+
+.theme-option .fa-desktop {
+    color: #6b7280;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 14px !important;
+    }
+    
+    .theme-dropdown {
+        min-width: 160px;
+        right: -20px;
+    }
+    
+    .theme-option {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}

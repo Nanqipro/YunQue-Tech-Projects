@@ -1,0 +1,397 @@
+/* Element Plus 风格滑块组件样式 */
+
+/* 滑块演示块容器 */
+.slider-demo-block {
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* Element Plus 滑块主容器 */
+.el-slider {
+    position: relative !important;
+    flex: 1 !important;
+    margin-top: 0 !important;
+    margin-left: 12px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* 滑块轨道 */
+.el-slider__runway {
+    width: 100%;
+    height: 6px;
+    margin: 16px 0;
+    background-color: #e4e7ed;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* 滑块进度条 */
+.el-slider__bar {
+    height: 6px;
+    background-color: #409eff;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* 滑块按钮容器 */
+.el-slider__button-wrapper {
+    height: 36px;
+    width: 36px;
+    position: absolute;
+    z-index: 1001;
+    top: -15px;
+    transform: translateX(-50%);
+    background-color: transparent;
+    text-align: center;
+    user-select: none;
+    line-height: normal;
+    outline: none;
+    cursor: grab;
+}
+
+.el-slider__button-wrapper:active {
+    cursor: grabbing;
+}
+
+/* 滑块按钮 */
+.el-slider__button {
+    width: 20px;
+    height: 20px;
+    border: solid 2px #409eff;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    user-select: none;
+    display: inline-block;
+    vertical-align: middle;
+    outline: none;
+    cursor: pointer;
+}
+
+.el-slider__button:hover {
+    transform: scale(1.2);
+}
+
+.el-slider__button.dragging {
+    border-color: #337ecc;
+    background-color: #337ecc;
+}
+
+/* 滑块输入框 */
+.el-slider.is-vertical {
+    position: relative;
+    display: inline-block;
+    width: 4px;
+    height: 200px;
+    flex: 0 0 auto;
+}
+
+/* 带输入框的滑块 */
+.el-slider--with-input {
+    display: flex;
+    align-items: center;
+}
+
+.el-slider--with-input .el-slider__runway {
+    margin-right: 160px;
+}
+
+/* 输入框样式 */
+.el-input-number {
+    position: relative;
+    display: inline-block;
+    width: 180px;
+    line-height: 38px;
+    margin-left: 12px;
+}
+
+.el-input-number .el-input {
+    display: block;
+    position: relative;
+    font-size: 14px;
+    width: 100%;
+}
+
+.el-input-number .el-input__inner {
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
+    height: 40px;
+    line-height: 40px;
+    outline: none;
+    padding: 0 15px;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    width: 100%;
+    text-align: center;
+}
+
+.el-input-number .el-input__inner:focus {
+    border-color: #409eff;
+    outline: none;
+}
+
+.el-input-number .el-input__inner:hover {
+    border-color: #c0c4cc;
+}
+
+/* 输入框控制按钮 */
+.el-input-number__decrease,
+.el-input-number__increase {
+    position: absolute;
+    z-index: 1;
+    top: 1px;
+    width: 40px;
+    height: auto;
+    text-align: center;
+    background: #f5f7fa;
+    color: #606266;
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.el-input-number__decrease {
+    left: 1px;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+}
+
+.el-input-number__increase {
+    right: 1px;
+    border-radius: 0 4px 4px 0;
+    border-left: none;
+}
+
+.el-input-number__decrease:hover,
+.el-input-number__increase:hover {
+    color: #409eff;
+}
+
+.el-input-number__decrease:active,
+.el-input-number__increase:active {
+    color: #3a8ee6;
+}
+
+.el-input-number__decrease.is-disabled,
+.el-input-number__increase.is-disabled {
+    color: #c0c4cc;
+    cursor: not-allowed;
+}
+
+/* 禁用状态 */
+.el-slider.is-disabled .el-slider__runway {
+    background-color: #f5f7fa;
+    cursor: not-allowed;
+}
+
+.el-slider.is-disabled .el-slider__bar {
+    background-color: #c0c4cc;
+}
+
+.el-slider.is-disabled .el-slider__button {
+    border-color: #c0c4cc;
+    cursor: not-allowed;
+}
+
+.el-slider.is-disabled .el-slider__button:hover {
+    transform: none;
+}
+
+/* 标记点 */
+.el-slider__marks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.el-slider__marks-text {
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #909399;
+    margin-top: 15px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .slider-demo-block {
+        max-width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .el-slider {
+        margin-left: 0;
+        margin-top: 12px;
+    }
+    
+    .el-slider--with-input .el-slider__runway {
+        margin-right: 0;
+        margin-bottom: 12px;
+    }
+    
+    .el-input-number {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* 美颜参数面板中的Element Plus滑块适配 */
+.parameter-item .slider-demo-block {
+    max-width: 100%;
+    margin-bottom: 8px;
+}
+
+.parameter-item .el-slider {
+    margin-left: 0;
+}
+
+.parameter-item .el-input-number {
+    width: 80px;
+    margin-left: 8px;
+}
+
+.parameter-item .el-input-number .el-input__inner {
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    padding: 0 8px;
+}
+
+.parameter-item .el-input-number__decrease,
+.parameter-item .el-input-number__increase {
+    width: 24px;
+    font-size: 12px;
+}
+
+/* 参数标签样式调整 */
+.parameter-label-el {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+.parameter-label-el .label-text {
+    font-size: 14px;
+    color: #606266;
+    font-weight: 500;
+}
+
+/* 参数组Element Plus风格 */
+.parameter-group-el {
+    margin-bottom: 24px !important;
+    background: #fff !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    border: 1px solid #e4e7ed !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+.group-header-el {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e4e7ed;
+}
+
+.group-header-el i {
+    font-size: 18px;
+    color: #409eff;
+}
+
+.group-title-el {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+}
+
+.parameter-item-el {
+    margin-bottom: 16px;
+}
+
+.parameter-item-el:last-child {
+    margin-bottom: 0;
+}
+
+.parameter-tips-el {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* 主题适配 */
+.light-theme .parameter-group-el {
+    background: #ffffff;
+    border-color: #e4e7ed;
+}
+
+.dark-theme .parameter-group-el {
+    background: #2d3748;
+    border-color: #4a5568;
+}
+
+.dark-theme .group-title-el {
+    color: #e2e8f0;
+}
+
+.dark-theme .parameter-label-el .label-text {
+    color: #a0aec0;
+}
+
+.dark-theme .parameter-tips-el {
+    color: #718096;
+}
+
+.dark-theme .el-input-number .el-input__inner {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.dark-theme .el-input-number .el-input__inner:focus {
+    border-color: #409eff;
+}
+
+.dark-theme .el-input-number__decrease,
+.dark-theme .el-input-number__increase {
+    background: #4a5568;
+    border-color: #4a5568;
+    color: #a0aec0;
+}
+
+.dark-theme .el-slider__runway {
+    background-color: #4a5568;
+}
+
+.dark-theme .el-slider__bar {
+    background-color: #409eff;
+}
