@@ -16,6 +16,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/primary_blue_dark</item>
         <item name="android:windowLightStatusBar">false</item>
+        <!-- Window flags -->
+        <item name="android:fitsSystemWindows">true</item>
     </style>
     
     <!-- Card style -->
