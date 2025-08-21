@@ -78,7 +78,7 @@ public class WordsFragment extends Fragment {
                  case "智能背词":
                      intent = new android.content.Intent(getContext(), SmartLearningActivity.class);
                      break;
-                 case "语境记忆":
+                 case "AI联想记忆":
                      intent = new android.content.Intent(getContext(), AIMemoryActivity.class);
                      break;
                  case "智能测试":
@@ -114,7 +114,7 @@ public class WordsFragment extends Fragment {
     private List<WordsFeature> createWordsFeatures() {
         List<WordsFeature> features = new ArrayList<>();
         features.add(new WordsFeature("智能背词", "AI记忆曲线", R.drawable.ic_brain, R.color.primary_blue));
-        features.add(new WordsFeature("语境记忆", "真实场景学习", R.drawable.ic_context, R.color.accent_green));
+        features.add(new WordsFeature("AI联想记忆", "智能生成记忆句子", R.drawable.ic_brain, R.color.accent_green));
         features.add(new WordsFeature("智能测试", "多样化练习", R.drawable.ic_quiz, R.color.warning_orange));
         features.add(new WordsFeature("能力画像", "学习分析报告", R.drawable.ic_chart, R.color.words_module));
         return features;

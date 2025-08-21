@@ -40,6 +40,15 @@ public class HomeFragment extends Fragment {
         readingTimeText = view.findViewById(R.id.reading_time_text);
         wordsModuleCard = view.findViewById(R.id.words_module_card);
         readingModuleCard = view.findViewById(R.id.reading_module_card);
+        androidx.cardview.widget.CardView aiMemoryCard = view.findViewById(R.id.ai_memory_card);
+        
+        // 设置AI联想记忆卡片点击事件
+        if (aiMemoryCard != null) {
+            aiMemoryCard.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(getContext(), AIMemoryActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void setupData() {
