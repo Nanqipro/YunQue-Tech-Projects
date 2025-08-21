@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +25,86 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- 词汇学习相关Activity -->
+        <activity
+            android:name=".VocabularyLearningActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AienglishApplication" />
+            
+        <activity
+            android:name=".WordDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".VocabularyLearningActivity"
+            android:theme="@style/Theme.AienglishApplication" />
+            
+        <activity
+             android:name=".SmartLearningActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <activity
+             android:name=".AIMemoryActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+            
+        <activity
+            android:name=".ContextMemoryActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AienglishApplication" />
+            
+        <activity
+            android:name=".SmartTestActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AienglishApplication" />
+            
+        <activity
+             android:name=".AbilityProfileActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <!-- 阅读相关Activity -->
+         <activity
+             android:name=".ReadingArticlesActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <activity
+             android:name=".ReadingDetailActivity"
+             android:exported="false"
+             android:parentActivityName=".ReadingArticlesActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <activity
+             android:name=".AICompanionActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <activity
+             android:name=".OutlineGeneratorActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <activity
+             android:name=".SmartQAActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
+             
+         <activity
+             android:name=".ReadingTasksActivity"
+             android:exported="false"
+             android:parentActivityName=".MainActivity"
+             android:theme="@style/Theme.AienglishApplication" />
         
     </application>
 

@@ -44,19 +44,78 @@ public class ReadingFragment extends Fragment {
         readingLevelsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         List<ReadingLevel> readingLevels = createReadingLevels();
         levelAdapter = new ReadingLevelAdapter(readingLevels);
+        levelAdapter.setOnItemClickListener(this::onReadingLevelClick);
         readingLevelsRecyclerView.setAdapter(levelAdapter);
 
         // 设置阅读分类
         readingCategoriesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         List<ReadingCategory> categories = createReadingCategories();
         categoryAdapter = new ReadingCategoryAdapter(categories);
+        categoryAdapter.setOnItemClickListener(this::onReadingCategoryClick);
         readingCategoriesRecyclerView.setAdapter(categoryAdapter);
 
         // 设置AI功能
         readingFeaturesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         List<ReadingFeature> features = createReadingFeatures();
         featureAdapter = new ReadingFeatureAdapter(features);
+        featureAdapter.setOnItemClickListener(this::onReadingFeatureClick);
         readingFeaturesRecyclerView.setAdapter(featureAdapter);
+    }
+    
+    private void onReadingLevelClick(ReadingLevel level) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), 
+                "选择阅读等级: " + level.level + "\n" + level.description, 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // 跳转到阅读文章列表
+            android.content.Intent intent = new android.content.Intent(getContext(), ReadingArticlesActivity.class);
+            intent.putExtra("level", level.level);
+            intent.putExtra("target", level.target);
+            intent.putExtra("description", level.description);
+            startActivity(intent);
+        }
+    }
+    
+    private void onReadingCategoryClick(ReadingCategory category) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), 
+                "选择分类: " + category.title + "\n" + category.description, 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // 跳转到分类文章列表
+            android.content.Intent intent = new android.content.Intent(getContext(), ReadingArticlesActivity.class);
+            intent.putExtra("category", category.title);
+            intent.putExtra("description", category.description);
+            startActivity(intent);
+        }
+    }
+    
+    private void onReadingFeatureClick(ReadingFeature feature) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), 
+                "启动功能: " + feature.title + "\n" + feature.description, 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // 暂时所有功能都显示开发中提示
+            switch (feature.title) {
+                case "AI伴读":
+                    android.widget.Toast.makeText(getContext(), "AI伴读功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                    break;
+                case "段落提纲":
+                    android.widget.Toast.makeText(getContext(), "段落提纲功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                    break;
+                case "智能问答":
+                    android.widget.Toast.makeText(getContext(), "智能问答功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                    break;
+                case "阅读任务":
+                    android.widget.Toast.makeText(getContext(), "阅读任务功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    android.widget.Toast.makeText(getContext(), "功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
     private List<ReadingLevel> createReadingLevels() {

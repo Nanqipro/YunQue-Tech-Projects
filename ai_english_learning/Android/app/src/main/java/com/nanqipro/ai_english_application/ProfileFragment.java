@@ -62,13 +62,59 @@ public class ProfileFragment extends Fragment {
         achievementsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         List<Achievement> achievements = createAchievements();
         achievementAdapter = new AchievementAdapter(achievements);
+        achievementAdapter.setOnItemClickListener(this::onAchievementClick);
         achievementsRecyclerView.setAdapter(achievementAdapter);
 
         // 设置设置列表
         settingsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Setting> settings = createSettings();
         settingAdapter = new SettingAdapter(settings);
+        settingAdapter.setOnItemClickListener(this::onSettingClick);
         settingsRecyclerView.setAdapter(settingAdapter);
+    }
+    
+    private void onAchievementClick(Achievement achievement) {
+        if (getContext() != null) {
+            String message = achievement.isUnlocked ? 
+                "恭喜获得成就: " + achievement.title + "\n" + achievement.description :
+                "未解锁成就: " + achievement.title + "\n" + achievement.description;
+            android.widget.Toast.makeText(getContext(), message, android.widget.Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    private void onSettingClick(Setting setting) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), 
+                "打开设置: " + setting.title, 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // 根据不同设置项启动不同Activity或功能
+             android.content.Intent intent = null;
+             switch (setting.title) {
+                 case "学习提醒":
+                     android.widget.Toast.makeText(getContext(), "学习提醒功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                     return;
+                 case "学习报告":
+                     intent = new android.content.Intent(getContext(), LearningReportActivity.class);
+                     break;
+                 case "语音设置":
+                     android.widget.Toast.makeText(getContext(), "语音设置功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                     return;
+                 case "主题设置":
+                     android.widget.Toast.makeText(getContext(), "主题设置功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                     return;
+                 case "关于我们":
+                     android.widget.Toast.makeText(getContext(), "关于我们功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                     return;
+                 default:
+                     return;
+             }
+             if (intent != null) {
+                 intent.putExtra("setting_title", setting.title);
+                 intent.putExtra("setting_description", setting.description);
+                 startActivity(intent);
+             }
+        }
     }
 
     private List<Achievement> createAchievements() {

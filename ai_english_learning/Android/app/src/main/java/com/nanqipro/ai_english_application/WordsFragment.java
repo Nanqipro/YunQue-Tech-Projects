@@ -41,13 +41,61 @@ public class WordsFragment extends Fragment {
         vocabularyRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         List<VocabularyLevel> vocabularyLevels = createVocabularyLevels();
         vocabularyAdapter = new VocabularyAdapter(vocabularyLevels);
+        vocabularyAdapter.setOnItemClickListener(this::onVocabularyLevelClick);
         vocabularyRecyclerView.setAdapter(vocabularyAdapter);
 
         // 设置功能模块
         featuresRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         List<WordsFeature> features = createWordsFeatures();
         featuresAdapter = new WordsFeatureAdapter(features);
+        featuresAdapter.setOnItemClickListener(this::onWordsFeatureClick);
         featuresRecyclerView.setAdapter(featuresAdapter);
+    }
+    
+    private void onVocabularyLevelClick(VocabularyLevel level) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), 
+                "选择了: " + level.title + "\n" + level.description, 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // 创建词汇学习Activity的Intent
+            android.content.Intent intent = new android.content.Intent(getContext(), VocabularyLearningActivity.class);
+            intent.putExtra("level_title", level.title);
+            intent.putExtra("level_description", level.description);
+            startActivity(intent);
+        }
+    }
+    
+    private void onWordsFeatureClick(WordsFeature feature) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), 
+                "启动功能: " + feature.title + "\n" + feature.description, 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // 根据不同功能启动不同Activity
+             android.content.Intent intent = null;
+             switch (feature.title) {
+                 case "智能背词":
+                     intent = new android.content.Intent(getContext(), SmartLearningActivity.class);
+                     break;
+                 case "语境记忆":
+                     intent = new android.content.Intent(getContext(), AIMemoryActivity.class);
+                     break;
+                 case "智能测试":
+                     android.widget.Toast.makeText(getContext(), "智能测试功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                     return;
+                 case "能力画像":
+                     android.widget.Toast.makeText(getContext(), "能力画像功能开发中...", android.widget.Toast.LENGTH_SHORT).show();
+                     return;
+                 default:
+                     return;
+             }
+             if (intent != null) {
+                 intent.putExtra("feature_title", feature.title);
+                 intent.putExtra("feature_description", feature.description);
+                 startActivity(intent);
+             }
+        }
     }
 
     private List<VocabularyLevel> createVocabularyLevels() {
