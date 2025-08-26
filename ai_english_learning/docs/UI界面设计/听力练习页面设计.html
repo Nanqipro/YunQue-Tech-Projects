@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>听力训练</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#3B82F6',
+secondary: '#60A5FA'
+},
+borderRadius: {
+'none': '0px',
+'sm': '2px',
+DEFAULT: '4px',
+'md': '8px',
+'lg': '12px',
+'xl': '16px',
+'2xl': '20px',
+'3xl': '24px',
+'full': '9999px',
+'button': '4px'
+}
+}
+}
+}
+</script>
+</head>
+<body class="bg-gray-50">
+<div class="w-[375px] min-h-[762px] mx-auto bg-white relative">
+<nav class="fixed top-0 w-full bg-white z-50 border-b">
+<div class="flex items-center justify-between px-4 h-[56px]">
+<button class="!rounded-button p-2">
+<i class="fas fa-arrow-left text-gray-700"></i>
+</button>
+<h1 class="text-lg font-medium">商务英语听力训练</h1>
+<button class="!rounded-button p-2">
+<i class="fas fa-share text-gray-700"></i>
+</button>
+</div>
+</nav>
+<div class="mt-[56px] px-4">
+<div class="rounded-lg overflow-hidden mt-4">
+<img src="https://ai-public.mastergo.com/ai/img_res/dbefb8b2b162be3b78d0d623ba33d01b.jpg"
+class="w-full h-[200px] object-cover" alt="课程场景">
+</div>
+<div class="mt-6">
+<div class="flex items-center justify-between">
+<div>
+<span class="text-sm text-gray-500">Level: 中级</span>
+<span class="mx-2 text-gray-300">|</span>
+<span class="text-sm text-gray-500">时长: 15分钟</span>
+</div>
+<div class="text-sm text-primary">66% 已完成</div>
+</div>
+</div>
+<div class="mt-8">
+<div class="flex flex-col items-center">
+<div class="w-full bg-gray-100 rounded-full h-1 mb-4">
+<div class="bg-primary h-1 rounded-full" style="width: 45%"></div>
+</div>
+<div class="flex justify-between w-full text-sm text-gray-500">
+<span>00:00</span>
+<span>15:00</span>
+</div>
+</div>
+<div class="flex items-center justify-center gap-8 mt-6">
+<button class="!rounded-button p-3">
+<i class="fas fa-backward-step text-gray-700 text-xl"></i>
+</button>
+<button class="!rounded-button w-16 h-16 bg-primary flex items-center justify-center">
+<i class="fas fa-play text-white text-2xl"></i>
+</button>
+<button class="!rounded-button p-3">
+<i class="fas fa-forward-step text-gray-700 text-xl"></i>
+</button>
+</div>
+<div class="flex items-center justify-between mt-8">
+<button class="!rounded-button flex items-center gap-2 px-4 py-2 bg-gray-100">
+<i class="fas fa-volume-high text-gray-700"></i>
+<span class="text-sm">音量</span>
+</button>
+<button class="!rounded-button flex items-center gap-2 px-4 py-2 bg-gray-100">
+<i class="fas fa-rotate-right text-gray-700"></i>
+<span class="text-sm">重复</span>
+</button>
+<button class="!rounded-button flex items-center gap-2 px-4 py-2 bg-gray-100">
+<i class="fas fa-gauge-high text-gray-700"></i>
+<span class="text-sm">1.0x</span>
+</button>
+</div>
+</div>
+<div class="mt-8">
+<button class="!rounded-button w-full py-3 bg-primary text-white font-medium">
+开始练习
+</button>
+</div>
+<div class="mt-8">
+<h2 class="text-lg font-medium mb-4">听力能力分析</h2>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span>语音识别</span>
+<span class="text-primary">90%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span>内容理解</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span>语速适应</span>
+<span class="text-primary">75%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

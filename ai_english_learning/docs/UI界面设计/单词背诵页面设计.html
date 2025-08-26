@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词学习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#F5A623'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                        'button': '4px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="fixed top-0 w-full bg-white shadow-sm z-50">
+        <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center">
+                <button class="p-2 hover:bg-gray-100 rounded-full">
+                    <i class="fas fa-arrow-left text-gray-600"></i>
+                </button>
+                <h1 class="ml-3 text-lg font-medium">托福核心词汇</h1>
+            </div>
+            <div class="text-primary">33%</div>
+        </div>
+        <div class="h-1 bg-gray-100">
+            <div class="h-full bg-primary" style="width: 33%"></div>
+        </div>
+    </nav>
+
+    <main class="mt-16 px-4 pb-32">
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="text-center">
+                <h2 class="text-3xl font-medium mb-2">Innovation</h2>
+                <div class="text-gray-500 mb-2">/ˌɪnəˈveɪʃn/</div>
+                <button class="mb-4 text-primary">
+                    <i class="fas fa-volume-up text-xl"></i>
+                </button>
+                <p class="text-gray-700 mb-4">创新</p>
+                <button class="text-primary text-sm">
+                    查看例句 <i class="fas fa-chevron-down ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+            <h3 class="text-lg font-medium mb-4">记忆曲线</h3>
+            <div id="chart" class="w-full h-48"></div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-robot text-primary text-xl"></i>
+                <h3 class="text-lg font-medium ml-2">AI 助手</h3>
+            </div>
+            <div class="space-y-4">
+                <button class="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span>智能例句生成</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </button>
+                <button class="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span>相关词汇联想</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </button>
+                <button class="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span>记忆技巧提示</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="fixed bottom-0 w-full bg-white shadow-lg px-4 py-3">
+        <div class="flex justify-between gap-4">
+            <button class="flex-1 py-3 bg-red-500 text-white font-medium rounded-button">
+                不认识
+            </button>
+            <button class="flex-1 py-3 bg-yellow-500 text-white font-medium rounded-button">
+                模糊
+            </button>
+            <button class="flex-1 py-3 bg-green-500 text-white font-medium rounded-button">
+                认识
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        const chart = echarts.init(document.getElementById('chart'));
+        const option = {
+            grid: {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 40
+            },
+            xAxis: {
+                type: 'category',
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                axisLine: {
+                    lineStyle: {
+                        color: '#ddd'
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: '#eee'
+                    }
+                }
+            },
+            series: [{
+                data: [20, 32, 25, 40, 35, 45, 38],
+                type: 'line',
+                smooth: true,
+                symbolSize: 8,
+                itemStyle: {
+                    color: '#4A90E2'
+                },
+                areaStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0,
+                            color: 'rgba(74, 144, 226, 0.2)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(74, 144, 226, 0)'
+                        }]
+                    }
+                }
+            }]
+        };
+        chart.setOption(option);
+    </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+。
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>听力学习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#E5E7EB'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                        'button': '4px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        .progress-bar {
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #3B82F6;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="fixed top-0 w-full bg-primary text-white px-4 py-3 flex items-center justify-between z-50">
+        <div class="flex items-center">
+            <i class="fas fa-bars text-xl"></i>
+            <div class="ml-4 flex items-center">
+                <img src="https://ai-public.mastergo.com/ai/img_res/bacd0a6782c2aada1f9af390a74dbe49.jpg" class="w-8 h-8 rounded-full" alt="avatar">
+                <span class="ml-2">张小明</span>
+            </div>
+        </div>
+        <i class="fas fa-bell text-xl"></i>
+    </nav>
+
+    <main class="mt-16 px-4 pb-20">
+        <section class="mb-6">
+            <h2 class="text-lg font-medium mb-4">今日听力课程</h2>
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-base font-medium">商务英语听力训练</h3>
+                    <span class="text-primary text-sm bg-blue-50 px-2 py-1 rounded">新课程</span>
+                </div>
+                <div class="text-gray-500 text-sm mb-4">Level: 中级 · 时长: 15分钟</div>
+                <div class="relative h-24 bg-gray-100 rounded-lg flex items-center justify-center mb-2">
+                    <button class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-white"></i>
+                    </button>
+                </div>
+                <div class="flex justify-between text-sm text-gray-500">
+                    <span>00:00</span>
+                    <span>15:00</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <img src="https://ai-public.mastergo.com/ai/img_res/680d72cf09f668067650ac5a369832e1.jpg" class="w-full h-24 object-cover rounded mb-2" alt="商务会议">
+                <h3 class="text-sm font-medium mb-1">商务会议场景</h3>
+                <div class="text-xs text-gray-500 mb-2">10分钟 · 初级</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 66%"></div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <img src="https://ai-public.mastergo.com/ai/img_res/0758eb66c26297b95b5b83bc87b010d1.jpg" class="w-full h-24 object-cover rounded mb-2" alt="日常对话">
+                <h3 class="text-sm font-medium mb-1">日常对话训练</h3>
+                <div class="text-xs text-gray-500 mb-2">8分钟 · 入门</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 100%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-medium">推荐训练</h2>
+                <a href="#" class="text-primary text-sm">查看全部</a>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-white rounded-lg p-3 flex items-center shadow-sm">
+                    <img src="https://ai-public.mastergo.com/ai/img_res/0677e9be003737c41dc5b9a7e9c3d998.jpg" class="w-20 h-20 rounded object-cover" alt="TED">
+                    <div class="ml-3 flex-1">
+                        <h3 class="font-medium">TED 演讲精选</h3>
+                        <div class="text-sm text-gray-500">20分钟 · 高级</div>
+                        <div class="flex items-center mt-1">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <span class="text-sm ml-1">4.9</span>
+                            <span class="text-sm text-gray-500 ml-2">12.5k 人已学习</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+                <div class="bg-white rounded-lg p-3 flex items-center shadow-sm">
+                    <img src="https://ai-public.mastergo.com/ai/img_res/6c56f45d78f07ef6199e843befea8caf.jpg" class="w-20 h-20 rounded object-cover" alt="新闻播报">
+                    <div class="ml-3 flex-1">
+                        <h3 class="font-medium">新闻播报训练</h3>
+                        <div class="text-sm text-gray-500">15分钟 · 中级</div>
+                        <div class="flex items-center mt-1">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <span class="text-sm ml-1">4.7</span>
+                            <span class="text-sm text-gray-500 ml-2">8.3k 人已学习</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-6">
+            <h2 class="text-lg font-medium mb-4">听力能力分析</h2>
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="text-center">
+                    <div class="text-2xl font-medium text-primary">32</div>
+                    <div class="text-sm text-gray-500">已练课程</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-medium text-primary">12</div>
+                    <div class="text-sm text-gray-500">连续练习</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-medium text-primary">92</div>
+                    <div class="text-sm text-gray-500">准确率</div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>语音识别</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>语意理解</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>语速适应</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg p-4 shadow-sm mb-6">
+            <div class="flex items-center">
+                <img src="https://ai-public.mastergo.com/ai/img_res/54861ed0fb828cd65ae743d80c8d2b09.jpg" class="w-10 h-10 rounded-full" alt="AI助手">
+                <div class="ml-3">
+                    <h2 class="text-base font-medium">AI 助手推荐</h2>
+                    <p class="text-sm text-gray-500 mt-1">根据你的学习情况，建议今天：</p>
+                    <div class="text-primary text-sm mt-2">
+                        <a href="#" class="mr-4">复习昨天的词汇</a>
+                        <a href="#">新增听力练习</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-200 px-6 py-2">
+        <div class="grid grid-cols-5 gap-4">
+            <a href="#" class="flex flex-col items-center text-primary">
+                <i class="fas fa-headphones text-xl mb-1"></i>
+                <span class="text-xs">听力</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-microphone text-xl mb-1"></i>
+                <span class="text-xs">口语</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-book text-xl mb-1"></i>
+                <span class="text-xs">词汇</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-pen text-xl mb-1"></i>
+                <span class="text-xs">写作</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-file-alt text-xl mb-1"></i>
+                <span class="text-xs">阅读</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

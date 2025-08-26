@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=375px, initial-scale=1.0">
+    <title>四六级阅读练习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#3B82F6',
+                    secondary: '#60A5FA'
+                },
+                borderRadius: {
+                    'none': '0px',
+                    'sm': '2px',
+                    DEFAULT: '4px',
+                    'md': '8px',
+                    'lg': '12px',
+                    'xl': '16px',
+                    '2xl': '20px',
+                    '3xl': '24px',
+                    'full': '9999px',
+                    'button': '4px'
+                }
+            }
+        }
+    }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <nav class="fixed top-0 w-full bg-white shadow-sm z-50">
+        <div class="flex items-center justify-between px-4 h-14">
+            <button class="flex items-center justify-center w-8 h-8 !rounded-button">
+                <i class="fas fa-arrow-left text-gray-600"></i>
+            </button>
+            <h1 class="text-base font-medium">四六级阅读练习</h1>
+            <button class="flex items-center justify-center w-8 h-8 text-primary !rounded-button">
+                <i class="fas fa-robot"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="mt-14 mb-16 px-4">
+        <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-sm text-gray-500">Passage 1</span>
+                <div class="flex items-center gap-3">
+                    <button class="flex items-center justify-center w-8 h-8 bg-gray-50 !rounded-button">
+                        <i class="fas fa-text-height text-gray-600"></i>
+                    </button>
+                    <button class="flex items-center justify-center w-8 h-8 bg-gray-50 !rounded-button">
+                        <i class="fas fa-volume-up text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            <article class="text-sm leading-6 text-gray-700">
+                Artificial intelligence (AI) has become an integral part of our daily lives, transforming how we work, communicate, and solve problems. From virtual assistants to autonomous vehicles, AI technologies continue to evolve and reshape various industries. This rapid advancement raises important questions about the future of human-AI interaction and its impact on society.
+
+                Recent developments in machine learning have enabled AI systems to process vast amounts of data and identify patterns with unprecedented accuracy. However, these capabilities also present challenges regarding privacy, ethics, and the potential displacement of human workers. As we move forward, it becomes crucial to establish frameworks that ensure responsible AI development while maximizing its benefits for humanity.
+            </article>
+            <div class="h-1 w-full bg-gray-100 rounded-full mt-4">
+                <div class="h-1 bg-primary rounded-full" style="width: 45%"></div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <p class="text-sm font-medium mb-4">1. What is the main focus of the passage?</p>
+                <div class="space-y-3">
+                    <button class="w-full text-left text-sm p-3 border border-gray-200 !rounded-button hover:border-primary">
+                        A. The history of artificial intelligence
+                    </button>
+                    <button class="w-full text-left text-sm p-3 border border-gray-200 !rounded-button hover:border-primary">
+                        B. Current AI applications and future implications
+                    </button>
+                    <button class="w-full text-left text-sm p-3 border border-gray-200 !rounded-button hover:border-primary">
+                        C. Challenges in AI development
+                    </button>
+                    <button class="w-full text-left text-sm p-3 border border-gray-200 !rounded-button hover:border-primary">
+                        D. The impact of AI on employment
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-sm font-medium">AI 解析</p>
+                    <i class="fas fa-lightbulb text-primary"></i>
+                </div>
+                <p class="text-sm text-gray-600">
+                    正确答案是 B。文章主要讨论了 AI 的当前应用及其对未来的影响。第一段介绍了 AI 如何融入日常生活，第二段则探讨了机器学习的发展及其带来的挑战，体现了文章对 AI 现状和未来影响的关注。
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-100">
+        <div class="flex items-center justify-between px-8 h-16">
+            <button class="flex flex-col items-center justify-center">
+                <i class="fas fa-book-open text-gray-400 mb-1"></i>
+                <span class="text-xs text-gray-400">练习</span>
+            </button>
+            <button class="flex flex-col items-center justify-center">
+                <i class="fas fa-star text-gray-400 mb-1"></i>
+                <span class="text-xs text-gray-400">收藏</span>
+            </button>
+            <button class="flex flex-col items-center justify-center">
+                <i class="fas fa-share-alt text-gray-400 mb-1"></i>
+                <span class="text-xs text-gray-400">分享</span>
+            </button>
+            <button class="flex flex-col items-center justify-center">
+                <i class="fas fa-history text-gray-400 mb-1"></i>
+                <span class="text-xs text-gray-400">记录</span>
+            </button>
+        </div>
+    </div>
+
+    <button class="fixed right-4 bottom-20 w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center">
+        <i class="fas fa-plus"></i>
+    </button>
+</body>
+</html>

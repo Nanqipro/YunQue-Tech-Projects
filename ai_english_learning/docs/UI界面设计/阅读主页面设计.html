@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=375px, initial-scale=1.0">
+<title>听力练习</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#4AA3FF',
+secondary: '#FFD93D'
+},
+borderRadius: {
+'none': '0px',
+'sm': '2px',
+DEFAULT: '4px',
+'md': '8px',
+'lg': '12px',
+'xl': '16px',
+'2xl': '20px',
+'3xl': '24px',
+'full': '9999px',
+'button': '4px'
+}
+}
+}
+}
+</script>
+</head>
+<body class="bg-gray-50 w-[375px] min-h-[762px]">
+<nav class="fixed top-0 w-full bg-primary px-4 py-3 flex items-center justify-between z-50">
+<button id="menuBtn" class="flex items-center">
+<i class="fas fa-bars text-white text-xl"></i>
+</button>
+<button id="profileBtn" class="flex items-center">
+<img class="w-10 h-10 rounded-full" src="https://ai-public.mastergo.com/ai/img_res/3346ccc1c21edeb5fb569b132249bb34.jpg" alt="用户头像">
+<span class="ml-3 text-white font-medium">张小明</span>
+</button>
+<div class="flex items-center space-x-4">
+<i class="fas fa-bell text-white text-xl"></i>
+</div>
+</nav>
+<div id="sideMenu" class="fixed top-0 left-0 w-64 h-full bg-white transform -translate-x-full transition-transform duration-300 ease-in-out z-50 shadow-lg">
+<div class="p-4 bg-primary">
+<div class="flex items-center space-x-3">
+<img class="w-12 h-12 rounded-full" src="https://ai-public.mastergo.com/ai/img_res/357d5838d383694186d56805bb9ed416.jpg" alt="用户头像">
+<div class="text-white">
+<p class="font-medium">张小明</p>
+<p class="text-sm opacity-80">英语学习者</p>
+</div>
+</div>
+</div>
+<div class="p-4">
+<button class="flex items-center space-x-3 w-full py-3 px-4 hover:bg-gray-50 rounded-lg">
+<i class="fas fa-user text-gray-500"></i>
+<span>编辑个人主页</span>
+</button>
+<button class="flex items-center space-x-3 w-full py-3 px-4 hover:bg-gray-50 rounded-lg">
+<i class="fas fa-cog text-gray-500"></i>
+<span>设置</span>
+</button>
+</div>
+</div>
+<div id="overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-40"></div>
+<main class="mt-16 mb-20 px-4">
+<div class="bg-white rounded-lg p-6 mb-6 shadow-sm">
+<h2 class="text-lg font-medium mb-4">阅读模式</h2>
+<div class="grid grid-cols-2 gap-4">
+<button class="p-4 rounded-lg border-2 border-primary bg-primary/5 flex flex-col items-center">
+<i class="fas fa-coffee text-primary text-2xl mb-2"></i>
+<span class="font-medium">休闲阅读</span>
+<p class="text-sm text-gray-500 mt-1">轻松阅读学习</p>
+</button>
+<button class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center">
+<i class="fas fa-tasks text-gray-400 text-2xl mb-2"></i>
+<span class="font-medium">阅读练习</span>
+<p class="text-sm text-gray-500 mt-1">生成练习题</p>
+</button>
+</div>
+</div>
+<div class="bg-white rounded-lg p-6 mb-6 shadow-sm">
+<h2 class="text-lg font-medium mb-4">阅读类型</h2>
+<div class="grid grid-cols-2 gap-4">
+<button class="relative p-4 rounded-lg border-2 border-primary bg-primary/5">
+<span class="font-medium">四六级阅读</span>
+<span class="absolute top-2 right-2 text-xs px-2 py-1 bg-primary text-white rounded-full">推荐</span>
+<p class="text-sm text-gray-500 mt-1">历年真题</p>
+</button>
+<button class="p-4 rounded-lg border-2 border-gray-200">
+<span class="font-medium">日常阅读</span>
+<p class="text-sm text-gray-500 mt-1">新闻文章</p>
+</button>
+<button class="p-4 rounded-lg border-2 border-gray-200">
+<span class="font-medium">考研阅读</span>
+<p class="text-sm text-gray-500 mt-1">考研真题</p>
+</button>
+<button class="p-4 rounded-lg border-2 border-gray-200">
+<span class="font-medium">专业阅读</span>
+<p class="text-sm text-gray-500 mt-1">学术文献</p>
+</button>
+</div>
+</div>
+<div class="bg-white rounded-lg p-6 mb-6 shadow-sm">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-lg font-medium">最近阅读</h2>
+<button class="text-primary text-sm">查看全部</button>
+</div>
+<div class="space-y-4">
+<div class="p-4 rounded-lg bg-gray-50">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-medium">The Future of Artificial Intelligence</h3>
+<p class="text-sm text-gray-500 mt-1">科技文章 | 已完成</p>
+</div>
+<div class="flex items-center">
+<i class="fas fa-check-circle text-primary mr-2"></i>
+<span class="text-xl font-medium text-primary">95</span>
+</div>
+</div>
+<div class="flex items-center space-x-4 mt-3">
+<div class="flex-1">
+<div class="flex justify-between text-xs text-gray-500 mb-1">
+<span>阅读理解</span>
+<span>95%</span>
+</div>
+<div class="h-1.5 bg-gray-200 rounded-full">
+<div class="h-1.5 bg-primary rounded-full" style="width: 95%"></div>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between text-xs text-gray-500 mb-1">
+<span>词汇掌握</span>
+<span>92%</span>
+</div>
+<div class="h-1.5 bg-gray-200 rounded-full">
+<div class="h-1.5 bg-primary rounded-full" style="width: 92%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-gray-50">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-medium">2024年6月四级阅读真题</h3>
+<p class="text-sm text-gray-500 mt-1">考试训练 | 练习中</p>
+</div>
+<i class="fas fa-book text-primary text-xl"></i>
+</div>
+<div class="mt-2 flex justify-between items-center">
+<div class="text-sm text-gray-500">已完成 3/5 道练习题</div>
+<button class="text-primary text-sm">继续阅读</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg p-6 shadow-sm">
+<h2 class="text-lg font-medium mb-4">阅读能力分析</h2>
+<div class="grid grid-cols-3 gap-4 mb-6">
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">45</p>
+<p class="text-sm text-gray-500">阅读文章</p>
+</div>
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">25</p>
+<p class="text-sm text-gray-500">练习天数</p>
+</div>
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">95</p>
+<p class="text-sm text-gray-500">平均分</p>
+</div>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-sm text-gray-500">阅读速度</span>
+<span class="text-sm text-primary">92%</span>
+</div>
+<div class="h-2 bg-gray-200 rounded-full">
+<div class="h-2 bg-primary rounded-full" style="width: 92%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-sm text-gray-500">理解准确度</span>
+<span class="text-sm text-primary">88%</span>
+</div>
+<div class="h-2 bg-gray-200 rounded-full">
+<div class="h-2 bg-primary rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-sm text-gray-500">词汇掌握</span>
+<span class="text-sm text-primary">85%</span>
+</div>
+<div class="h-2 bg-gray-200 rounded-full">
+<div class="h-2 bg-primary rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-sm text-gray-500">长难句理解</span>
+<span class="text-sm text-primary">82%</span>
+</div>
+<div class="h-2 bg-gray-200 rounded-full">
+<div class="h-2 bg-primary rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="bg-white rounded-lg p-6 shadow-sm">
+<h2 class="text-lg font-medium mb-4">AI助手建议</h2>
+<div class="flex items-start space-x-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+<i class="fas fa-robot text-primary text-xl"></i>
+</div>
+<div class="flex-1">
+<p class="text-sm text-gray-600">根据你最近的写作表现，建议重点关注：</p>
+<div class="mt-2 space-y-2">
+<p class="text-sm"><i class="fas fa-check text-primary mr-2"></i>动词时态的准确使用</p>
+<p class="text-sm"><i class="fas fa-check text-primary mr-2"></i>从句结构的多样化</p>
+<p class="text-sm"><i class="fas fa-check text-primary mr-2"></i>academic写作用词提升</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="bg-white rounded-lg p-6 shadow-sm">
+<h2 class="text-lg font-medium mb-4">学习统计</h2>
+<div class="grid grid-cols-4 gap-4 mb-6">
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">120</p>
+<p class="text-sm text-gray-500">阅读文章</p>
+</div>
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">15</p>
+<p class="text-sm text-gray-500">连续打卡</p>
+</div>
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">4.8</p>
+<p class="text-sm text-gray-500">平均得分</p>
+</div>
+<div class="text-center">
+<p class="text-2xl font-medium text-primary">85</p>
+<p class="text-sm text-gray-500">完成率</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-gray-50 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">本月阅读时长</span>
+<span class="text-primary font-medium">48小时</span>
+</div>
+<div class="h-2 bg-gray-200 rounded-full">
+<div class="h-2 bg-primary rounded-full" style="width: 80%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">目标：60小时/月</p>
+</div>
+<div class="p-4 bg-gray-50 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">文章完成度</span>
+<span class="text-primary font-medium">85%</span>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<div class="h-1.5 bg-primary rounded-full"></div>
+<div class="h-1.5 bg-primary rounded-full"></div>
+<div class="h-1.5 bg-primary rounded-full"></div>
+<div class="h-1.5 bg-primary rounded-full"></div>
+<div class="h-1.5 bg-primary rounded-full"></div>
+<div class="h-1.5 bg-primary/30 rounded-full"></div>
+<div class="h-1.5 bg-primary/30 rounded-full"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">已完成 85/100 篇</p>
+</div>
+<div class="p-4 bg-gray-50 rounded-lg">
+<h3 class="text-sm font-medium mb-3">每周阅读统计</h3>
+<div class="grid grid-cols-7 gap-2">
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 60%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">一</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 80%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">二</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 40%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">三</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 90%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">四</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 70%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">五</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 85%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">六</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-4 bg-gray-200 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary rounded-full" style="height: 50%"></div>
+</div>
+<span class="text-xs text-gray-500 mt-1">日</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<button class="fixed right-4 bottom-20 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg">
+<i class="fas fa-robot text-white text-xl"></i>
+</button>
+<nav class="fixed bottom-0 w-full bg-white border-t border-gray-200 px-4 py-2">
+<div class="grid grid-cols-5 gap-2">
+<button class="flex flex-col items-center">
+<i class="fas fa-headphones text-gray-400 text-xl mb-1"></i>
+<span class="text-xs text-gray-400">听力</span>
+</button>
+<button class="flex flex-col items-center">
+<i class="fas fa-microphone text-gray-400 text-xl mb-1"></i>
+<span class="text-xs text-gray-400">口语</span>
+</button>
+<button class="flex flex-col items-center">
+<i class="fas fa-book text-gray-400 text-xl mb-1"></i>
+<span class="text-xs text-gray-400">词汇</span>
+</button>
+<button class="flex flex-col items-center">
+<i class="fas fa-pen text-gray-400 text-xl mb-1"></i>
+<span class="text-xs text-gray-400">写作</span>
+</button>
+<button class="flex flex-col items-center">
+<i class="fas fa-book-open text-primary text-xl mb-1"></i>
+<span class="text-xs text-primary">阅读</span>
+</button>
+</div>
+</nav>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const avatarButtons = document.querySelectorAll('.grid.grid-cols-4 button');
+const accentButtons = document.querySelectorAll('.flex.justify-center.space-x-4 button');
+const micButton = document.querySelector('button.w-12.h-12.bg-primary');
+let isRecording = false;
+avatarButtons.forEach(button => {
+button.addEventListener('click', function() {
+avatarButtons.forEach(btn => {
+btn.classList.remove('border-primary');
+});
+this.classList.add('border-primary');
+});
+});
+accentButtons.forEach(button => {
+button.addEventListener('click', function() {
+accentButtons.forEach(btn => {
+btn.classList.remove('border-primary');
+});
+this.classList.add('border-primary');
+});
+});
+micButton.addEventListener('click', function() {
+isRecording = !isRecording;
+const icon = this.querySelector('i');
+if (isRecording) {
+icon.classList.remove('fa-microphone');
+icon.classList.add('fa-stop');
+this.classList.add('animate-pulse');
+} else {
+icon.classList.remove('fa-stop');
+icon.classList.add('fa-microphone');
+this.classList.remove('animate-pulse');
+}
+});
+playButton.addEventListener('click', function() {
+isPlaying = !isPlaying;
+const icon = this.querySelector('i');
+if (isPlaying) {
+icon.classList.remove('fa-play');
+icon.classList.add('fa-pause');
+} else {
+icon.classList.remove('fa-pause');
+icon.classList.add('fa-play');
+}
+});
+// Side menu functionality
+const menuBtn = document.getElementById('menuBtn');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+menuBtn.addEventListener('click', function() {
+sideMenu.classList.toggle('-translate-x-full');
+overlay.classList.toggle('opacity-0');
+overlay.classList.toggle('pointer-events-none');
+});
+overlay.addEventListener('click', function() {
+sideMenu.classList.add('-translate-x-full');
+overlay.classList.add('opacity-0');
+overlay.classList.add('pointer-events-none');
+});
+// Profile navigation
+const profileBtn = document.getElementById('profileBtn');
+profileBtn.addEventListener('click', function() {
+window.location.href = './profile.html';
+});
+// Edit profile button in side menu
+const editProfileBtn = document.querySelector('#sideMenu button:first-child');
+editProfileBtn.addEventListener('click', function() {
+window.location.href = './profile.html';
+});
+// Vocabulary books navigation
+const vocabBooks = document.querySelectorAll('.vocab-book');
+vocabBooks.forEach(book => {
+book.addEventListener('click', function() {
+window.location.href = './writing.html';
+});
+});
+// Bottom navigation
+const bottomNavBtns = document.querySelectorAll('nav.fixed.bottom-0 button');
+bottomNavBtns.forEach((btn, index) => {
+btn.addEventListener('click', function() {
+const pages = ['./listening.html', './speaking.html', './vocabulary.html', './writing.html', './reading.html'];
+window.location.href = pages[index];
+});
+});
+// AI assistant button
+const aiAssistantBtn = document.querySelector('button.fixed.right-4.bottom-20');
+aiAssistantBtn.addEventListener('click', function() {
+window.location.href = './ai-assistant.html';
+});
+});
+</script>
+</body>
+</html>

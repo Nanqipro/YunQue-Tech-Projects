@@ -1,0 +1,126 @@
+。
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=375px, initial-scale=1.0">
+    <title>中译英练习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066FF',
+                        secondary: '#4CAF50'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                        'button': '4px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #fff;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #E8E8E8;
+        }
+        .progress-value {
+            height: 100%;
+            border-radius: 4px;
+            background: #4CAF50;
+        }
+        input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="pb-20">
+    <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+        <div class="px-4 h-12 flex items-center justify-between">
+            <button class="text-gray-800">
+                <i class="fas fa-arrow-left text-lg"></i>
+            </button>
+            <h1 class="text-base font-medium">中译英练习</h1>
+            <span class="text-primary">得分：92</span>
+        </div>
+    </nav>
+
+    <main class="px-4 mt-16">
+        <section class="mb-8">
+            <h2 class="text-base font-medium mb-4">翻译句子</h2>
+            <p class="text-gray-900 mb-4">随着科技的发展，人工智能在我们的日常生活中扮演着越来越重要的角色。</p>
+            <input type="text" placeholder="请输入英文翻译" class="w-full h-10 px-3 mb-3 border border-gray-200 rounded-button">
+            <p class="text-gray-400 text-sm mb-4">示例：With the development of technology, artificial intelligence plays an increasingly important role in our daily lives.</p>
+            <button class="w-full h-12 bg-primary text-white rounded-button">提交翻译</button>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-base font-medium mb-4">AI 智能纠错</h2>
+            <div class="flex items-center mb-6">
+                <span class="text-2xl font-medium text-primary">95</span>
+                <span class="ml-2 text-gray-500">评分</span>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-gray-600">语法准确度</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-value" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-gray-600">表达流畅度</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-value" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-base font-medium mb-4">历史记录</h2>
+            <div class="space-y-4">
+                <div class="p-4 bg-gray-50 rounded-lg">
+                    <p class="text-gray-900 mb-2">环境保护需要每个人的参与和努力。</p>
+                    <p class="text-gray-600 mb-2">Environmental protection requires everyone's participation and effort.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-400">2023-12-20</span>
+                        <span class="text-primary">得分：90</span>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg">
+                    <p class="text-gray-900 mb-2">健康的生活方式包括均衡的饮食和适量的运动。</p>
+                    <p class="text-gray-600 mb-2">A healthy lifestyle includes a balanced diet and moderate exercise.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-400">2023-12-19</span>
+                        <span class="text-primary">得分：88</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
