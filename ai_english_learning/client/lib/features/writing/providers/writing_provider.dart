@@ -7,13 +7,11 @@ import '../../../core/services/storage_service.dart';
 
 class WritingProvider with ChangeNotifier {
   final ApiClient _apiClient;
-  final StorageService _storageService;
 
   WritingProvider({
     required ApiClient apiClient,
     required StorageService storageService,
-  }) : _apiClient = apiClient,
-       _storageService = storageService;
+  }) : _apiClient = apiClient;
 
   // 状态变量
   List<WritingTask> _tasks = [];
@@ -95,13 +93,13 @@ class WritingProvider with ChangeNotifier {
       _clearError();
       
       final response = await _apiClient.get('/writing/tasks');
-      if (response['success']) {
-        _tasks = (response['data'] as List)
+      if (response.data['success']) {
+        _tasks = (response.data['data'] as List)
             .map((json) => WritingTask.fromJson(json))
             .toList();
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '加载任务失败');
+        _setError(response.data['message'] ?? '加载任务失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -124,13 +122,13 @@ class WritingProvider with ChangeNotifier {
       if (difficulty != null) params['difficulty'] = difficulty.name;
       
       final response = await _apiClient.get('/writing/tasks', queryParameters: params);
-      if (response['success']) {
-        _tasks = (response['data'] as List)
+      if (response.data['success']) {
+        _tasks = (response.data['data'] as List)
             .map((json) => WritingTask.fromJson(json))
             .toList();
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '加载任务失败');
+        _setError(response.data['message'] ?? '加载任务失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -146,11 +144,11 @@ class WritingProvider with ChangeNotifier {
       _clearError();
       
       final response = await _apiClient.get('/writing/tasks/$taskId');
-      if (response['success']) {
-        _currentTask = WritingTask.fromJson(response['data']);
+      if (response.data['success']) {
+        _currentTask = WritingTask.fromJson(response.data['data']);
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '加载任务详情失败');
+        _setError(response.data['message'] ?? '加载任务详情失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -170,14 +168,14 @@ class WritingProvider with ChangeNotifier {
         'status': 'draft',
       });
       
-      if (response['success']) {
-        _currentSubmission = WritingSubmission.fromJson(response['data']);
+      if (response.data['success']) {
+        _currentSubmission = WritingSubmission.fromJson(response.data['data']);
         _currentContent = '';
         _currentWordCount = 0;
         _timeSpent = 0;
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '开始任务失败');
+        _setError(response.data['message'] ?? '开始任务失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -237,12 +235,12 @@ class WritingProvider with ChangeNotifier {
         },
       );
       
-      if (response['success']) {
-        _currentSubmission = WritingSubmission.fromJson(response['data']);
+      if (response.data['success']) {
+        _currentSubmission = WritingSubmission.fromJson(response.data['data']);
         notifyListeners();
         return true;
       } else {
-        _setError(response['message'] ?? '提交失败');
+        _setError(response.data['message'] ?? '提交失败');
         return false;
       }
     } catch (e) {
@@ -260,11 +258,11 @@ class WritingProvider with ChangeNotifier {
       _clearError();
       
       final response = await _apiClient.get('/writing/submissions/$submissionId');
-      if (response['success']) {
-        _currentSubmission = WritingSubmission.fromJson(response['data']);
+      if (response.data['success']) {
+        _currentSubmission = WritingSubmission.fromJson(response.data['data']);
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '加载结果失败');
+        _setError(response.data['message'] ?? '加载结果失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -280,13 +278,13 @@ class WritingProvider with ChangeNotifier {
       _clearError();
       
       final response = await _apiClient.get('/writing/submissions');
-      if (response['success']) {
-        _submissions = (response['data'] as List)
+      if (response.data['success']) {
+        _submissions = (response.data['data'] as List)
             .map((json) => WritingSubmission.fromJson(json))
             .toList();
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '加载提交历史失败');
+        _setError(response.data['message'] ?? '加载提交历史失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -302,11 +300,11 @@ class WritingProvider with ChangeNotifier {
       _clearError();
       
       final response = await _apiClient.get('/writing/stats');
-      if (response['success']) {
-        _stats = WritingStats.fromJson(response['data']);
+      if (response.data['success']) {
+        _stats = WritingStats.fromJson(response.data['data']);
         notifyListeners();
       } else {
-        _setError(response['message'] ?? '加载统计数据失败');
+        _setError(response.data['message'] ?? '加载统计数据失败');
       }
     } catch (e) {
       _setError('网络错误: $e');
@@ -375,8 +373,5 @@ class WritingProvider with ChangeNotifier {
     _error = null;
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+
 }

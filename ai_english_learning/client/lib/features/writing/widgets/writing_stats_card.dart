@@ -6,10 +6,10 @@ class WritingStatsCard extends StatelessWidget {
   final bool showDetails;
 
   const WritingStatsCard({
-    Key? key,
+    super.key,
     required this.stats,
     this.showDetails = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,8 @@ class WritingStatsCard extends StatelessWidget {
               ],
             ),
             
-            if (showDetails) ..[
+            if (showDetails) ...[
+
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 16),
@@ -120,7 +121,7 @@ class WritingStatsCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -183,18 +184,18 @@ class WritingStatsCard extends StatelessWidget {
         const SizedBox(height: 16),
         
         // 技能分析
-        if (stats.skillAnalysis != null) ..[
-          Text(
-            '技能分析',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade700,
-            ),
+        // 技能分析
+        Text(
+          '技能分析',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey.shade700,
           ),
-          const SizedBox(height: 8),
-          _buildSkillAnalysis(),
-        ],
+        ),
+        const SizedBox(height: 8),
+        _buildSkillAnalysis(),
+
       ],
     );
   }
@@ -203,7 +204,7 @@ class WritingStatsCard extends StatelessWidget {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: stats.typeStats.entries.map((entry) {
+      children: stats.taskTypeStats.entries.map((entry) {
         final percentage = stats.totalTasks > 0 
             ? (entry.value / stats.totalTasks * 100).toInt()
             : 0;
@@ -214,10 +215,10 @@ class WritingStatsCard extends StatelessWidget {
             vertical: 4,
           ),
           decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.1),
+            color: Colors.blue.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: Colors.blue.withOpacity(0.3),
+              color: Colors.blue.withValues(alpha: 0.3),
             ),
           ),
           child: Text(
@@ -264,17 +265,17 @@ class WritingStatsCard extends StatelessWidget {
             vertical: 4,
           ),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
             ),
           ),
           child: Text(
             '${entry.key}: ${entry.value} ($percentage%)',
             style: TextStyle(
               fontSize: 12,
-              color: color.shade700,
+              color: Colors.grey[700],
             ),
           ),
         );
@@ -283,17 +284,33 @@ class WritingStatsCard extends StatelessWidget {
   }
 
   Widget _buildSkillAnalysis() {
-    final analysis = stats.skillAnalysis!;
+    final analysis = stats.skillAnalysis;
     
     return Column(
       children: [
-        _buildSkillBar('语法', analysis.grammar, Colors.blue),
-        const SizedBox(height: 8),
-        _buildSkillBar('词汇', analysis.vocabulary, Colors.green),
-        const SizedBox(height: 8),
-        _buildSkillBar('结构', analysis.structure, Colors.orange),
-        const SizedBox(height: 8),
-        _buildSkillBar('内容', analysis.content, Colors.purple),
+        ...analysis.criteriaScores.entries.map((entry) {
+          Color color;
+          switch (entry.key) {
+            case 'grammar':
+              color = Colors.blue;
+              break;
+            case 'vocabulary':
+              color = Colors.green;
+              break;
+            case 'structure':
+              color = Colors.orange;
+              break;
+            case 'content':
+              color = Colors.purple;
+              break;
+            default:
+              color = Colors.grey;
+          }
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: _buildSkillBar(entry.key, entry.value * 100, color),
+          );
+        }),
       ],
     );
   }

@@ -36,7 +36,7 @@ class ReadingResultDialog extends StatelessWidget {
       score: score,
       correctCount: correctCount,
       totalCount: totalCount,
-      timeSpent: 0, // 可以从练习中获取
+      timeSpent: Duration.zero, // 可以从练习中获取
       accuracy: score,
     );
   }
@@ -234,7 +234,7 @@ class ReadingResultDialog extends StatelessWidget {
     List<String> suggestions = _getSuggestions();
 
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.paddingMd),
+      padding: const EdgeInsets.all(AppDimensions.spacingMd),
       decoration: BoxDecoration(
         color: AppColors.info.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusMd),
@@ -267,7 +267,7 @@ class ReadingResultDialog extends StatelessWidget {
             feedback,
             style: AppTextStyles.bodyMedium,
           ),
-          if (suggestions.isNotEmpty) ..[
+          if (suggestions.isNotEmpty) ...[
             const SizedBox(height: AppDimensions.spacingSm),
             ...suggestions.map((suggestion) => Padding(
                   padding: const EdgeInsets.only(top: AppDimensions.spacingXs),
@@ -401,7 +401,7 @@ class ReadingResultDialog extends StatelessWidget {
 /// 显示阅读结果对话框
 Future<void> showReadingResultDialog(
   BuildContext context,
-  ReadingExerciseResult result, {
+  ReadingExercise exercise, {
   VoidCallback? onRestart,
   VoidCallback? onContinue,
   VoidCallback? onClose,
@@ -410,10 +410,10 @@ Future<void> showReadingResultDialog(
     context: context,
     barrierDismissible: false,
     builder: (context) => ReadingResultDialog(
-      result: result,
-      onRestart: onRestart,
-      onContinue: onContinue,
-      onClose: onClose,
+      exercise: exercise,
+      onReview: onRestart,
+      onRetry: onContinue,
+      onFinish: onClose,
     ),
   );
 }

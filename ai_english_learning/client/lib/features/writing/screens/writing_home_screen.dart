@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/writing_provider.dart';
 import '../models/writing_task.dart';
+import '../models/writing_submission.dart';
 import '../widgets/writing_task_card.dart';
 import '../widgets/writing_stats_card.dart';
-import '../widgets/writing_filter_bar.dart';
+import 'widgets/writing_filter_bar.dart';
 import 'writing_task_screen.dart';
 import 'writing_history_screen.dart';
 import 'writing_stats_screen.dart';
 
 class WritingHomeScreen extends StatefulWidget {
-  const WritingHomeScreen({Key? key}) : super(key: key);
+  const WritingHomeScreen({super.key});
 
   @override
   State<WritingHomeScreen> createState() => _WritingHomeScreenState();
@@ -129,7 +130,16 @@ class _WritingHomeScreenState extends State<WritingHomeScreen>
                 ),
               
               // 筛选栏
-              const WritingFilterBar(),
+              WritingFilterBar(
+                selectedType: provider.selectedType,
+                selectedDifficulty: provider.selectedDifficulty,
+                sortBy: provider.sortBy,
+                isAscending: provider.sortAscending,
+                onTypeChanged: (type) => provider.setTypeFilter(type),
+                onDifficultyChanged: (difficulty) => provider.setDifficultyFilter(difficulty),
+                onSortChanged: (sortBy) => provider.setSorting(sortBy),
+                onClearFilters: () => provider.clearFilters(),
+              ),
               
               // 任务列表
               Expanded(

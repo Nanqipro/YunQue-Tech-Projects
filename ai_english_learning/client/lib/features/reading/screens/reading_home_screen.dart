@@ -6,9 +6,6 @@ import '../widgets/reading_article_card.dart';
 import '../widgets/reading_stats_card.dart';
 import '../widgets/reading_search_bar.dart';
 import 'reading_article_screen.dart';
-import 'reading_search_screen.dart';
-import 'reading_favorites_screen.dart';
-import 'reading_history_screen.dart';
 
 /// 阅读模块主页面
 class ReadingHomeScreen extends StatefulWidget {
@@ -70,13 +67,7 @@ class _ReadingHomeScreenState extends State<ReadingHomeScreen>
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ReadingSearchScreen(),
-                ),
-              );
-            },
+            onPressed: () => _showSearchDialog(),
           ),
           IconButton(
             icon: const Icon(Icons.filter_list, color: Colors.white),

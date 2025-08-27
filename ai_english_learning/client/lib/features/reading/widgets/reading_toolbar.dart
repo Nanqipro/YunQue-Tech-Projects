@@ -129,8 +129,8 @@ class _ToolbarButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingXs,
-          vertical: AppDimensions.paddingXs,
+          horizontal: AppDimensions.spacingXs,
+                vertical: AppDimensions.spacingXs,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -194,7 +194,7 @@ class _ReadingSettingsBottomSheetState extends State<ReadingSettingsBottomSheet>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.paddingLg),
+      padding: const EdgeInsets.all(AppDimensions.spacingLg),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: const BorderRadius.vertical(

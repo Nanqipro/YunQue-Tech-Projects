@@ -5,18 +5,19 @@ import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/loading_widget.dart';
 import '../../../shared/widgets/error_widget.dart';
 import '../models/vocabulary_book_model.dart';
+import '../models/word_model.dart';
+
 import '../providers/vocabulary_provider.dart';
 import 'vocabulary_book_screen.dart';
 import 'word_learning_screen.dart';
 import 'vocabulary_test_screen.dart';
-import 'study_statistics_screen.dart';
 
 /// 单词学习主页
 class VocabularyHomeScreen extends ConsumerStatefulWidget {
   const VocabularyHomeScreen({super.key});
 
   @override
-  ConsumerState<VocabularyHomeScreen> createState() => _VocabularyHomeScreenState;
+  ConsumerState<VocabularyHomeScreen> createState() => _VocabularyHomeScreenState();
 }
 
 class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
@@ -53,11 +54,9 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
           IconButton(
             icon: const Icon(Icons.analytics_outlined),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const StudyStatisticsScreen(),
-                ),
+              // TODO: 实现统计页面导航
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('统计功能开发中')),
               );
             },
           ),
@@ -116,7 +115,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
     }
 
     if (state.error != null && state.systemBooks.isEmpty) {
-      return CustomErrorWidget(
+      return ErrorDisplayWidget(
         message: state.error!,
         onRetry: () {
           ref.read(vocabularyProvider.notifier).loadSystemVocabularyBooks();
@@ -252,7 +251,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                   Expanded(
                     child: _buildStatItem(
                       '学习时长',
-                      '${todayStats.studyTimeMinutes}分钟',
+                      '${(todayStats.totalStudyTimeSeconds / 60).toInt()}分钟',
                       Icons.access_time,
                       theme.colorScheme.tertiary,
                       theme,
@@ -261,7 +260,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                   Expanded(
                     child: _buildStatItem(
                       '正确率',
-                      '${(todayStats.accuracy * 100).toInt()}%',
+                      '${(todayStats.averageAccuracy * 100).toInt()}%',
                       Icons.check_circle_outline,
                       Colors.green,
                       theme,
@@ -338,8 +337,25 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const WordLearningScreen(
-                        mode: StudyMode.smart,
+                      builder: (context) => WordLearningScreen(
+                        vocabularyBook: VocabularyBook(
+                          id: 'smart_learning',
+                          name: '智能学习',
+                          type: VocabularyBookType.system,
+                          difficulty: VocabularyBookDifficulty.intermediate,
+                          totalWords: 0,
+                          isPublic: true,
+                          tags: [],
+                          targetLevels: [],
+                          estimatedDays: 30,
+                          dailyWordCount: 20,
+                          downloadCount: 0,
+                          rating: 5.0,
+                          reviewCount: 0,
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ),
+                        mode: LearningMode.normal,
                       ),
                     ),
                   );
@@ -429,8 +445,26 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const WordLearningScreen(
-                        mode: StudyMode.today,
+                      builder: (context) => WordLearningScreen(
+                        vocabularyBook: VocabularyBook(
+                          id: 'today_words',
+                          name: '今日单词',
+                          type: VocabularyBookType.system,
+                          difficulty: VocabularyBookDifficulty.intermediate,
+                          totalWords: state.todayWords.length,
+                          isPublic: true,
+                          tags: [],
+                          targetLevels: [],
+                          estimatedDays: 1,
+                          dailyWordCount: state.todayWords.length,
+                          downloadCount: 0,
+                          rating: 5.0,
+                          reviewCount: 0,
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ),
+                        specificWords: state.todayWords,
+                        mode: LearningMode.normal,
                       ),
                     ),
                   );
@@ -544,7 +578,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => VocabularyBookScreen(book: book),
+              builder: (context) => VocabularyBookScreen(vocabularyBook: book),
             ),
           );
         },
@@ -574,7 +608,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      book.title,
+                      book.name,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -583,7 +617,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      book.description,
+                      book.description ?? '暂无描述',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.outline,
                       ),
@@ -600,7 +634,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                         ),
                         const SizedBox(width: 8),
                         _buildBookTag(
-                          '${book.wordCount}词',
+                          '${book.totalWords}词',
                           theme.colorScheme.outline,
                           theme,
                         ),
@@ -634,7 +668,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => VocabularyBookScreen(book: book),
+              builder: (context) => VocabularyBookScreen(vocabularyBook: book),
             ),
           );
         },
@@ -664,7 +698,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      book.title,
+                      book.name,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -673,7 +707,7 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      book.description,
+                      book.description ?? '暂无描述',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.outline,
                       ),
@@ -683,35 +717,33 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                     const SizedBox(height: 8),
                     
                     // 学习进度
-                    if (book.userProgress != null) ...[
-                      Row(
-                        children: [
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              value: book.userProgress!.progress,
-                              backgroundColor: theme.colorScheme.outline.withOpacity(0.2),
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                _getBookColor(book.difficulty),
-                              ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: LinearProgressIndicator(
+                            value: 0.0,
+                            backgroundColor: theme.colorScheme.outline.withValues(alpha: 0.2),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              _getBookColor(book.difficulty),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '${(book.userProgress!.progress * 100).toInt()}%',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.outline,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '已学 ${book.userProgress!.learnedWords}/${book.wordCount} 词',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.outline,
                         ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '0%',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.outline,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '已学 0/${book.totalWords} 词',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.outline,
                       ),
-                    ],
+                    ),
                   ],
                 ),
               ),
@@ -723,8 +755,8 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
                     context,
                     MaterialPageRoute(
                       builder: (context) => WordLearningScreen(
-                        mode: StudyMode.book,
-                        bookId: book.id,
+                        vocabularyBook: book,
+                        mode: LearningMode.normal,
                       ),
                     ),
                   );
@@ -743,9 +775,9 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Text(
         text,
@@ -762,6 +794,8 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
     switch (difficulty) {
       case VocabularyBookDifficulty.beginner:
         return Colors.green;
+      case VocabularyBookDifficulty.elementary:
+        return Colors.lightGreen;
       case VocabularyBookDifficulty.intermediate:
         return Colors.orange;
       case VocabularyBookDifficulty.advanced:
@@ -775,11 +809,11 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
   IconData _getBookIcon(VocabularyBookType type) {
     switch (type) {
       case VocabularyBookType.system:
-        return Icons.book;
+        return Icons.school;
       case VocabularyBookType.custom:
         return Icons.edit;
-      case VocabularyBookType.imported:
-        return Icons.download;
+      case VocabularyBookType.shared:
+        return Icons.share;
     }
   }
 
@@ -788,6 +822,8 @@ class _VocabularyHomeScreenState extends ConsumerState<VocabularyHomeScreen>
     switch (difficulty) {
       case VocabularyBookDifficulty.beginner:
         return '初级';
+      case VocabularyBookDifficulty.elementary:
+        return '基础';
       case VocabularyBookDifficulty.intermediate:
         return '中级';
       case VocabularyBookDifficulty.advanced:

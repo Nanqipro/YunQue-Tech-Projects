@@ -200,7 +200,7 @@ class ReadingExerciseResult {
   final double score;
   final int correctCount;
   final int totalCount;
-  final int timeSpent; // 用时（秒）
+  final Duration timeSpent; // 用时
   final double accuracy;
 
   const ReadingExerciseResult({
@@ -211,12 +211,18 @@ class ReadingExerciseResult {
     required this.accuracy,
   });
 
+  /// 错误题数
+  int get wrongCount => totalCount - correctCount;
+
+  /// 总题数（别名）
+  int get totalQuestions => totalCount;
+
   factory ReadingExerciseResult.fromJson(Map<String, dynamic> json) {
     return ReadingExerciseResult(
       score: (json['score'] as num).toDouble(),
       correctCount: json['correctCount'] as int,
       totalCount: json['totalCount'] as int,
-      timeSpent: json['timeSpent'] as int,
+      timeSpent: Duration(seconds: json['timeSpent'] as int),
       accuracy: (json['accuracy'] as num).toDouble(),
     );
   }
@@ -226,7 +232,7 @@ class ReadingExerciseResult {
       'score': score,
       'correctCount': correctCount,
       'totalCount': totalCount,
-      'timeSpent': timeSpent,
+      'timeSpent': timeSpent.inSeconds,
       'accuracy': accuracy,
     };
   }

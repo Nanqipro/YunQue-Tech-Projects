@@ -201,7 +201,7 @@ class SpeakingTaskCard extends StatelessWidget {
         text,
         style: TextStyle(
           fontSize: 10,
-          color: color.shade700,
+          color: color,
           fontWeight: FontWeight.w500,
         ),
       ),

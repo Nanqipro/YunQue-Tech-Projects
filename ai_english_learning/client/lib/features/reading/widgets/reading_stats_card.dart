@@ -62,7 +62,7 @@ class ReadingStatsCard extends StatelessWidget {
                 child: _buildStatItem(
                   icon: Icons.article,
                   label: '已读文章',
-                  value: stats.articlesRead.toString(),
+                  value: stats.totalArticlesRead.toString(),
                   unit: '篇',
                 ),
               ),
@@ -70,7 +70,7 @@ class ReadingStatsCard extends StatelessWidget {
                 child: _buildStatItem(
                   icon: Icons.quiz,
                   label: '练习次数',
-                  value: stats.exercisesCompleted.toString(),
+                  value: stats.practicesDone.toString(),
                   unit: '次',
                 ),
               ),
@@ -93,7 +93,7 @@ class ReadingStatsCard extends StatelessWidget {
                 child: _buildStatItem(
                   icon: Icons.speed,
                   label: '阅读速度',
-                  value: stats.readingSpeed.toString(),
+                  value: stats.averageReadingSpeed.toStringAsFixed(0),
                   unit: '词/分',
                 ),
               ),
@@ -108,7 +108,7 @@ class ReadingStatsCard extends StatelessWidget {
                 child: _buildStatItem(
                   icon: Icons.schedule,
                   label: '总时长',
-                  value: stats.formattedTotalTime,
+                  value: '${stats.totalReadingTime}分钟',
                   unit: '',
                 ),
               ),
@@ -116,7 +116,7 @@ class ReadingStatsCard extends StatelessWidget {
                 child: _buildStatItem(
                   icon: Icons.local_fire_department,
                   label: '连续天数',
-                  value: stats.streakDays.toString(),
+                  value: stats.consecutiveDays.toString(),
                   unit: '天',
                 ),
               ),
