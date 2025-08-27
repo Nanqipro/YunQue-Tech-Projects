@@ -85,7 +85,7 @@ AI英语学习平台是一款基于人工智能技术的全方位英语学习应
 ### 后端技术
 - **Go Gin**：高性能API服务
 - **微服务架构**：模块化、可扩展的系统设计
-- **PostgreSQL**：可靠的关系型数据库
+- **MySQL 8.0**：可靠的关系型数据库
 
 ### AI技术栈
 - **Hugging Face Transformers**：自然语言处理
@@ -121,7 +121,7 @@ ai_english_learning/
 ### 环境要求
 - Flutter SDK 3.0+
 - Go 1.19+
-- PostgreSQL 13+
+- MySQL 8.0+
 - Docker & Docker Compose
 - Node.js 16+ (用于部分工具)
 
@@ -143,8 +143,8 @@ go mod tidy
 
 3. **数据库设置**
 ```bash
-# 启动PostgreSQL数据库
-docker-compose up -d postgres
+# 启动MySQL数据库
+docker-compose up -d mysql
 
 # 运行数据库迁移
 go run cmd/migrate/main.go

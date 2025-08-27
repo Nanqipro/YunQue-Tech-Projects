@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI英语学习平台 - 词汇量测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .test-modes {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .test-mode {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-mode:hover {
+            border-color: #4facfe;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+        }
+
+        .test-mode.selected {
+            border-color: #4facfe;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .test-mode h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .test-mode.selected h3 {
+            color: white;
+        }
+
+        .test-mode p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .test-mode.selected p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .test-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .test-mode.selected .test-info {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .difficulty-levels {
+            padding: 0 40px 20px;
+        }
+
+        .difficulty-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .level-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .level-item:hover {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .level-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .level-range {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .start-section {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .start-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .features {
+            padding: 0 40px 40px;
+        }
+
+        .features-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: #4facfe;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .test-modes {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .start-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 词汇量测试</h1>
+            <p>科学评估您的英语词汇水平，制定个性化学习计划</p>
+        </div>
+
+        <div class="test-modes">
+            <div class="test-mode" id="quickTest" onclick="selectMode('quick')">
+                <h3>🚀 快速测试</h3>
+                <p>适合快速了解词汇水平，基于核心词汇进行评估</p>
+                <div class="test-info">
+                    <div class="info-item">
+                        <span>测试时长：</span>
+                        <span>15-20分钟</span>
+                    </div>
+                    <div class="info-item">
+                        <span>题目数量：</span>
+                        <span>50-80题</span>
+                    </div>
+                    <div class="info-item">
+                        <span>准确度：</span>
+                        <span>85%+</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-mode" id="preciseTest" onclick="selectMode('precise')">
+                <h3>🎯 精准测试</h3>
+                <p>全面深入的词汇量评估，涵盖各个难度层次</p>
+                <div class="test-info">
+                    <div class="info-item">
+                        <span>测试时长：</span>
+                        <span>30-45分钟</span>
+                    </div>
+                    <div class="info-item">
+                        <span>题目数量：</span>
+                        <span>120-150题</span>
+                    </div>
+                    <div class="info-item">
+                        <span>准确度：</span>
+                        <span>95%+</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="difficulty-levels">
+            <h3 class="difficulty-title">📊 词汇量等级参考</h3>
+            <div class="levels-grid">
+                <div class="level-item">
+                    <div class="level-name">小学</div>
+                    <div class="level-range">800-1500词</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">初中</div>
+                    <div class="level-range">1500-3000词</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">高中</div>
+                    <div class="level-range">3000-4500词</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">四级</div>
+                    <div class="level-range">4500-6000词</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">六级</div>
+                    <div class="level-range">6000-8000词</div>
+                </div>
+                <div class="level-item">
+                    <div class="level-name">专业级</div>
+                    <div class="level-range">8000+词</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3 class="features-title">✨ 测试特色</h3>
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🧠</div>
+                    <span>自适应算法调整难度</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <span>详细分析报告</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <span>个性化学习建议</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📚</div>
+                    <span>多维度能力评估</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <span>实时进度反馈</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏆</div>
+                    <span>与同水平用户对比</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="start-section">
+            <button class="start-btn" id="startBtn" onclick="startTest()" disabled>
+                请先选择测试模式
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let selectedMode = null;
+
+        function selectMode(mode) {
+            // 移除之前的选择
+            document.querySelectorAll('.test-mode').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // 选择当前模式
+            if (mode === 'quick') {
+                document.getElementById('quickTest').classList.add('selected');
+                selectedMode = 'quick';
+            } else if (mode === 'precise') {
+                document.getElementById('preciseTest').classList.add('selected');
+                selectedMode = 'precise';
+            }
+
+            // 更新开始按钮
+            const startBtn = document.getElementById('startBtn');
+            startBtn.disabled = false;
+            startBtn.textContent = `开始${mode === 'quick' ? '快速' : '精准'}测试`;
+        }
+
+        function startTest() {
+            if (!selectedMode) {
+                alert('请先选择测试模式');
+                return;
+            }
+
+            // 这里可以跳转到实际的测试页面
+            alert(`即将开始${selectedMode === 'quick' ? '快速' : '精准'}测试！\n\n测试说明：\n1. 请在安静的环境中进行测试\n2. 根据直觉选择答案，不要过度思考\n3. 遇到不认识的单词请选择"不认识"\n4. 测试过程中请勿查阅词典`);
+            
+            // 实际项目中这里应该跳转到测试页面
+            // window.location.href = `/test/${selectedMode}`;
+        }
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(30px)';
+            document.querySelector('.container').style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
