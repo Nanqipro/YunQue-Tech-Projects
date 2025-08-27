@@ -83,7 +83,7 @@ AI英语学习平台是一款基于人工智能技术的全方位英语学习应
 - 响应式设计，优秀的用户体验
 
 ### 后端技术
-- **Python FastAPI**：高性能API服务
+- **Go Gin**：高性能API服务
 - **微服务架构**：模块化、可扩展的系统设计
 - **PostgreSQL**：可靠的关系型数据库
 
@@ -120,7 +120,7 @@ ai_english_learning/
 
 ### 环境要求
 - Flutter SDK 3.0+
-- Python 3.9+
+- Go 1.19+
 - PostgreSQL 13+
 - Docker & Docker Compose
 - Node.js 16+ (用于部分工具)
@@ -136,9 +136,9 @@ cd ai_english_learning
 2. **后端环境设置**
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+# 初始化Go模块
+go mod init ai_english_learning
+go mod tidy
 ```
 
 3. **数据库设置**
@@ -147,7 +147,7 @@ pip install -r requirements.txt
 docker-compose up -d postgres
 
 # 运行数据库迁移
-python manage.py migrate
+go run cmd/migrate/main.go
 ```
 
 4. **前端环境设置**
@@ -161,7 +161,7 @@ flutter run
 ```bash
 # 后端API服务
 cd backend
-uvicorn main:app --reload
+go run main.go
 
 # AI服务
 celery -A ai_services worker --loglevel=info
@@ -170,14 +170,14 @@ celery -A ai_services worker --loglevel=info
 ## 开发指南
 
 ### 代码规范
-- 遵循PEP 8 Python代码规范
+- 遵循Go官方代码规范（gofmt, golint）
 - 使用Flutter官方代码规范
 - 提交前运行代码格式化和静态检查
 
 ### 测试
 ```bash
 # 后端测试
-pytest tests/
+go test ./...
 
 # 前端测试
 flutter test
