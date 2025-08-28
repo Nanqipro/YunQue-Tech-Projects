@@ -1,0 +1,150 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Application specific
+/serve/ai-english-learning
+/serve/serve
+/serve/main
+/serve/logs/
+*.log
+
+# Configuration files with sensitive data
+/serve/config/config.local.yaml
+/serve/config/config.prod.yaml
+/serve/config/.env
+.env
+.env.local
+.env.production
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+/backups/
+*.sql.backup
+
+# Docker volumes
+/mysql_data/
+/redis_data/
+
+# Temporary files
+/tmp/
+/temp/
+*.tmp
+
+# Coverage reports
+coverage.out
+coverage.html
+
+# Profiling data
+*.prof
+
+# Build artifacts
+/dist/
+/build/
+
+# Node.js (for any frontend tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Flutter/Dart specific (for client)
+/client/.dart_tool/
+/client/.flutter-plugins
+/client/.flutter-plugins-dependencies
+/client/.packages
+/client/.pub-cache/
+/client/.pub/
+/client/build/
+/client/ios/Flutter/flutter_export_environment.sh
+/client/ios/Runner/GeneratedPluginRegistrant.*
+
+# Android specific
+/client/android/app/debug
+/client/android/app/profile
+/client/android/app/release
+/client/android/.gradle/
+/client/android/captures/
+/client/android/gradlew
+/client/android/gradlew.bat
+/client/android/local.properties
+/client/android/**/GeneratedPluginRegistrant.java
+/client/android/key.properties
+
+# iOS specific
+/client/ios/Flutter/App.framework
+/client/ios/Flutter/Flutter.framework
+/client/ios/Flutter/Flutter.podspec
+/client/ios/Flutter/Generated.xcconfig
+/client/ios/Flutter/app.flx
+/client/ios/Flutter/app.zip
+/client/ios/Flutter/flutter_assets/
+/client/ios/ServiceDefinitions.json
+/client/ios/Runner/GeneratedPluginRegistrant.*
+
+# Web specific
+/client/web/
+
+# Windows specific
+/client/windows/flutter/generated_plugin_registrant.cc
+/client/windows/flutter/generated_plugin_registrant.h
+
+# macOS specific
+/client/macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Linux specific
+/client/linux/flutter/generated_plugin_registrant.cc
+/client/linux/flutter/generated_plugin_registrant.h
+
+# Documentation build
+/docs/build/
+/docs/_build/
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# Monitoring and metrics
+/metrics/
+/monitoring/
+
+# Cache directories
+.cache/
